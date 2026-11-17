@@ -5,6 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import crypto from 'crypto';
 import fs from 'fs';
+import zlib from 'node:zlib';
 import { google } from 'googleapis';
 import webpush from 'web-push';
 
@@ -208,7 +209,9 @@ function permisoParaRuta(ruta){
 
     // PAGOS puede consultar, imprimir y actualizar Stock Online.
     // Las operaciones administrativas se reservan a SUPERADMIN.
-    if(ruta === '/api/stock-online/banner' ||
+    if(ruta.startsWith('/api/stock-online/comparar-ventas')) return 'SUPERADMIN';
+    if(ruta === '/api/stock-online/pedidos-config') return 'SUPERADMIN';
+     if(ruta === '/api/stock-online/banner' ||
        ruta === '/api/stock-online/categorias' ||
        ruta === '/api/stock-online/orden-categorias') return 'SUPERADMIN';
     if(ruta.startsWith('/api/stock-online/')) return ['STOCK_ONLINE','PAGOS'];
@@ -678,6 +681,36 @@ function confirmarAvisoPagos(usuario, id){
 }
 
 
+// CONFIGURACIÓN PÚBLICA DEL DESTINO DE PEDIDOS.
+// Se lee de Google Sheets, no del navegador ni de memoria temporal.
+const GC_PEDIDOS_HOJA = 'CONFIG_PEDIDOS';
+async function leerNumeroPedidos(){
+    if(!sheets) throw Error('Google Sheets no está conectado.');
+    try{
+        const r=await sheets.spreadsheets.values.get({spreadsheetId:GOOGLE_SHEET_ID,range:`${GC_PEDIDOS_HOJA}!A1:B2`});
+        const filas=r.data.values||[];
+        return filas[1]?.[0]==='WHATSAPP' ? String(filas[1]?.[1]||'') : '';
+    }catch(e){
+        if(e.code===400 || e.code===404 || /Unable to parse range/i.test(e.message||'')) return '';
+        throw e;
+    }
+}
+async function guardarNumeroPedidos(numero){
+    if(!sheets) throw Error('Google Sheets no está conectado.');
+    const info=await sheets.spreadsheets.get({spreadsheetId:GOOGLE_SHEET_ID,fields:'sheets.properties.title'});
+    if(!(info.data.sheets||[]).some(s=>s.properties?.title===GC_PEDIDOS_HOJA)){
+        try{await sheets.spreadsheets.batchUpdate({spreadsheetId:GOOGLE_SHEET_ID,requestBody:{requests:[{addSheet:{properties:{title:GC_PEDIDOS_HOJA}}}]}})}
+        catch(e){if(!/already exists/i.test(e.message||''))throw e;}
+    }
+    await sheets.spreadsheets.values.update({spreadsheetId:GOOGLE_SHEET_ID,range:`${GC_PEDIDOS_HOJA}!A1:B2`,valueInputOption:'RAW',requestBody:{values:[['CLAVE','VALOR'],['WHATSAPP',numero]]}});
+}
+// Acceso público necesario para el catálogo de Cloudflare (solo devuelve el número receptor).
+app.get('/api/public/stock-pedidos-config',async(req,res)=>{
+    res.setHeader('Cache-Control','no-store');
+    try{const numero=await leerNumeroPedidos();res.json({success:true,configured:!!numero,whatsapp:numero});}
+    catch(e){console.error('Configuración pública de pedidos:',e.message);res.status(503).json({success:false,error:'Configuración temporalmente no disponible.'});}
+});
+
 app.use(authMejorada);
 
 // STOCK ONLINE: controles exclusivos del sistema autenticado.
@@ -700,6 +733,21 @@ async function githubStock(endpoint, options={}){
     }
     return response.status===204?null:response.json();
 }
+// Progreso real por etapas de GitHub Actions, sin porcentajes por tiempo.
+async function progresoStock(run){
+    const data=await githubStock(`actions/runs/${run.id}/jobs?per_page=100`);
+    const jobs=data.jobs||[];
+    const steps=jobs.flatMap(job=>(job.steps||[]).map(step=>({...step,jobStatus:job.status})));
+    const completed=steps.filter(step=>step.status==='completed').length;
+    const current=steps.find(step=>step.status==='in_progress');
+    const allJobsCompleted=jobs.length>0&&jobs.every(job=>job.status==='completed');
+    return {completed,total:steps.length,percent:run.status==='completed'&&run.conclusion==='success'?100:
+        (steps.length?Math.min(99,Math.floor(completed/steps.length*100)):null),
+        stage:current?.name||(run.status==='completed'?'Finalizando…':allJobsCompleted?'Esperando siguiente tarea…':'Esperando inicio en GitHub…')};
+}
+async function progresoStockSeguro(run){
+    try{return await progresoStock(run)}catch(e){return {percent:null,stage:'Trabajo en curso; avance temporalmente no disponible.'}}
+}
 app.post('/api/stock-online/actualizar',async(req,res)=>{
     // authMejorada ya validó sesión + permiso STOCK_ONLINE.
     if(Date.now()-ultimaSolicitudStock<60000)return res.status(429).json({success:false,error:'Ya se solicitó una actualización hace menos de un minuto.'});
@@ -709,15 +757,82 @@ app.post('/api/stock-online/actualizar',async(req,res)=>{
             body:JSON.stringify({ref:process.env.GITHUB_STOCK_REF||'main'})
         });
         ultimaSolicitudStock=Date.now();
-        return res.json({success:true,message:'Actualización solicitada. GitHub comenzará la sincronización en breve.'});
+        return res.json({success:true,requestedAt:new Date().toISOString(),message:'Actualización solicitada. GitHub comenzará la sincronización en breve.'});
     }catch(e){return res.status(502).json({success:false,error:e.message});}
 });
 app.get('/api/stock-online/estado',async(req,res)=>{
     try{
-        const r=await githubStock(`actions/workflows/${STOCK_WORKFLOW}/runs?per_page=1`);
-        const run=r.workflow_runs?.[0];
-        return res.json({success:true,run:run?{id:run.id,status:run.status,conclusion:run.conclusion,created_at:run.created_at,updated_at:run.updated_at,html_url:run.html_url}:null});
+        const since=typeof req.query.since==='string'?Date.parse(req.query.since):NaN;
+        const r=await githubStock(`actions/workflows/${STOCK_WORKFLOW}/runs?per_page=20`);
+        const runs=r.workflow_runs||[];
+        // Si hay una solicitud manual, seguir solamente ejecuciones manuales posteriores.
+        // Se toleran 10 segundos de diferencia entre relojes de GitHub y del servidor.
+        const run=Number.isFinite(since)
+            ? runs.find(x=>x.event==='workflow_dispatch' && Date.parse(x.created_at)>=since-10000)
+            : runs[0];
+        return res.json({success:true,progress:run?await progresoStockSeguro(run):null,run:run?{id:run.id,status:run.status,conclusion:run.conclusion,created_at:run.created_at,updated_at:run.updated_at,html_url:run.html_url}:null});
     }catch(e){return res.status(502).json({success:false,error:e.message});}
+});
+// Auditoría manual exclusiva SUPERADMIN: workflow independiente del stock.
+const VENTAS_WORKFLOW='comparar-web-ventas.yml';
+let ultimaComparacionVentas=0;
+app.post('/api/stock-online/comparar-ventas',async(req,res)=>{
+    if(!usuarioTienePermiso(req.usuarioGC,'SUPERADMIN'))return res.status(403).json({success:false,error:'Solo SUPERADMIN puede comparar ventas.'});
+    if(Date.now()-ultimaComparacionVentas<60000)return res.status(429).json({success:false,error:'Esperá un minuto antes de repetir la comparación.'});
+    try{
+        await githubStock(`actions/workflows/${VENTAS_WORKFLOW}/dispatches`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ref:process.env.GITHUB_STOCK_REF||'main'})});
+        ultimaComparacionVentas=Date.now();
+        res.json({success:true,requestedAt:new Date().toISOString(),message:'Comparación iniciada en GitHub.'});
+    }catch(e){res.status(502).json({success:false,error:e.message})}
+});
+// ZIP pequeño con un solo JSON: leer archivo desde el artifact sin dependencias extra.
+function jsonDesdeZip(buffer){
+    // Leer el directorio central: admite ZIP con descriptor de datos.
+    let end=-1;
+    for(let i=buffer.length-22;i>=Math.max(0,buffer.length-65557);i--){
+        if(buffer.readUInt32LE(i)===0x06054b50){end=i;break;}
+    }
+    if(end<0)throw Error('ZIP de GitHub inválido');
+    let pos=buffer.readUInt32LE(end+16);
+    const count=buffer.readUInt16LE(end+10);
+    for(let i=0;i<count;i++){
+        if(buffer.readUInt32LE(pos)!==0x02014b50)throw Error('Directorio ZIP inválido');
+        const method=buffer.readUInt16LE(pos+10),size=buffer.readUInt32LE(pos+20);
+        const n=buffer.readUInt16LE(pos+28),e=buffer.readUInt16LE(pos+30),c=buffer.readUInt16LE(pos+32);
+        const name=buffer.subarray(pos+46,pos+46+n).toString('utf8');
+        if(name.endsWith('comparacion.json')){
+            const local=buffer.readUInt32LE(pos+42);
+            if(buffer.readUInt32LE(local)!==0x04034b50)throw Error('Entrada ZIP inválida');
+            const start=local+30+buffer.readUInt16LE(local+26)+buffer.readUInt16LE(local+28);
+            if(start+size>buffer.length)throw Error('Archivo ZIP incompleto');
+            const data=buffer.subarray(start,start+size);
+            const decoded=method===8?zlib.inflateRawSync(data):method===0?data:null;
+            if(!decoded)throw Error('Compresión ZIP no admitida');
+            return JSON.parse(decoded.toString('utf8'));
+        }
+        pos+=46+n+e+c;
+    }
+    throw Error('No se encontró el informe en el archivo de GitHub.');
+}
+app.get('/api/stock-online/comparar-ventas/estado',async(req,res)=>{
+    if(!usuarioTienePermiso(req.usuarioGC,'SUPERADMIN'))return res.status(403).json({success:false,error:'Solo SUPERADMIN.'});
+    try{
+        const since=Date.parse(String(req.query.since||''));
+        if(!Number.isFinite(since))return res.status(400).json({success:false,error:'Falta la fecha de solicitud.'});
+        const runs=await githubStock(`actions/workflows/${VENTAS_WORKFLOW}/runs?per_page=20`);
+        const run=(runs.workflow_runs||[]).find(x=>x.event==='workflow_dispatch'&&Date.parse(x.created_at)>=since-10000);
+        if(!run)return res.json({success:true,status:'waiting'});
+        if(run.status!=='completed')return res.json({success:true,status:'running',runId:run.id,progress:await progresoStockSeguro(run)});
+        if(run.conclusion!=='success')return res.json({success:true,status:'error',note:'GitHub finalizó con '+run.conclusion,runUrl:run.html_url});
+        const artifacts=await githubStock(`actions/runs/${run.id}/artifacts`);
+        const artifact=(artifacts.artifacts||[]).find(a=>a.name==='comparacion-web-ventas'&&!a.expired);
+        if(!artifact)return res.json({success:true,status:'processing',note:'Esperando que GitHub publique el informe.'});
+        const token=process.env.GITHUB_STOCK_TOKEN;
+        const download=await fetch(artifact.archive_download_url,{headers:{Authorization:`Bearer ${token}`,Accept:'application/vnd.github+json'},signal:AbortSignal.timeout(20000)});
+        if(!download.ok)throw Error('No se pudo descargar el informe: HTTP '+download.status);
+        const report=jsonDesdeZip(Buffer.from(await download.arrayBuffer()));
+        res.json({success:true,status:'completed',report});
+    }catch(e){res.status(502).json({success:false,error:e.message})}
 });
 app.get('/api/stock-online/catalogo',async(req,res)=>{
     try{
@@ -793,6 +908,23 @@ app.post('/api/stock-online/orden-categorias',async(req,res)=>{
         res.json({success:true,message:'Orden enviado para publicación. Puede tardar unos minutos.'});
     }catch(e){res.status(502).json({success:false,error:e.message});}
 });
+// Configuración de pedidos: solo SUPERADMIN puede consultar y modificar.
+app.get('/api/stock-online/pedidos-config',async(req,res)=>{
+    if(!usuarioTienePermiso(req.usuarioGC,'SUPERADMIN'))return res.status(403).json({success:false,error:'Solo SUPERADMIN puede configurar pedidos.'});
+    try{const whatsapp=await leerNumeroPedidos();res.json({success:true,whatsapp});}
+    catch(e){res.status(503).json({success:false,error:'No se pudo leer la configuración: '+e.message});}
+});
+app.post('/api/stock-online/pedidos-config',async(req,res)=>{
+    if(!usuarioTienePermiso(req.usuarioGC,'SUPERADMIN'))return res.status(403).json({success:false,error:'Solo SUPERADMIN puede configurar pedidos.'});
+    let local=String(req.body?.whatsapp||'').replace(/\D/g,'');
+    if(local.startsWith('0054'))local=local.slice(4);
+    else if(local.startsWith('54'))local=local.slice(2);
+    const whatsapp='54'+local;
+    if(!/^9\d{10}$/.test(local))return res.status(400).json({success:false,error:'Ingresá 9 + código de área + número de celular (11 dígitos después del +54). Ejemplo: 9 11 1234 5678.'});
+    try{await guardarNumeroPedidos(whatsapp);res.json({success:true,whatsapp,message:'Número de pedidos guardado correctamente.'});}
+    catch(e){console.error('Guardando WhatsApp de pedidos:',e);res.status(503).json({success:false,error:'No se pudo guardar la configuración: '+e.message});}
+});
+
 // ============================================================
 // API NOTIFICACIONES WINDOWS
 // ============================================================
