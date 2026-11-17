@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Good Company - Usuarios</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{margin:0;background:#020617;color:#e2e8f0;font-family:Arial,Helvetica,sans-serif}
+.card{background:#0f172a;border:1px solid #334155;border-radius:14px}
+.input{background:#020617;border:1px solid #475569;color:#fff;border-radius:9px;padding:10px 12px;outline:none;font-weight:700;width:100%;box-sizing:border-box}
+.input:focus{border-color:#2563eb}
+.btn{border:0;border-radius:9px;padding:10px 14px;font-weight:900;cursor:pointer}
+.primary{background:#2563eb;color:white}.danger{background:#991b1b;color:white}.secondary{background:#334155;color:white}
+th,td{padding:9px 8px;border-bottom:1px solid #1e293b;font-size:13px}
+th{color:#94a3b8;text-align:left}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);align-items:center;justify-content:center;padding:18px;z-index:2147483647;pointer-events:auto;user-select:text;-webkit-user-select:text}
+.modal.show{display:flex !important;pointer-events:auto !important}
+.modal *{pointer-events:auto}
+.modal input,.modal select,.modal textarea{pointer-events:auto !important;user-select:text !important;-webkit-user-select:text !important;-webkit-user-modify:read-write !important}
+</style>
+</head>
+<body class="p-5">
+<div class="max-w-6xl mx-auto">
+<div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+<div>
+<h1 class="text-2xl font-black">⚙️ ADMINISTRAR USUARIOS</h1>
+<p class="text-slate-400 text-sm">SUPERADMIN — Good Company · versión corregida</p>
+</div>
+<div class="flex gap-2">
+<button class="btn primary" onclick="nuevo()">＋ NUEVO USUARIO</button>
+<button class="btn secondary" onclick="location.href='/'">← VOLVER</button>
+<button class="btn danger" onclick="salir()">🚪 SALIR</button>
+</div>
+</div>
+<div class="card p-4 overflow-auto">
+<table class="w-full">
+<thead><tr><th>USUARIO</th><th>NOMBRE</th><th>ROL</th><th>ESTADO</th><th>PERMISOS</th><th>CLAVE</th><th>ACCIÓN</th></tr></thead>
+<tbody id="lista"></tbody>
+</table>
+</div>
+</div>
+
+<div id="modal" class="modal">
+<div class="card p-6 w-full max-w-2xl">
+<h2 id="titulo" class="text-xl font-black mb-4">NUEVO USUARIO</h2>
+<input id="original" type="hidden">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+<div><label class="text-xs font-black">USUARIO</label><input id="usuario" class="input mt-1"></div>
+<div><label class="text-xs font-black">NOMBRE</label><input id="nombre" class="input mt-1"></div>
+<div><label class="text-xs font-black">NUEVA CONTRASEÑA</label><input id="password" type="password" class="input mt-1" autocomplete="new-password" placeholder="Mínimo 6 caracteres"></div>
+<div><label class="text-xs font-black">ROL</label><select id="rol" class="input mt-1"><option>USUARIO</option></select></div>
+</div>
+<label class="flex items-center gap-2 mt-4"><input id="activo" type="checkbox" class="w-4 h-4" checked><b>USUARIO ACTIVO</b></label>
+<div class="mt-4">
+<div class="font-black mb-2">PERMISOS</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm font-bold">
+<label><input id="p_ie" type="checkbox"> Ingresos / Egresos</label>
+<label><input id="p_tareas" type="checkbox"> Tareas</label>
+<label><input id="p_prod" type="checkbox"> Producción</label>
+<label><input id="p_tall" type="checkbox"> Talleres</label>
+<label><input id="p_pagos" type="checkbox"> Pagos</label>
+<label><input id="p_bd" type="checkbox"> BD</label>
+<label><input id="p_rollos" type="checkbox"> Rollos</label>
+<label><input id="p_stock" type="checkbox"> Stock Online</label>
+</div>
+</div>
+<div id="msg" class="text-red-300 font-bold text-sm mt-4"></div>
+<div class="flex justify-end gap-2 mt-5">
+<button class="btn secondary" onclick="cerrar()">CANCELAR</button>
+<button class="btn primary" onclick="guardar()">GUARDAR</button>
+</div>
+</div>
+</div>
+
+<script>
+let editando=null;
+const qs=id=>document.getElementById(id);
+function permisos(){
+ return {
+  INGRESOS_EGRESOS:qs('p_ie').checked,TAREAS:qs('p_tareas').checked,
+  PRODUCCION:qs('p_prod').checked,TALLERES:qs('p_tall').checked,
+  PAGOS:qs('p_pagos').checked,BD:qs('p_bd').checked,ROLLOS:qs('p_rollos').checked,STOCK_ONLINE:qs('p_stock').checked
+ };
+}
+function setPermisos(p){
+ qs('p_ie').checked=!!p.INGRESOS_EGRESOS; qs('p_tareas').checked=!!p.TAREAS;
+ qs('p_prod').checked=!!p.PRODUCCION; qs('p_tall').checked=!!p.TALLERES;
+ qs('p_pagos').checked=!!p.PAGOS; qs('p_bd').checked=!!p.BD; qs('p_rollos').checked=!!p.ROLLOS; qs('p_stock').checked=!!p.STOCK_ONLINE;
+}
+async function cargar(){
+ const r=await fetch('/api/admin/usuarios');
+ if(r.status===401||r.status===403){location.href='/login.html?next='+encodeURIComponent('/admin-usuarios.html');return}
+ const d=await r.json();
+ if(!r.ok){alert(d.error||'Error');return}
+ qs('lista').innerHTML=d.usuarios.map(u=>{
+   const pp=Object.entries(u.permisos).filter(x=>x[1]).map(x=>x[0].replace('INGRESOS_EGRESOS','ING/EG')).join(', ')||'—';
+   return `<tr>
+    <td class="font-black">${u.usuario}</td><td>${u.nombre||'—'}</td><td>${u.rol}</td>
+    <td>${u.activo==='SI'?'🟢 ACTIVO':'🔴 INACTIVO'}</td><td>${pp}</td>
+    <td>${u.tienePassword?'✓ Configurada':'⚠ Sin clave'}</td>
+    <td>
+      <button type="button" class="btn primary btn-editar" data-usuario="${encodeURIComponent(u.usuario)}">EDITAR</button>
+      ${u.usuario!=='SERPER'?` <button type="button" class="btn danger btn-eliminar" data-usuario="${encodeURIComponent(u.usuario)}">ELIMINAR</button>`:''}
+    </td>
+   </tr>`;
+ }).join('');
+
+ // Botones sin inline onclick: más fiables dentro de Electron/WebView.
+ qs('lista').querySelectorAll('.btn-editar').forEach(btn=>{
+   btn.addEventListener('click',()=>{
+     const fila=d.usuarios.find(x=>encodeURIComponent(x.usuario)===btn.dataset.usuario);
+     if(fila) editar(fila);
+   });
+ });
+ qs('lista').querySelectorAll('.btn-eliminar').forEach(btn=>{
+   btn.addEventListener('click',()=>eliminar(btn.dataset.usuario));
+ });
+}
+function nuevo(){
+ editando=null;qs('titulo').textContent='NUEVO USUARIO';qs('original').value='';
+ ['usuario','nombre','password'].forEach(id=>qs(id).value='');
+ qs('usuario').disabled=false;
+ qs('nombre').disabled=false;
+ qs('password').disabled=false;
+ qs('rol').disabled=false;
+ qs('activo').disabled=false;
+ qs('usuario').readOnly=false;
+ qs('nombre').readOnly=false;
+ qs('password').readOnly=false;
+ qs('rol').readOnly=false;
+ qs('activo').checked=true;
+ qs('rol').value='USUARIO';
+ setPermisos({});
+ qs('msg').textContent='';
+ qs('modal').classList.add('show');
+ setTimeout(()=>qs('usuario').focus(),50);
+}
+function editar(u){
+ editando=u.usuario;qs('titulo').textContent='EDITAR '+u.usuario;qs('original').value=u.usuario;
+ qs('usuario').value=u.usuario;qs('usuario').disabled=true;qs('nombre').value=u.nombre||'';
+ qs('password').value='';qs('activo').checked=u.activo==='SI';qs('rol').value=u.rol;setPermisos(u.permisos);
+ qs('msg').textContent='';
+ qs('modal').classList.add('show');
+ setTimeout(()=>qs('nombre').focus(),50);
+}
+function cerrar(){qs('modal').classList.remove('show')}
+async function guardar(){
+ qs('msg').textContent='';
+ const usuario=qs('usuario').value.trim(), nombre=qs('nombre').value.trim(), password=qs('password').value;
+ if(!usuario||!nombre)return qs('msg').textContent='Completá usuario y nombre.';
+ if(!editando && password.length<6)return qs('msg').textContent='La contraseña debe tener al menos 6 caracteres.';
+ const body={nombre,activo:qs('activo').checked,rol:qs('rol').value,permisos:permisos()};
+ if(password)body.password=password;
+ const url=editando?'/api/admin/usuarios/'+encodeURIComponent(editando):'/api/admin/usuarios';
+ const r=await fetch(url,{method:editando?'PUT':'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(editando?body:{...body,usuario,password})});
+ const d=await r.json();
+ if(!r.ok)return qs('msg').textContent=d.error||'No se pudo guardar.';
+ cerrar();cargar();
+}
+async function eliminar(u){
+ try{
+   const usuario=decodeURIComponent(String(u||''));
+   if(!usuario) return alert('Usuario inválido.');
+   if(!confirm('¿Seguro que querés eliminar este usuario?'))return;
+
+   const r=await fetch('/api/admin/usuarios/'+encodeURIComponent(usuario),{
+     method:'DELETE',
+     credentials:'same-origin',
+     headers:{'Accept':'application/json'}
+   });
+
+   const textoRespuesta=await r.text();
+   let d={};
+   try{ d=textoRespuesta?JSON.parse(textoRespuesta):{}; }catch(_){}
+
+   if(!r.ok){
+     return alert(
+       d.error ||
+       `No se pudo eliminar. HTTP ${r.status}`
+     );
+   }
+
+   await cargar();
+   alert(`✅ Usuario ${usuario} eliminado correctamente.`);
+ }catch(error){
+   console.error('❌ ERROR ELIMINANDO USUARIO:',error);
+   alert('❌ No se pudo eliminar el usuario.\n\n'+error.message);
+ }
+}
+
+// Compatibilidad con versiones anteriores del HTML
+async function eliminarFila(u){
+ return eliminar(u);
+}
+
+async function salir(){
+ await fetch('/api/auth/logout',{method:'POST'});
+ location.href='/login.html';
+}
+cargar();
+</script>
+</body>
+</html>

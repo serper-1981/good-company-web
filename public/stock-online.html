@@ -1,0 +1,83 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>STOCK ONLINE — GOOD COMPANY</title><script src="/auth.js?v=11" defer></script>
+<style>*{box-sizing:border-box}body{margin:0;background:#08111d;color:#f1f5f9;font:14px Arial,sans-serif}header{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:10px 16px;background:#111f30;border-bottom:1px solid #334155}header a{color:#fff;text-decoration:none;background:#334155;padding:9px 13px;border-radius:8px;font-weight:bold}header strong{font-size:17px}.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 16px;background:#10283c;border-bottom:1px solid #334155}.controls button,.controls a{cursor:pointer;background:#126e75;color:#fff;border:0;border-radius:7px;padding:10px 14px;text-decoration:none;font-weight:bold}.controls button:disabled{opacity:.5;cursor:wait}#last{font-size:12px;color:#cbd5e1}#message{font-size:12px;color:#b9f3df}iframe{display:block;width:100%;height:calc(100vh - 135px);min-height:600px;border:0;background:#fff}</style></head><body>
+<header><a href="/">← GOOD COMPANY</a><strong>📦 STOCK ONLINE</strong><span>Acceso autorizado</span></header>
+<div class="controls"><span id="last">Consultando última publicación…</span><a href="https://goodcompany-stock-online.pages.dev/informe-colores" target="_blank" rel="noopener">🖨 IMPRIMIR</a><button id="share-whatsapp" type="button" style="background:#168a4b">COMPARTIR POR WHATSAPP</button><button id="update" type="button">↻ ACTUALIZAR AHORA</button><button id="banner-admin" type="button" style="display:none">🖼 ADMINISTRAR BANNER</button><button id="categories-admin" type="button" style="display:none">⚙ ELEGIR ORDEN DE VISTA</button><span id="message" role="status" aria-live="polite"></span></div>
+<dialog id="banner-dialog" style="background:#10283c;color:#fff;border:1px solid #54708a;border-radius:12px;width:min(95vw,650px);padding:22px"><h2>Banner del catálogo</h2><p>Elegí una imagen horizontal (recomendado 1920 × 300). Se comprimirá automáticamente para publicarla.</p><input id="banner-file" type="file" accept="image/*"><p><img id="banner-preview" style="display:none;width:100%;height:auto" alt="Vista previa"></p><label><input id="banner-active" type="checkbox" checked> Mostrar banner (si está desactivado, vuelve el logo)</label><p id="banner-message" role="status"></p><button id="banner-save">GUARDAR Y PUBLICAR</button> <button id="banner-close">CERRAR</button></dialog>
+<dialog id="categories-dialog" style="background:#10283c;color:white;border:1px solid #54708a;border-radius:12px;width:min(95vw,650px);padding:22px;max-height:85vh">
+<h2>Orden de categorías</h2><p>Usá las flechas para ordenar. Los artículos nacionales mantienen su orden por código.</p>
+<div id="category-list" style="display:grid;gap:7px;max-height:48vh;overflow:auto"></div>
+<p id="category-message" role="status"></p><button id="categories-save" type="button">GUARDAR ORDEN</button> <button id="categories-close" type="button">CERRAR</button></dialog>
+<iframe id="catalog" src="https://goodcompany-stock-online.pages.dev/" title="Catálogo Stock Online" referrerpolicy="no-referrer" loading="eager"></iframe>
+<script>
+const button=document.querySelector('#update'),msg=document.querySelector('#message'),last=document.querySelector('#last');
+async function json(url,opts){const r=await fetch(url,{credentials:'same-origin',cache:'no-store',...opts});const data=await r.json();if(!r.ok||!data.success)throw Error(data.error||'Error al consultar el servidor');return data}
+async function metadata(){try{const d=await json('/api/stock-online/catalogo');last.textContent=`${d.articulos} artículos · Última actualización: ${d.updatedAt?new Date(d.updatedAt).toLocaleString('es-AR',{timeZone:'America/Argentina/Buenos_Aires',hour12:false}):'sin fecha'}`}catch(e){last.textContent='No se pudo consultar la fecha: '+e.message}}
+button.addEventListener('click',async()=>{button.disabled=true;msg.textContent='Solicitando actualización…';let previousId=null;try{previousId=(await json('/api/stock-online/estado')).run?.id||null}catch(_){}try{const d=await json('/api/stock-online/actualizar',{method:'POST',headers:{'Content-Type':'application/json'}});msg.textContent=d.message+' Se verificará el resultado.';let checks=0;const timer=setInterval(async()=>{checks++;try{const d=await json('/api/stock-online/estado');if(d.run?.id && d.run.id!==previousId && d.run.status==='completed'){clearInterval(timer);msg.textContent=d.run.conclusion==='success'?'Actualización terminada correctamente.':'La ejecución terminó con estado: '+d.run.conclusion;await metadata();document.querySelector('#catalog').src='https://goodcompany-stock-online.pages.dev/?v='+Date.now()}}catch(e){msg.textContent='No se pudo consultar el progreso: '+e.message}if(checks>=40){clearInterval(timer);msg.textContent+=' Revisá el resultado en GitHub Actions.'}},15000)}catch(e){msg.textContent=e.message}finally{button.disabled=false}});metadata();
+document.querySelector('#share-whatsapp').addEventListener('click',()=>{
+  // Texto sin emojis para evitar caracteres de reemplazo en WhatsApp Web.
+  const message=[
+    '¡Hola!',
+    '',
+    'Te compartimos nuestro catálogo de GOOD COMPANY, donde podés consultar los artículos, colores disponibles y precios actualizados.',
+    '',
+    'https://goodcompany-stock-online.pages.dev/?compartir=gc20261023',
+    '',
+    '¡Gracias por elegirnos!'
+  ].join('\n');
+  window.open('https://wa.me/?text='+encodeURIComponent(message),'_blank','noopener,noreferrer');
+});
+const adminBtn=document.querySelector('#banner-admin'),dlg=document.querySelector('#banner-dialog'),file=document.querySelector('#banner-file'),preview=document.querySelector('#banner-preview'),active=document.querySelector('#banner-active'),bmsg=document.querySelector('#banner-message');
+json('/api/stock-online/banner-admin').then(d=>{if(d.superadmin===true){adminBtn.style.display='inline-block';document.querySelector('#categories-admin').style.display='inline-block';}}).catch(e=>{console.error('Permisos de catálogo:',e);});
+adminBtn.onclick=()=>dlg.showModal();document.querySelector('#banner-close').onclick=()=>dlg.close();
+file.onchange=()=>{if(file.files[0]){preview.src=URL.createObjectURL(file.files[0]);preview.style.display='block'}};
+async function compressBanner(f){
+ const bmp=await createImageBitmap(f);const c=document.createElement('canvas');c.width=1920;c.height=300;
+ const ctx=c.getContext('2d');ctx.fillStyle='#07172a';ctx.fillRect(0,0,c.width,c.height);
+ const scale=Math.min(c.width/bmp.width,c.height/bmp.height),w=bmp.width*scale,h=bmp.height*scale;
+ ctx.drawImage(bmp,(c.width-w)/2,(c.height-h)/2,w,h);bmp.close();
+ for(const q of [.75,.6,.45,.3,.2,.12,.07]){
+  const blob=await new Promise(r=>c.toBlob(r,'image/webp',q));if(blob&&blob.size<36000){const buf=await blob.arrayBuffer();const bytes=new Uint8Array(buf);let binary='';for(let i=0;i<bytes.length;i+=8192)binary+=String.fromCharCode(...bytes.subarray(i,i+8192));return btoa(binary)}
+ }
+ throw Error('La imagen no pudo comprimirse lo suficiente. Probá con una versión JPG más liviana.');
+}
+document.querySelector('#banner-save').onclick=async()=>{
+ const save=document.querySelector('#banner-save');save.disabled=true;bmsg.textContent='Preparando banner…';
+ try{if(active.checked&&!file.files[0])throw Error('Seleccioná una imagen para activar el banner.');
+ const image=file.files[0]?await compressBanner(file.files[0]):'';
+ const d=await json('/api/stock-online/banner',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({active:active.checked,image})});bmsg.textContent=d.message;
+ }catch(e){bmsg.textContent='Error: '+e.message}finally{save.disabled=false}
+};
+
+const catBtn=document.querySelector('#categories-admin'),catDlg=document.querySelector('#categories-dialog'),catList=document.querySelector('#category-list'),catMessage=document.querySelector('#category-message');
+let categoryOrder=[];
+const norm=x=>String(x||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toUpperCase();
+function drawCategoryList(){
+ catList.replaceChildren();
+ categoryOrder.forEach((name,i)=>{
+  const row=document.createElement('div');row.style.cssText='display:flex;align-items:center;justify-content:space-between;background:#173950;padding:8px;border-radius:6px;gap:8px';
+  const title=document.createElement('span');title.textContent=name;
+  const buttons=document.createElement('span');
+  for(const [arrow,offset] of [['↑',-1],['↓',1]]){
+   const b=document.createElement('button');b.textContent=arrow;b.type='button';b.disabled=i+offset<0||i+offset>=categoryOrder.length;
+   b.onclick=()=>{[categoryOrder[i],categoryOrder[i+offset]]=[categoryOrder[i+offset],categoryOrder[i]];drawCategoryList()};buttons.append(b);
+  }
+  row.append(title,buttons);catList.append(row);
+ });
+}
+catBtn.onclick=async()=>{
+ catMessage.textContent='Cargando categorías…';catList.replaceChildren();catDlg.showModal();
+ try{
+  const response=await json('/api/stock-online/categorias');
+  const cats=Array.isArray(response.categories)?response.categories:[];
+  const stored=Array.isArray(response.order)?response.order:[];
+  categoryOrder=[...stored.filter(x=>cats.includes(x)),...cats.filter(x=>!stored.includes(x))];
+  drawCategoryList();catMessage.textContent=categoryOrder.length+' categorías disponibles.';
+ }catch(e){catMessage.textContent='No se pudieron cargar categorías: '+e.message}
+};
+document.querySelector('#categories-close').onclick=()=>catDlg.close();
+document.querySelector('#categories-save').onclick=async()=>{
+ const b=document.querySelector('#categories-save');if(!categoryOrder.length){catMessage.textContent='Primero cargá las categorías.';return}b.disabled=true;catMessage.textContent='Guardando…';
+ try{const d=await json('/api/stock-online/orden-categorias',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({order:categoryOrder})});catMessage.textContent=d.message}
+ catch(e){catMessage.textContent='Error: '+e.message}finally{b.disabled=false}
+};
+</script></body></html>

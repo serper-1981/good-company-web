@@ -1,0 +1,5921 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+<script src="/auth.js?v=10"></script>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
+
+    <title>GOOD COMPANY</title>
+<!-- RESPONSIVE v25: mobile/tablet cleanup -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+
+    <style>
+
+        /* =====================================================
+           FONDO GENERAL
+        ===================================================== */
+
+        body {
+
+            background:
+                radial-gradient(
+                    circle at top,
+                    #1e3a8a 0%,
+                    #0f172a 35%,
+                    #020617 100%
+                );
+
+            color:
+                #e2e8f0;
+
+        }
+
+
+        /* =====================================================
+           CONTENEDORES OSCUROS
+        ===================================================== */
+
+        /* =====================================================
+           RESERVAS DE PRODUCCIÓN
+        ===================================================== */
+
+        .reservas-card{
+            background:rgba(15,23,42,.94);
+            border:1px solid rgba(71,85,105,.65);
+            border-radius:.75rem;
+            overflow:hidden;
+        }
+
+        .reservas-columnas{
+            display:grid;
+            grid-template-columns:90px 70px 1fr 105px 112px;
+            gap:.5rem;
+            align-items:center;
+            padding:.35rem .75rem;
+            background:rgba(2,6,23,.72);
+            border-top:1px solid rgba(71,85,105,.35);
+            border-bottom:1px solid rgba(71,85,105,.45);
+            color:#94a3b8;
+            font-size:10px;
+            font-weight:900;
+            letter-spacing:.03em;
+        }
+        .reservas-columnas div,
+        .reserva-row > div,
+        .reserva-row > button{
+            text-align:center;
+        }
+        .reserva-row > div:first-child{
+            text-align:center;
+        }
+
+        .reserva-row{
+            display:grid;
+            grid-template-columns:90px 70px 1fr 105px 112px;
+            gap:.5rem;
+            align-items:center;
+            min-height:46px;
+            padding:.42rem .75rem;
+            border-bottom:1px solid rgba(71,85,105,.35);
+            font-size:13px;
+}
+
+        .reserva-row:last-child{border-bottom:0}
+        .reserva-art{font-weight:900;color:#fff;font-size:20px;text-align:left}
+        .reserva-color{font-weight:900;color:#e2e8f0}
+        .reserva-cantidad{text-align:center;font-weight:900;color:#fff}
+        .reserva-fecha{color:#94a3b8;font-weight:800;text-align:center}
+        .reserva-add{
+            justify-self:center;
+            min-width:92px;
+            background:#16a34a;
+            color:white;
+            font-weight:900;
+            border-radius:.5rem;
+            padding:.45rem .55rem;
+            cursor:pointer;
+        }
+        .reserva-add:hover{background:#15803d}
+        .reserva-add:disabled{opacity:.55;cursor:not-allowed}
+        @media(max-width:640px){
+            .reservas-columnas{grid-template-columns:65px 1fr 55px 82px 92px;font-size:8px}
+            .reserva-row{grid-template-columns:65px 1fr 55px 82px 92px;font-size:11px}
+        }
+
+
+        .panel {
+
+            background:
+                rgba(15, 23, 42, 0.94);
+
+            border:
+                1px solid
+                rgba(71, 85, 105, 0.65);
+
+            box-shadow:
+                0 15px 35px
+                rgba(0, 0, 0, .30);
+
+        }
+
+
+        /* =====================================================
+           INPUTS / SELECTS
+        ===================================================== */
+
+        input,
+        select {
+
+            transition:
+                border-color .2s,
+                box-shadow .2s,
+                background-color .2s;
+
+        }
+
+
+        input:focus,
+        select:focus {
+
+            outline:
+                none;
+
+            border-color:
+                #3b82f6 !important;
+
+            box-shadow:
+                0 0 0 2px
+                rgba(59, 130, 246, .20);
+
+        }
+
+
+        /* =====================================================
+           SELECTOR DE TALLER
+        ===================================================== */
+
+        #select-taller {
+
+            font-size: 16px !important;
+            line-height: 1.25 !important;
+
+            background-color:
+                #1e293b !important;
+
+            color:
+                #f8fafc !important;
+
+            border-color:
+                #475569 !important;
+
+        }
+
+
+        #select-taller option {
+
+            font-size: 16px !important;
+            padding: 5px 8px;
+
+            background:
+                #1e293b;
+
+            color:
+                #f8fafc;
+
+        }
+
+
+        /* =====================================================
+           INPUTS FORMULARIO
+        ===================================================== */
+
+        .campo-oscuro {
+
+            background:
+                #1e293b !important;
+
+            color:
+                #f8fafc !important;
+
+            border-color:
+                #475569 !important;
+
+        }
+
+
+        .campo-oscuro::placeholder {
+
+            color:
+                #94a3b8;
+
+        }
+
+
+        /* =====================================================
+           TABLAS DE MERCADERÍA
+        ===================================================== */
+
+        .tabla-mercaderia {
+
+            width:
+                100%;
+
+            border-collapse:
+                collapse;
+
+        }
+
+
+        .tabla-mercaderia thead th {
+
+            background:
+                #1e293b;
+
+            color:
+                #cbd5e1;
+
+            font-size:
+                11px;
+
+            font-weight:
+                900;
+
+            padding:
+                8px 6px;
+
+            border-bottom:
+                1px solid
+                #475569;
+
+            white-space:
+                nowrap;
+
+        }
+
+
+        .tabla-mercaderia tbody tr {
+
+            background:
+                #0f172a;
+
+            color:
+                #e2e8f0;
+
+            border-bottom:
+                1px solid
+                #334155;
+
+        }
+
+
+        .tabla-mercaderia tbody td {
+
+            background:
+                #0f172a;
+
+            color:
+                #e2e8f0;
+
+            font-size:
+                12px;
+
+            font-weight:
+                700;
+
+            padding:
+                8px 6px;
+
+            white-space:
+                nowrap;
+
+        }
+
+
+        .tabla-mercaderia tbody tr:hover td {
+
+            background:
+                #1e293b;
+
+        }
+
+
+        /* =====================================================
+           CANTIDAD
+        ===================================================== */
+
+        .tabla-mercaderia
+        tbody
+        td:nth-child(2) {
+
+            color:
+                #ffffff;
+
+            font-size:
+                15px;
+
+            font-weight:
+                900;
+
+            text-align:
+                center;
+
+        }
+
+
+        /* =====================================================
+           BOTÓN INGRESAR
+        ===================================================== */
+
+        .btn-ingresar {
+
+            background:
+                #059669;
+
+            color:
+                white;
+
+            font-size:
+                11px;
+
+            font-weight:
+                900;
+
+            padding:
+                5px 9px;
+
+            border-radius:
+                6px;
+
+            transition:
+                all .15s;
+
+            box-shadow:
+                0 2px 5px
+                rgba(0,0,0,.20);
+
+        }
+
+
+        .btn-ingresar:hover {
+
+            background:
+                #047857;
+
+            transform:
+                translateY(-1px);
+
+        }
+
+
+        /* =====================================================
+           ENCABEZADOS DE CATEGORÍAS
+        ===================================================== */
+
+        .categoria-pendientes {
+
+            background:
+                #2563eb;
+
+        }
+
+
+        .categoria-reparaciones {
+
+            background:
+                #d97706;
+
+        }
+
+
+        .categoria-muestras {
+
+            background:
+                #7c3aed;
+
+        }
+
+
+        .categoria-titulo {
+
+            color:
+                white;
+
+            font-size:
+                14px;
+
+            font-weight:
+                900;
+
+            letter-spacing:
+                .5px;
+
+        }
+
+
+        .categoria-total {
+
+            color:
+                white;
+
+            font-size:
+                20px;
+
+            font-weight:
+                900;
+
+        }
+
+
+        /* =====================================================
+           TARJETAS DE LAS TRES CATEGORÍAS
+        ===================================================== */
+
+        .categoria-card {
+
+            background:
+                rgba(15, 23, 42, .96);
+
+            border:
+                1px solid
+                #334155;
+
+            border-radius:
+                10px;
+
+            overflow:
+                hidden;
+
+            box-shadow:
+                0 10px 25px
+                rgba(0,0,0,.25);
+
+        }
+
+
+        /* =====================================================
+           BOTONES PRINCIPALES
+        ===================================================== */
+
+        .btn-principal {
+
+            transition:
+                transform .15s,
+                box-shadow .15s;
+
+        }
+
+
+        .btn-principal:hover {
+
+            transform:
+                translateY(-1px);
+
+            box-shadow:
+                0 8px 18px
+                rgba(0,0,0,.30);
+
+        }
+
+
+        /* =====================================================
+           SCROLL
+        ===================================================== */
+
+        ::-webkit-scrollbar {
+
+            width:
+                8px;
+
+            height:
+                8px;
+
+        }
+
+
+        ::-webkit-scrollbar-track {
+
+            background:
+                #0f172a;
+
+        }
+
+
+        ::-webkit-scrollbar-thumb {
+
+            background:
+                #475569;
+
+            border-radius:
+                10px;
+
+        }
+
+
+        ::-webkit-scrollbar-thumb:hover {
+
+            background:
+                #64748b;
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1023px) {
+
+            .categorias-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+        }
+
+
+    
+.reservas-contenido-centrado{
+    width:96%;
+    max-width:1050px;
+    margin:0 auto;
+}
+
+
+        /* FECHAS UNIFICADAS: DD/MM/AAAA */
+        .disponible-fecha,
+        .reserva-fecha{
+            font-size:10px !important;
+            font-weight:800 !important;
+            line-height:1 !important;
+            white-space:nowrap;
+        }
+
+</style>
+
+
+<style>
+/* ======================================================
+   TOAST GOOD COMPANY — MENSAJES TEMPORALES
+====================================================== */
+.gc-toast{
+    position:fixed;
+    left:50%;
+    top:22px;
+    transform:translateX(-50%);
+    z-index:99999;
+    background:#0f172a;
+    color:#fff;
+    border:1px solid #334155;
+    border-radius:12px;
+    padding:17px 30px;
+    font-weight:900;
+    font-size:20px;
+    box-shadow:0 15px 35px rgba(0,0,0,.35);
+    opacity:0;
+    transition:opacity .18s ease;
+    pointer-events:none;
+}
+.gc-toast.show{opacity:1}
+
+
+
+        /* =====================================================
+           RESERVAS + DISPONIBLES — LAYOUT GEMELO
+        ===================================================== */
+
+        .grid-reservas-disponibles{
+            display:grid;
+            grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+            gap:16px;
+            align-items:start;
+            margin-top:2px;
+        }
+
+        .grid-reservas-disponibles > *{
+            min-width:0;
+        }
+
+        /* La lista de disponibles mantiene exactamente los
+           encabezados pedidos: ARTÍCULO, CANT., COLOR,
+           PRODUCCIÓN, ACCIÓN. */
+        .grid-reservas-disponibles .disponibles-columnas,
+        .grid-reservas-disponibles .disponible-row{
+            grid-template-columns:90px 70px minmax(0,1fr) 105px 92px;
+        }
+
+        .grid-reservas-disponibles .disponibles-columnas{
+            column-gap:.5rem;
+        }
+
+        .grid-reservas-disponibles .disponible-row{
+            column-gap:.5rem;
+        }
+
+        .grid-reservas-disponibles .disponible-art{
+            font-size:13px;
+        }
+
+        .grid-reservas-disponibles .disponible-add{
+            min-width:84px;
+            font-size:11px;
+            padding:.36rem .5rem;
+        }
+
+        /* Reserva: hacemos que tenga las mismas proporciones
+           compactas que disponibles. */
+        .grid-reservas-disponibles .reservas-columnas,
+        .grid-reservas-disponibles .reserva-row{
+            font-size:11px;
+        }
+
+        @media(max-width:900px){
+            .grid-reservas-disponibles{
+                grid-template-columns:1fr;
+            }
+        }
+
+        /* =====================================================
+           ARTÍCULOS DISPONIBLES
+        ===================================================== */
+
+        .disponibles-card{
+            background:rgba(15,23,42,.94);
+            border:1px solid rgba(71,85,105,.65);
+            border-radius:.75rem;
+            overflow:hidden;
+        }
+
+        /* =====================================================
+           DISPONIBLES — MISMAS PROPORCIONES VISUALES QUE
+           PENDIENTES: FILAS BAJAS, LETRA COMPACTA Y BOTONES
+           CHICOS.
+        ===================================================== */
+
+        .disponibles-columnas{
+            display:grid;
+            grid-template-columns:90px 70px 1fr 105px 92px;
+            gap:.5rem;
+            align-items:center;
+            padding:.32rem .75rem;
+            background:rgba(2,6,23,.72);
+            border-top:1px solid rgba(71,85,105,.35);
+            border-bottom:1px solid rgba(71,85,105,.45);
+            color:#94a3b8;
+            font-size:10px;
+            font-weight:900;
+            letter-spacing:.03em;
+        }
+
+        .disponible-row{
+            display:grid;
+            grid-template-columns:90px 70px 1fr 105px 92px;
+            gap:.5rem;
+            align-items:center;
+            min-height:32px;
+            padding:.28rem .75rem;
+            border-bottom:1px solid rgba(71,85,105,.35);
+            font-size:11px;
+            font-weight:800;
+        }
+
+        .disponible-row:last-child{
+            border-bottom:0;
+        }
+
+        .disponible-art{
+            font-weight:900;
+            color:#fff;
+            font-size:13px;
+        }
+
+        .disponible-cantidad{
+            text-align:center;
+            font-weight:900;
+            color:#fff;
+        }
+
+        .disponible-color{
+            font-weight:900;
+            color:#e2e8f0;
+        }
+
+        .disponible-fecha{
+            color:#94a3b8;
+            font-weight:800;
+            text-align:center;
+        }
+
+        .disponible-add{
+            justify-self:center;
+            min-width:92px;
+            width:92px;
+            white-space:nowrap;
+            background:#0891b2;
+            color:white;
+            font-size:11px;
+            font-weight:900;
+            line-height:1;
+            border-radius:.45rem;
+            padding:.36rem .5rem;
+            cursor:pointer;
+        }
+
+        .disponible-add:hover{
+            background:#0e7490;
+        }
+
+        .disponible-add:disabled{
+            opacity:.55;
+            cursor:not-allowed;
+        }
+
+        @media(max-width:640px){
+            .disponibles-columnas{
+                grid-template-columns:70px 55px 1fr 82px 84px;
+                font-size:9px;
+            }
+
+            .disponible-row{
+                grid-template-columns:70px 55px 1fr 82px 84px;
+                min-height:30px;
+                font-size:11px;
+            }
+
+            .disponible-art{
+                font-size:13px;
+            }
+
+            .disponible-add{
+                min-width:76px;
+                font-size:10px;
+                padding:.34rem .42rem;
+            }
+        }
+
+</style>
+
+<style>
+/* ============================================================
+   GOOD COMPANY — ESTILO ÚNICO DE FILAS
+   Tomamos ARTÍCULOS DISPONIBLES como referencia visual.
+   No cambiamos colores de las categorías.
+============================================================ */
+
+/* ENCABEZADOS DE LAS 5 TABLAS */
+.tabla-mercaderia thead th,
+.reservas-columnas,
+.disponibles-columnas{
+    font-family:inherit !important;
+    font-size:9px !important;
+    font-weight:900 !important;
+    line-height:1 !important;
+}
+
+/* PENDIENTES / REPARACIONES / MUESTRAS */
+.tabla-mercaderia tbody tr{
+    height:32px !important;
+    min-height:32px !important;
+}
+
+.tabla-mercaderia tbody td{
+    font-family:inherit !important;
+    font-size:10px !important;
+    font-weight:800 !important;
+    line-height:1 !important;
+    padding:5px 6px !important;
+    height:32px !important;
+    white-space:nowrap;
+}
+
+/* La cantidad deja de crecer respecto del resto */
+.tabla-mercaderia tbody td:nth-child(2){
+    font-size:10px !important;
+    font-weight:900 !important;
+}
+
+/* Artículo: mismo tamaño que la columna ARTÍCULO de Disponibles */
+.tabla-mercaderia tbody td:first-child{
+    font-size:13px !important;
+    font-weight:900 !important;
+}
+
+/* Fechas de las tres tablas superiores */
+.tabla-mercaderia tbody td:nth-child(4){
+    font-size:10px !important;
+    font-weight:800 !important;
+    line-height:1 !important;
+}
+
+/* Botones INGRESAR = mismo tamaño visual que AGREGAR de Disponibles */
+.btn-ingresar{
+    font-family:inherit !important;
+    font-size:10px !important;
+    font-weight:900 !important;
+    line-height:1 !important;
+    padding:5px 8px !important;
+    min-height:25px !important;
+}
+
+/* RESERVAS */
+.reserva-row{
+    min-height:32px !important;
+    height:32px !important;
+    padding:5px 12px !important;
+    font-family:inherit !important;
+    font-size:10px !important;
+    font-weight:800 !important;
+    line-height:1 !important;
+}
+
+.reserva-art{
+    font-family:inherit !important;
+    font-size:13px !important;
+    font-weight:900 !important;
+    line-height:1 !important;
+}
+
+.reserva-color,
+.reserva-cantidad,
+.reserva-fecha{
+    font-family:inherit !important;
+    font-size:10px !important;
+    font-weight:800 !important;
+    line-height:1 !important;
+}
+
+.reserva-cantidad{
+    font-weight:900 !important;
+}
+
+.reserva-add{
+    font-family:inherit !important;
+    font-size:10px !important;
+    font-weight:900 !important;
+    line-height:1 !important;
+    min-width:84px !important;
+    min-height:25px !important;
+    padding:5px 8px !important;
+}
+
+/* DISPONIBLES — referencia */
+.disponible-row{
+    min-height:32px !important;
+    height:32px !important;
+    padding:5px 12px !important;
+    font-family:inherit !important;
+    font-size:10px !important;
+    font-weight:800 !important;
+    line-height:1 !important;
+}
+
+.disponible-art{
+    font-family:inherit !important;
+    font-size:13px !important;
+    font-weight:900 !important;
+    line-height:1 !important;
+}
+
+.disponible-cantidad,
+.disponible-color,
+.disponible-fecha{
+    font-family:inherit !important;
+    font-size:10px !important;
+    font-weight:800 !important;
+    line-height:1 !important;
+}
+
+.disponible-cantidad{
+    font-weight:900 !important;
+}
+
+.disponible-add{
+    font-family:inherit !important;
+    font-size:10px !important;
+    font-weight:900 !important;
+    line-height:1 !important;
+    min-width:92px !important;
+    width:92px !important;
+    white-space:nowrap !important;
+    min-height:25px !important;
+    padding:5px 8px !important;
+}
+
+/* TODAS LAS FECHAS: MISMO FORMATO VISUAL */
+.tabla-mercaderia tbody td:nth-child(4),
+.reserva-fecha,
+.disponible-fecha{
+    white-space:nowrap !important;
+}
+
+/* Responsive: conservar la misma proporción */
+@media(max-width:640px){
+    .tabla-mercaderia tbody td{
+        font-size:10px !important;
+        padding:5px 5px !important;
+    }
+
+    .tabla-mercaderia tbody td:first-child{
+        font-size:12px !important;
+    }
+
+    .reserva-row,
+    .disponible-row{
+        min-height:30px !important;
+        height:30px !important;
+    }
+}
+</style>
+
+
+<style id="alineacion-tablas-index">
+.reservas-table th,
+.reservas-table td,
+.disponibles-table th,
+.disponibles-table td {
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+</style>
+
+
+<style id="index-tablas-articulos-final">
+/* ============================================================
+   GOOD COMPANY — TABLAS DE ARTÍCULOS
+   SOLO AJUSTE VISUAL SOLICITADO
+   ENCABEZADOS: 12px
+   DATOS INTERNOS: 14px
+   ORDEN:
+   - PENDIENTES / REPARACIONES / MUESTRAS:
+     ARTÍCULO | CANTIDAD | COLOR | FECHA DE SALIDA | ACCIÓN
+   - RESERVAS / DISPONIBLES:
+     ARTÍCULO | CANTIDAD | COLOR | FECHA DE PRODUCCIÓN | ACCIÓN
+============================================================ */
+
+/* ENCABEZADOS */
+.tabla-mercaderia thead th,
+.reservas-columnas,
+.disponibles-columnas,
+.reservas-columnas div,
+.disponibles-columnas div{
+    font-size:12px !important;
+    font-weight:900 !important;
+    line-height:1.1 !important;
+}
+
+/* DATOS INTERNOS */
+.tabla-mercaderia tbody td,
+.reserva-row > div,
+.disponible-row > div{
+    font-size:14px !important;
+    font-weight:800 !important;
+    line-height:1.1 !important;
+}
+
+/* ARTÍCULO también 14px, igual que el resto de los datos */
+.tabla-mercaderia tbody td:first-child,
+.reserva-art,
+.disponible-art{
+    font-size:14px !important;
+    font-weight:900 !important;
+}
+
+/* CANTIDAD */
+.tabla-mercaderia tbody td:nth-child(2),
+.reserva-cantidad,
+.disponible-cantidad{
+    font-size:14px !important;
+    font-weight:900 !important;
+    text-align:center !important;
+}
+
+/* COLOR */
+.reserva-color,
+.disponible-color{
+    font-size:14px !important;
+    font-weight:800 !important;
+}
+
+/* FECHAS */
+.tabla-mercaderia tbody td:nth-child(4),
+.reserva-fecha,
+.disponible-fecha{
+    font-size:14px !important;
+    font-weight:800 !important;
+    text-align:center !important;
+    white-space:nowrap !important;
+}
+
+/* ACCIÓN: mantenemos los botones compactos y legibles */
+.btn-ingresar,
+.reserva-add,
+.disponible-add{
+    font-size:12px !important;
+    font-weight:900 !important;
+    line-height:1 !important;
+}
+
+/* RESERVAS: orden exacto ARTÍCULO | CANT. | COLOR | PRODUCCIÓN | ACCIÓN */
+.reservas-columnas,
+.reserva-row{
+    grid-template-columns:90px 70px minmax(0,1fr) 105px 112px !important;
+}
+
+.reservas-columnas{
+    padding:.45rem .75rem !important;
+}
+
+.reserva-row{
+    min-height:38px !important;
+    height:38px !important;
+    padding:5px 12px !important;
+}
+
+/* DISPONIBLES: orden exacto ARTÍCULO | CANT. | COLOR | PRODUCCIÓN | ACCIÓN */
+.disponibles-columnas,
+.disponible-row{
+    grid-template-columns:90px 70px minmax(0,1fr) 105px 92px !important;
+}
+
+.disponibles-columnas{
+    padding:.45rem .75rem !important;
+}
+
+.disponible-row{
+    min-height:38px !important;
+    height:38px !important;
+    padding:5px 12px !important;
+}
+
+/* Todas las columnas quedan centradas para que las tablas se vean prolijas */
+.tabla-mercaderia thead th,
+.tabla-mercaderia tbody td,
+.reservas-columnas div,
+.reserva-row > div,
+.reserva-row > button,
+.disponibles-columnas div,
+.disponible-row > div,
+.disponible-row > button{
+    text-align:center !important;
+    vertical-align:middle !important;
+}
+
+/* Artículo también centrado, como pidió el diseño uniforme */
+.tabla-mercaderia tbody td:first-child{
+    text-align:center !important;
+}
+
+/* En las tarjetas superiores, acción conserva su botón */
+.tabla-mercaderia tbody td:last-child{
+    text-align:center !important;
+}
+
+@media(max-width:640px){
+    .tabla-mercaderia thead th,
+    .reservas-columnas,
+    .disponibles-columnas,
+    .reservas-columnas div,
+    .disponibles-columnas div{
+        font-size:12px !important;
+    }
+
+    .tabla-mercaderia tbody td,
+    .tabla-mercaderia tbody td:first-child,
+    .reserva-row > div,
+    .reserva-art,
+    .reserva-cantidad,
+    .reserva-color,
+    .reserva-fecha,
+    .disponible-row > div,
+    .disponible-art,
+    .disponible-cantidad,
+    .disponible-color,
+    .disponible-fecha{
+        font-size:14px !important;
+    }
+}
+</style>
+
+
+<style id="registro-salida-tamanos-final">
+/* REGISTRAR SALIDA — mismo criterio visual:
+   encabezados 12px / contenido 14px */
+#form-egreso label{
+    font-size:12px !important;
+    font-weight:900 !important;
+    line-height:1.1 !important;
+}
+
+#form-egreso input,
+#form-egreso select{
+    font-size:14px !important;
+    font-weight:800 !important;
+    line-height:1.2 !important;
+}
+</style>
+
+
+<style id="separador-fecha-disponibles">
+/* Separador visual entre fechas de PRODUCCIÓN */
+.disponible-separador{
+    height:7px;
+    margin:0;
+    background:rgba(30,41,59,.75);
+    border-top:1px solid rgba(96,165,250,.18);
+    border-bottom:1px solid rgba(15,23,42,.95);
+}
+</style>
+
+
+<style id="gc-aviso-pagos-directo">
+@keyframes gcPagosTitilaDirecto {
+    0%,100% {
+        transform:scale(1);
+        filter:brightness(1);
+    }
+    50% {
+        transform:scale(1.08);
+        filter:brightness(1.8);
+    }
+}
+
+#btn-pagos-index.gc-pagos-nuevo {
+    animation:gcPagosTitilaDirecto .65s ease-in-out infinite;
+    box-shadow:0 0 0 3px rgba(245,158,11,.35),
+               0 0 24px rgba(245,158,11,.75);
+}
+
+@media(prefers-reduced-motion:reduce){
+    #btn-pagos-index.gc-pagos-nuevo{
+        animation:none;
+        filter:brightness(1.5);
+    }
+}
+</style>
+
+
+<style id="gc-modal-salida-estetica">
+/* ============================================================
+   GOOD COMPANY — CARTEL REGISTRAR SALIDA — OPCIÓN B
+============================================================ */
+.gc-salida-overlay{
+    position:fixed; inset:0; z-index:999999;
+    display:flex; align-items:center; justify-content:center;
+    padding:18px; background:rgba(1,8,18,.82);
+    backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px);
+}
+.gc-salida-modal{
+    width:min(650px,96vw); overflow:hidden;
+    background:radial-gradient(circle at 50% -20%,rgba(20,184,166,.09),transparent 45%),linear-gradient(180deg,#041522 0%,#02101d 100%);
+    border:1px solid rgba(20,184,166,.65); border-radius:10px;
+    box-shadow:0 30px 90px rgba(0,0,0,.78),0 0 32px rgba(20,184,166,.08),inset 0 0 0 1px rgba(255,255,255,.025);
+    color:#edf7f8; font-family:Arial,Helvetica,sans-serif;
+}
+.gc-salida-brand{height:58px;display:flex;align-items:center;justify-content:center;position:relative;border-bottom:1px solid rgba(20,184,166,.22)}
+.gc-salida-brand img{height:31px;width:auto;object-fit:contain}
+.gc-salida-close{position:absolute;right:15px;top:13px;width:32px;height:32px;border:0;background:transparent;color:#dce8eb;font-size:28px;line-height:30px;cursor:pointer;opacity:.9}
+.gc-salida-close:hover{opacity:1;color:#fff}
+.gc-salida-head{display:flex;align-items:center;gap:18px;padding:23px 30px 21px;border-bottom:1px solid rgba(20,184,166,.32)}
+.gc-salida-head-icon{flex:0 0 58px;width:58px;height:58px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,rgba(13,148,136,.18),rgba(20,184,166,.05));border:2px solid #14b8a6;box-shadow:0 0 20px rgba(20,184,166,.16);color:#22d3c0;font-size:35px;font-weight:900;transform:none}
+.gc-salida-title{color:#20c8b6;font-size:27px;line-height:1.05;font-weight:900;letter-spacing:.2px}
+.gc-salida-subtitle{margin-top:6px;color:#a9b9bf;font-size:13px;line-height:1.25;font-weight:600}
+.gc-salida-body{padding:18px 30px 8px}
+.gc-salida-taller{display:flex;align-items:center;gap:9px;min-height:31px;padding:0 2px 13px;border-bottom:1px solid rgba(20,184,166,.20);font-size:13px;font-weight:900}
+.gc-salida-taller-icon{color:#22d3c0;font-size:16px}.gc-salida-label{color:#22d3c0}.gc-salida-value{color:#eefcfb}
+.gc-salida-info{margin-top:13px;overflow:hidden;border:1px solid rgba(20,184,166,.42);border-radius:9px;background:rgba(5,27,39,.68);box-shadow:inset 0 0 24px rgba(20,184,166,.025)}
+.gc-salida-row{display:grid;grid-template-columns:32px 1fr auto;align-items:center;min-height:48px;padding:0 17px;border-bottom:1px dashed rgba(20,184,166,.18);font-size:13px}
+.gc-salida-row:last-child{border-bottom:0}.gc-salida-row-icon{color:#c5d7dc;text-align:center;font-size:17px}.gc-salida-row-label{color:#d6e1e5;font-weight:700;letter-spacing:.2px}.gc-salida-row strong{color:#20d2c0;font-weight:900;font-size:14px}
+.gc-salida-question{display:flex;align-items:center;justify-content:center;gap:11px;margin-top:15px;min-height:48px;border:1px solid rgba(20,184,166,.65);border-radius:8px;background:rgba(13,148,136,.12);color:#eefbfa;font-size:16px;font-weight:900;letter-spacing:.1px}
+.gc-salida-question-icon{width:26px;height:26px;border:2px solid #14b8a6;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#20d2c0;font-size:15px;font-weight:900}
+.gc-salida-actions{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:18px 30px 13px}
+.gc-salida-btn{min-height:50px;border-radius:7px;font-size:14px;font-weight:900;letter-spacing:.15px;cursor:pointer;transition:transform .12s,filter .12s,box-shadow .12s}
+.gc-salida-btn:hover{transform:translateY(-1px);filter:brightness(1.08)}.gc-salida-btn:active{transform:translateY(0)}
+.gc-salida-cancel{background:rgba(3,18,30,.75);border:1px solid #ef4444;color:#ff4d55}.gc-salida-confirm{background:linear-gradient(135deg,#12b8a7,#18c7b4);border:1px solid #22d3c0;color:#fff;box-shadow:0 7px 22px rgba(20,184,166,.20)}
+.gc-salida-btn span{font-size:21px;vertical-align:-2px;margin-right:8px}.gc-salida-tip{text-align:center;padding:0 10px 17px;color:#82959d;font-size:11px;font-weight:700}.gc-salida-tip b{color:#20d2c0}
+@media(max-width:560px){.gc-salida-head{padding:18px}.gc-salida-body{padding-left:18px;padding-right:18px}.gc-salida-actions{padding-left:18px;padding-right:18px;gap:10px}.gc-salida-title{font-size:21px}.gc-salida-subtitle{font-size:11px}.gc-salida-modal{width:96vw}.gc-salida-row{padding:0 11px}}
+</style>
+
+
+<style id="gc-index-mobile-menu">
+/* INDEX — menú hamburguesa para móvil/tablet */
+.gc-index-desktop-modules{display:flex;}
+.gc-index-hamburger{display:none;}
+.gc-index-mobile-menu{display:none;}
+@media (max-width: 768px){
+  .gc-index-desktop-modules{display:none !important;}
+  .gc-index-hamburger{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid rgba(148,163,184,.45);border-radius:10px;background:#0f172a;color:#fff;font-size:25px;font-weight:900;cursor:pointer;flex:none;}
+  .gc-index-mobile-menu{position:fixed;top:68px;right:12px;z-index:99990;width:min(285px,calc(100vw - 24px));padding:10px;background:rgba(15,23,42,.98);border:1px solid rgba(96,165,250,.35);border-radius:14px;box-shadow:0 18px 45px rgba(0,0,0,.45);backdrop-filter:blur(8px);}
+  .gc-index-mobile-menu.gc-open{display:block;}
+  .gc-index-mobile-menu a{display:flex;align-items:center;width:100%;padding:13px 14px;margin:3px 0;border-radius:9px;color:#fff;text-decoration:none;font-size:15px;font-weight:900;}
+  .gc-index-mobile-menu a:hover{background:rgba(51,65,85,.8);}
+  .gc-index-mobile-menu a.gc-hidden{display:none;}
+  .gc-index-mobile-backdrop{display:none;position:fixed;inset:0;z-index:99980;background:rgba(0,0,0,.18);}
+  .gc-index-mobile-backdrop.gc-open{display:block;}
+}
+</style>
+
+<style id="gc-ocultar-imprimir-movil">
+@media (max-width: 900px) {
+  #btnImprimir,
+  #btnImprimirTaller,
+  .btn-imprimir,
+  button[onclick*="imprimirPendientesTaller"] {
+    display: none !important;
+  }
+}
+</style>
+
+
+<style id="gc-index-mobile-refresh-v17">
+/* En móvil/tablet se usa ACTUALIZAR en lugar de la hamburguesa.
+   En PC se conserva la barra original sin cambios. */
+.gc-index-refresh{display:none;}
+@media (max-width: 768px){
+  .gc-index-hamburger{display:none !important;}
+  .gc-index-refresh{
+    display:flex !important;
+    align-items:center;
+    justify-content:center;
+    width:44px;
+    height:44px;
+    border:1px solid rgba(148,163,184,.45);
+    border-radius:10px;
+    background:#0f172a;
+    color:#fff;
+    font-size:28px;
+    font-weight:900;
+    cursor:pointer;
+    flex:none;
+    line-height:1;
+  }
+  .gc-index-refresh:active{transform:scale(.96);}
+}
+</style>
+
+<script id="gc-index-mobile-refresh-js">
+document.addEventListener('DOMContentLoaded', function(){
+  const btn = document.getElementById('gcIndexRefresh');
+  if (btn) {
+    btn.addEventListener('click', function(){
+      window.location.reload();
+    });
+  }
+});
+</script>
+
+
+<style id="gc-ingreso-mobile-v18">
+@media (max-width: 768px){
+  .gc-ingreso-modal,
+  .gc-nuevo-ingreso-modal{
+    max-height: calc(100dvh - 18px) !important;
+  }
+}
+</style>
+
+
+<style id="gc-cantidad-stepper-v20">
+/* Cantidad +/-: pensado para móvil/tablet; no altera la apariencia de PC. */
+.gc-cantidad-stepper{
+  display:none;
+}
+@media (max-width:768px){
+  .gc-cantidad-stepper{
+    display:flex;
+    justify-content:flex-end;
+    gap:8px;
+    margin-top:8px;
+  }
+  .gc-cantidad-stepper button{
+    width:52px;
+    height:42px;
+    border-radius:10px;
+    border:1px solid rgba(96,165,250,.65);
+    background:#17243a;
+    color:#fff;
+    font-size:28px;
+    font-weight:800;
+    line-height:1;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .gc-cantidad-stepper button:active{
+    transform:scale(.96);
+  }
+}
+</style>
+
+
+
+
+
+
+<style id="gc-cantidad-stepper-mobile-v21">
+@media (max-width:768px){
+  #gc-cantidad-stepper{
+    display:flex !important;
+    justify-content:flex-end;
+    gap:8px;
+    margin-top:8px;
+    touch-action:manipulation;
+    -webkit-user-select:none;
+    user-select:none;
+  }
+  #gc-cantidad-stepper button{
+    width:52px !important;
+    height:42px !important;
+    min-width:52px !important;
+    min-height:42px !important;
+    border-radius:10px;
+    border:1px solid rgba(96,165,250,.65);
+    background:#17243a;
+    color:#fff;
+    font-size:28px !important;
+    font-weight:800;
+    line-height:1;
+    cursor:pointer;
+    touch-action:manipulation;
+    -webkit-user-select:none;
+    user-select:none;
+    -webkit-touch-callout:none;
+  }
+  #gc-cantidad-stepper button:active{
+    transform:scale(.96);
+  }
+  #gc-cantidad-stepper button:disabled{
+    opacity:.38;
+    cursor:default;
+  }
+}
+</style>
+
+
+<style id="gc-cantidad-max-mobile-v22">
+@media (max-width:768px){
+  #gc-aviso-cantidad{
+    padding-right:2px;
+  }
+}
+</style>
+
+
+<style id="gc-index-mobile-layout-v23">
+/* ============================================================
+   GOOD COMPANY — AJUSTES EXCLUSIVOS PARA MÓVIL
+   PC / notebook: SIN CAMBIOS
+============================================================ */
+@media (max-width:768px){
+
+  /* 1) ENCABEZADO: una sola línea y mucho más bajo */
+  header.panel{
+    padding:10px 12px !important;
+    margin-bottom:12px !important;
+  }
+  header.panel > div{
+    gap:8px !important;
+  }
+  header.panel img{
+    height:34px !important;
+    max-width:82px !important;
+  }
+  header.panel h1{
+    font-size:19px !important;
+    line-height:1 !important;
+    white-space:nowrap !important;
+    letter-spacing:.03em !important;
+  }
+  .gc-index-refresh{
+    width:44px !important;
+    height:44px !important;
+    font-size:29px !important;
+  }
+
+  /* 2) SELECTOR: solamente la barra "Seleccionar taller" */
+  #select-taller{
+    height:48px !important;
+    padding:8px 12px !important;
+    font-size:17px !important;
+  }
+
+  /* Ocultar título, icono, subtítulo e imprimir SOLO en móvil */
+  #select-taller{
+    flex:1 1 auto !important;
+  }
+  section.panel:has(#select-taller) > div > div:first-child{
+    display:none !important;
+  }
+  section.panel:has(#select-taller) #btn-imprimir-pendientes{
+    display:none !important;
+  }
+  section.panel:has(#select-taller) > div{
+    display:block !important;
+  }
+  section.panel:has(#select-taller){
+    padding:10px !important;
+    margin-bottom:14px !important;
+  }
+
+  /* 3) TABLAS: entran completas en el ancho de la pantalla.
+     No achicamos toda la tipografía; reservamos espacio real para ACCIÓN. */
+  .categoria-card .overflow-x-auto{
+    overflow-x:hidden !important;
+  }
+  .tabla-mercaderia{
+    width:100% !important;
+    table-layout:fixed !important;
+  }
+  .tabla-mercaderia th,
+  .tabla-mercaderia td{
+    box-sizing:border-box !important;
+    overflow:hidden !important;
+  }
+
+  /* ART. / CANT. / COLOR / SALIDA / ACCIÓN */
+  .tabla-mercaderia th:nth-child(1),
+  .tabla-mercaderia td:nth-child(1){width:14% !important;}
+  .tabla-mercaderia th:nth-child(2),
+  .tabla-mercaderia td:nth-child(2){width:12% !important;}
+  .tabla-mercaderia th:nth-child(3),
+  .tabla-mercaderia td:nth-child(3){width:21% !important;}
+  .tabla-mercaderia th:nth-child(4),
+  .tabla-mercaderia td:nth-child(4){width:24% !important;}
+  .tabla-mercaderia th:nth-child(5),
+  .tabla-mercaderia td:nth-child(5){width:29% !important;}
+
+  .tabla-mercaderia thead th{
+    font-size:11px !important;
+    padding:7px 2px !important;
+    white-space:nowrap !important;
+  }
+  .tabla-mercaderia tbody td{
+    font-size:12px !important;
+    padding:6px 2px !important;
+    white-space:nowrap !important;
+  }
+  .tabla-mercaderia tbody td:first-child{
+    font-size:13px !important;
+  }
+  .tabla-mercaderia tbody td:nth-child(4){
+    font-size:11px !important;
+  }
+
+  /* Botón INGRESAR: siempre completo y fácil de tocar */
+  .tabla-mercaderia tbody td:last-child{
+    padding-left:3px !important;
+    padding-right:3px !important;
+  }
+  .tabla-mercaderia .btn-ingresar{
+    display:block !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    padding:7px 2px !important;
+    font-size:10px !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:clip !important;
+    border-radius:7px !important;
+  }
+
+  /* 4) Menos espacio entre las tres categorías */
+  .categorias-grid{
+    gap:12px !important;
+    margin-bottom:12px !important;
+  }
+  .categoria-card{
+    margin-bottom:0 !important;
+  }
+  .categoria-pendientes,
+  .categoria-reparaciones,
+  .categoria-muestras{
+    padding-top:9px !important;
+    padding-bottom:9px !important;
+  }
+}
+
+/* Pantallas angostas: priorizar que el botón siga entrando */
+@media (max-width:420px){
+  header.panel h1{
+    font-size:17px !important;
+  }
+  header.panel img{
+    height:30px !important;
+    max-width:72px !important;
+  }
+  .gc-index-refresh{
+    width:40px !important;
+    height:40px !important;
+    font-size:27px !important;
+  }
+  .tabla-mercaderia th:nth-child(1),
+  .tabla-mercaderia td:nth-child(1){width:13% !important;}
+  .tabla-mercaderia th:nth-child(2),
+  .tabla-mercaderia td:nth-child(2){width:11% !important;}
+  .tabla-mercaderia th:nth-child(3),
+  .tabla-mercaderia td:nth-child(3){width:20% !important;}
+  .tabla-mercaderia th:nth-child(4),
+  .tabla-mercaderia td:nth-child(4){width:24% !important;}
+  .tabla-mercaderia th:nth-child(5),
+  .tabla-mercaderia td:nth-child(5){width:32% !important;}
+}
+</style>
+
+
+<style id="gc-index-phone-v24">
+/* ============================================================
+   V24 — TELÉFONOS CHICOS
+   iPad/tablet y PC conservan el diseño anterior.
+============================================================ */
+@media (max-width:480px){
+
+  /* Evitar zoom accidental por doble/múltiple toque en iPhone. */
+  html, body{
+    touch-action: manipulation !important;
+    -webkit-text-size-adjust:100% !important;
+  }
+  button, a, select, input, textarea{
+    touch-action:manipulation !important;
+  }
+
+  /* ENCABEZADO: compacto sin aplastar el título */
+  header.panel{
+    padding:8px 9px !important;
+    margin-bottom:10px !important;
+  }
+  header.panel > div{
+    gap:6px !important;
+  }
+  header.panel img{
+    height:27px !important;
+    max-width:66px !important;
+  }
+  header.panel h1{
+    font-size:16px !important;
+    line-height:1.05 !important;
+    letter-spacing:.01em !important;
+  }
+  .gc-index-refresh{
+    width:38px !important;
+    height:38px !important;
+    font-size:25px !important;
+    flex:0 0 38px !important;
+  }
+
+  /* SELECTOR DE TALLER: solo la barra */
+  section.panel:has(#select-taller){
+    padding:8px !important;
+    margin-bottom:11px !important;
+  }
+  section.panel:has(#select-taller) #select-taller{
+    width:100% !important;
+    height:45px !important;
+    font-size:16px !important;
+    padding:7px 10px !important;
+  }
+
+  /* Tablas: más espacio para ACCIÓN, sin scroll horizontal. */
+  .categoria-card .overflow-x-auto{
+    overflow-x:hidden !important;
+  }
+  .tabla-mercaderia{
+    width:100% !important;
+    table-layout:fixed !important;
+  }
+  .tabla-mercaderia th:nth-child(1),
+  .tabla-mercaderia td:nth-child(1){width:13% !important;}
+  .tabla-mercaderia th:nth-child(2),
+  .tabla-mercaderia td:nth-child(2){width:11% !important;}
+  .tabla-mercaderia th:nth-child(3),
+  .tabla-mercaderia td:nth-child(3){width:20% !important;}
+  .tabla-mercaderia th:nth-child(4),
+  .tabla-mercaderia td:nth-child(4){width:23% !important;}
+  .tabla-mercaderia th:nth-child(5),
+  .tabla-mercaderia td:nth-child(5){width:33% !important;}
+
+  .tabla-mercaderia thead th{
+    font-size:10px !important;
+    padding:6px 1px !important;
+    white-space:nowrap !important;
+  }
+  .tabla-mercaderia tbody td{
+    font-size:11px !important;
+    padding:5px 1px !important;
+    white-space:nowrap !important;
+  }
+  .tabla-mercaderia tbody td:nth-child(4){
+    font-size:10px !important;
+  }
+
+  .tabla-mercaderia .btn-ingresar{
+    width:100% !important;
+    min-width:0 !important;
+    padding:6px 1px !important;
+    font-size:9px !important;
+    white-space:nowrap !important;
+    border-radius:7px !important;
+  }
+
+  /* Menos aire vertical entre categorías */
+  .categorias-grid{
+    gap:9px !important;
+    margin-bottom:9px !important;
+  }
+
+  /* REGISTRAR SALIDA: dos columnas que se acomodan al ancho */
+  .registrar-salida,
+  .gc-registrar-salida{
+    max-width:100% !important;
+    width:100% !important;
+  }
+}
+</style>
+
+
+<style id="gc-finalizar-ingreso-titila">
+@keyframes gcFinalizarIngresoTitila {
+    0%,100% { transform:scale(1); filter:brightness(1); }
+    50% { transform:scale(1.08); filter:brightness(1.8); }
+}
+#gc-btn-finalizar-ingreso.gc-finalizar-nuevo {
+    animation:gcFinalizarIngresoTitila .65s ease-in-out infinite;
+    box-shadow:0 0 0 3px rgba(16,185,129,.35),
+               0 0 24px rgba(16,185,129,.75);
+}
+@media(prefers-reduced-motion:reduce){
+    #gc-btn-finalizar-ingreso.gc-finalizar-nuevo{
+        animation:none;
+        filter:brightness(1.5);
+    }
+}
+@media(max-width:768px){
+    #gc-btn-finalizar-ingreso{
+        width:100%;
+        margin-top:8px;
+    }
+}
+</style>
+
+<!-- ============================================================
+     GOOD COMPANY — TELÉFONOS V27
+     RESERVAS / DISPONIBLES = MISMO CRITERIO QUE
+     PENDIENTES / REPARACIONES / MUESTRAS
+     SOLO <= 480px
+============================================================ -->
+<style id="gc-telefono-misma-estetica-v27">
+@media (max-width:480px){
+
+  /* Ancho general */
+  body{
+    overflow-x:hidden !important;
+    -webkit-text-size-adjust:100% !important;
+  }
+
+  /* ==========================================================
+     MISMA ESTÉTICA DE PENDIENTES / REPARACIONES / MUESTRAS
+  ========================================================== */
+
+  /* Encabezados: 10px */
+  .reservas-columnas,
+  .disponibles-columnas{
+    font-size:10px !important;
+    font-weight:900 !important;
+    line-height:1 !important;
+    height:30px !important;
+    min-height:30px !important;
+    padding:6px 1px !important;
+  }
+
+  /* Datos: 11px */
+  .reserva-row > div,
+  .disponible-row > div{
+    font-size:11px !important;
+    font-weight:800 !important;
+    line-height:1 !important;
+  }
+
+  /* ARTÍCULO: 13px, igual a las tres tablas superiores */
+  .reserva-art,
+  .disponible-art{
+    font-size:13px !important;
+    font-weight:900 !important;
+    line-height:1 !important;
+  }
+
+  /* FECHA: 10px, igual que SALIDA */
+  .reserva-fecha,
+  .disponible-fecha{
+    font-size:10px !important;
+    font-weight:800 !important;
+    line-height:1 !important;
+    white-space:nowrap !important;
+  }
+
+  /* Botones: mismo tamaño visual que INGRESAR */
+  .reserva-add,
+  .disponible-add{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    min-height:25px !important;
+    height:25px !important;
+    padding:5px 1px !important;
+    margin:0 !important;
+    border-radius:7px !important;
+    font-size:9px !important;
+    font-weight:900 !important;
+    line-height:1 !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:clip !important;
+  }
+
+  /* Misma proporción de columnas que PENDIENTES /
+     REPARACIONES / MUESTRAS */
+  .reservas-columnas,
+  .reserva-row,
+  .disponibles-columnas,
+  .disponible-row{
+    display:grid !important;
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    box-sizing:border-box !important;
+    grid-template-columns:13% 11% 20% 23% 33% !important;
+    gap:0 !important;
+    padding-left:1px !important;
+    padding-right:1px !important;
+  }
+
+  .reservas-columnas > div,
+  .reserva-row > div,
+  .reserva-row > button,
+  .disponibles-columnas > div,
+  .disponible-row > div,
+  .disponible-row > button{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    box-sizing:border-box !important;
+    overflow:hidden !important;
+    text-align:center !important;
+  }
+
+  /* Filas con la misma altura compacta */
+  .reserva-row,
+  .disponible-row{
+    height:36px !important;
+    min-height:36px !important;
+    padding:5px 1px !important;
+  }
+
+  /* Sin texto que empuje la columna */
+  .reserva-art,
+  .reserva-cantidad,
+  .reserva-color,
+  .reserva-fecha,
+  .disponible-art,
+  .disponible-cantidad,
+  .disponible-color,
+  .disponible-fecha{
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:clip !important;
+  }
+
+  /* Encabezados alineados exactamente */
+  .reservas-columnas > div,
+  .disponibles-columnas > div{
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:clip !important;
+    text-align:center !important;
+  }
+
+  /* Cabeceras de las tarjetas */
+  .reservas-card h2,
+  .disponibles-card h2{
+    font-size:14px !important;
+    line-height:1.1 !important;
+  }
+
+  .reservas-card p,
+  .disponibles-card p{
+    font-size:10px !important;
+    line-height:1.1 !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+}
+</style>
+
+</head>
+
+
+<body class="min-h-screen">
+
+
+<!-- =====================================================
+     CONTENEDOR PRINCIPAL
+===================================================== -->
+
+<div
+    class="w-[94%] max-w-[1600px] mx-auto px-3 md:px-4 py-4"
+>
+
+
+    <!-- =================================================
+         CABECERA
+    ================================================== -->
+
+    <header
+        class="panel rounded-xl px-4 py-3 mb-4"
+    >
+
+        <div
+            class="flex items-center justify-between gap-4"
+        >
+
+
+            <!-- =================================================
+                 LOGO
+            ================================================== -->
+
+            <div
+                class="flex items-center shrink-0"
+            >
+
+                <img
+                    src="https://raw.githubusercontent.com/serpereyra1981-GC/LOGOS/2a857363c00ab37e7fe8d1fb265a6c0681251949/LOGO%20TRANSPARENTE%20BLANCO.png"
+                    alt="GOOD COMPANY"
+                    class="h-10 md:h-12 w-auto object-contain"
+                >
+
+            </div>
+
+
+            <!-- =================================================
+                 TÍTULO
+            ================================================== -->
+
+            <div
+                class="flex-1 text-center"
+            >
+
+                <h1
+                    class="text-xl md:text-2xl font-black tracking-wider text-white"
+                >
+                    INGRESOS / EGRESOS
+                </h1>
+
+            </div>
+
+
+            <!-- BOTONES -->
+
+            <div
+                class="flex items-center gap-2 gc-index-desktop-modules"
+            >
+
+                <!-- PRODUCCIÓN -->
+                <button
+                    type="button"
+                    onclick="window.location.href='/produccion.html'"
+                    class="bg-violet-600 hover:bg-violet-700 text-white font-black px-3 py-2 rounded-lg text-xs md:text-sm transition shadow"
+                >
+                    🏭 PRODUCCIÓN
+                </button>
+
+                <!-- TAREAS DISPONIBLES -->
+                <button
+                    type="button"
+                    onclick="window.location.href='/tareas.html'"
+                    class="bg-cyan-600 hover:bg-cyan-700 text-white font-black px-3 py-2 rounded-lg text-xs md:text-sm transition shadow"
+                >
+                    📋 TAREAS DISPONIBLES
+                </button>
+
+                <!-- TALLERES -->
+                <button
+                    type="button"
+                    onclick="window.location.href='/talleres.html'"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-black px-3 py-2 rounded-lg text-xs md:text-sm transition shadow"
+                >
+                    ⚙ TALLERES
+                </button>
+
+                <!-- PAGOS -->
+                <button
+                    id="btn-pagos-index"
+                    type="button"
+                    onclick="window.location.href='/pagos.html'"
+                    class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-black px-3 py-2 rounded-lg text-xs md:text-sm transition shadow"
+                >
+                    💰 PAGOS
+                </button>
+
+                <!-- CONTROL DE ROLLOS -->
+                <button type="button" onclick="window.location.href='/rollos.html'"
+                    class="bg-teal-600 hover:bg-teal-700 text-white font-black px-3 py-2 rounded-lg text-xs md:text-sm transition shadow">
+                    🧵 ROLLOS
+                </button>
+
+                <!-- BD -->
+                <button
+                    type="button"
+                    onclick="window.location.href='/bd.html'"
+                    class="bg-emerald-600 hover:bg-emerald-700 text-white font-black px-3 py-2 rounded-lg text-xs md:text-sm transition shadow"
+                >
+                    📊 BD
+                </button>
+
+                <span
+                    class="bg-slate-800 border border-slate-600 text-slate-200 text-xs px-3 py-2 rounded-lg font-black uppercase"
+                >
+                    SERPER BD
+                </span>
+
+            </div>
+
+            <!-- MENÚ HAMBURGUESA MÓVIL/TABLET -->
+            <button type="button" class="gc-index-hamburger" id="gcIndexHamburger" aria-label="Abrir módulos" aria-expanded="false">☰</button>
+<button type="button" class="gc-index-refresh" id="gcIndexRefresh" aria-label="Actualizar página" title="Actualizar">↻</button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ACCESO A ROLLOS EN TELÉFONOS Y TABLETS (el menú se oculta en móvil) -->
+    <div class="gc-rollos-mobile-access" style="display:none">
+      <a href="/rollos.html" aria-label="Abrir control de rollos">🧵 CONTROL DE ROLLOS</a>
+    </div>
+    <style>
+      @media(max-width:768px){
+        .gc-rollos-mobile-access{display:flex !important;justify-content:flex-end;margin:-4px 0 12px;}
+        .gc-rollos-mobile-access a{display:inline-flex;align-items:center;justify-content:center;background:#0d9488;color:#fff;font-size:12px;font-weight:900;padding:10px 14px;border-radius:9px;text-decoration:none;border:1px solid #2dd4bf;}
+      }
+    </style>
+
+    <!-- =================================================
+         SELECTOR DE TALLER
+    ================================================== -->
+
+    <section
+        class="panel rounded-xl px-4 py-3 mb-6"
+    >
+
+        <div
+            class="flex flex-col md:flex-row md:items-center gap-3"
+        >
+
+
+            <!-- TITULO -->
+
+            <div
+                class="flex items-center gap-2 shrink-0"
+            >
+
+                <div
+                    class="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center text-lg"
+                >
+                    🏭
+                </div>
+
+
+                <div>
+
+                    <h2
+                        class="text-sm md:text-base font-black tracking-wide text-white"
+                    >
+                        TALLER
+                    </h2>
+
+                    <p
+                        class="text-[11px] text-slate-400"
+                    >
+                        Seleccioná el taller
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- SELECT -->
+
+            <div
+                class="flex-1"
+            >
+
+                <select
+                    id="select-taller"
+                    class="w-full px-3 py-2.5 rounded-lg text-sm font-bold"
+                >
+
+                    <option value="">
+                        Seleccionar Taller
+                    </option>
+
+                </select>
+
+            </div>
+
+            <button
+                type="button"
+                id="gc-btn-finalizar-ingreso"
+                class="gc-finalizar-ingreso hidden shrink-0 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-black px-4 py-2.5 text-sm shadow-lg border border-emerald-300/50"
+                title="Finalizar el ingreso del taller seleccionado"
+            >
+                ✅ FINALIZAR
+            </button>
+
+            <button
+                id="btn-imprimir-pendientes"
+                type="button"
+                onclick="window.imprimirPendientesTaller && window.imprimirPendientesTaller()"
+                class="btn-principal shrink-0 bg-slate-700 hover:bg-slate-600 border border-slate-500 text-white font-black px-4 py-2.5 rounded-lg text-sm shadow"
+                title="Imprimir control del taller seleccionado"
+            >
+                🖨️ IMPRIMIR
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         OPERACIONES
+    ================================================== -->
+
+    <section
+        id="seccion-operaciones"
+        class="hidden"
+    >
+
+
+        <!-- =================================================
+             TRES CATEGORÍAS
+        ================================================== -->
+
+        <div
+            class="categorias-grid grid grid-cols-1 lg:grid-cols-3 gap-5 mb-6"
+        >
+
+
+            <!-- =================================================
+                 PENDIENTES
+            ================================================== -->
+
+            <div
+                class="categoria-card"
+            >
+
+
+                <div
+                    class="categoria-pendientes px-3 py-2"
+                >
+
+                    <div
+                        class="flex items-center justify-between"
+                    >
+
+                        <div
+                            class="categoria-titulo"
+                        >
+                            📦 PENDIENTES
+                        </div>
+
+
+                        <div
+                            id="total-pendientes"
+                            class="categoria-total"
+                        >
+                            0
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="overflow-x-auto"
+                >
+
+                    <table
+                        class="tabla-mercaderia"
+                    >
+
+                        <thead>
+
+                            <tr>
+
+                                <th
+                                    class="text-left"
+                                >
+                                    ART.
+                                </th>
+
+                                <th
+                                    class="text-center"
+                                >
+                                    CANT.
+                                </th>
+
+                                <th
+                                    class="text-left"
+                                >
+                                    COLOR
+                                </th>
+
+                                <th
+                                    class="text-center"
+                                >
+                                    SALIDA
+                                </th>
+
+                                <th
+                                    class="text-center"
+                                >
+                                    ACCIÓN
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody
+                            id="tabla-pendientes"
+                        >
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 REPARACIONES
+            ================================================== -->
+
+            <div
+                class="categoria-card"
+            >
+
+
+                <div
+                    class="categoria-reparaciones px-3 py-2"
+                >
+
+                    <div
+                        class="flex items-center justify-between"
+                    >
+
+                        <div
+                            class="categoria-titulo text-slate-950"
+                        >
+                            🔧 REPARACIONES
+                        </div>
+
+
+                        <div
+                            id="total-reparaciones"
+                            class="categoria-total text-slate-950"
+                        >
+                            0
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="overflow-x-auto"
+                >
+
+                    <table
+                        class="tabla-mercaderia"
+                    >
+
+                        <thead>
+
+                            <tr>
+
+                                <th
+                                    class="text-left"
+                                >
+                                    ART.
+                                </th>
+
+                                <th
+                                    class="text-center"
+                                >
+                                    CANT.
+                                </th>
+
+                                <th
+                                    class="text-left"
+                                >
+                                    COLOR
+                                </th>
+
+                                <th
+                                    class="text-center"
+                                >
+                                    SALIDA
+                                </th>
+
+                                <th
+                                    class="text-center"
+                                >
+                                    ACCIÓN
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody
+                            id="tabla-reparaciones"
+                        >
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 MUESTRAS
+            ================================================== -->
+
+            <div
+                class="categoria-card"
+            >
+
+
+                <div
+                    class="categoria-muestras categoria-muestras px-3 py-2"
+                >
+
+                    <div
+                        class="flex items-center justify-between"
+                    >
+
+                        <div
+                            class="categoria-titulo"
+                        >
+                            🏷️ MUESTRAS
+                        </div>
+
+
+                        <div
+                            id="total-muestras"
+                            class="categoria-total"
+                        >
+                            0
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="overflow-x-auto"
+                >
+
+                    <table
+                        class="tabla-mercaderia"
+                    >
+
+                        <thead>
+
+                            <tr>
+
+                                <th
+                                    class="text-left"
+                                >
+                                    ART.
+                                </th>
+
+                                <th
+                                    class="text-center"
+                                >
+                                    CANT.
+                                </th>
+
+                                <th
+                                    class="text-left"
+                                >
+                                    COLOR
+                                </th>
+
+                                <th
+                                    class="text-center"
+                                >
+                                    SALIDA
+                                </th>
+
+                                <th
+                                    class="text-center"
+                                >
+                                    ACCIÓN
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody
+                            id="tabla-muestras"
+                        >
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+<!-- =================================================
+             REGISTRAR SALIDA
+        ================================================== -->
+
+        <div
+            class="panel rounded-xl overflow-hidden mb-6"
+        >
+
+
+            <!-- TITULO -->
+
+            <div
+                class="bg-slate-800 border-b border-slate-700 px-4 py-2"
+            >
+
+                <div
+                    class="flex items-center gap-2"
+                >
+
+                    <div
+                        class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center"
+                    >
+                        📤
+                    </div>
+
+
+                    <div>
+
+                        <h2
+                            class="text-sm font-black text-white"
+                        >
+                            REGISTRAR SALIDA
+                        </h2>
+
+                        <p
+                            class="text-[10px] text-slate-400"
+                        >
+                            Fábrica → Taller
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- FORMULARIO -->
+
+            <form
+                id="form-egreso"
+                class="px-4 py-3"
+            >
+
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2 items-end"
+                >
+
+
+                    <!-- ARTÍCULO -->
+
+                    <div>
+
+                        <label
+                            class="block text-[10px] font-black text-slate-400 mb-1 uppercase"
+                        >
+                            ARTÍCULO
+                        </label>
+
+                        <input
+                            type="text"
+                            class="input-articulo campo-oscuro w-full px-3 py-2 rounded-lg text-sm font-bold uppercase"
+                            placeholder="Ej: 1969"
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+
+
+                    <!-- CANTIDAD -->
+
+                    <div>
+
+                        <label
+                            class="block text-[10px] font-black text-slate-400 mb-1 uppercase"
+                        >
+                            CANTIDAD
+                        </label>
+
+                        <input
+                            type="number"
+                            min="1"
+                            class="input-cantidad campo-oscuro w-full px-3 py-2 rounded-lg text-sm font-bold"
+                            placeholder="0"
+                        >
+
+                    </div>
+
+
+
+                    <!-- COLOR -->
+
+                    <div>
+
+                        <label
+                            class="block text-[10px] font-black text-slate-400 mb-1 uppercase"
+                        >
+                            COLOR
+                        </label>
+
+                        <select
+                            class="select-color campo-oscuro w-full px-3 py-2 rounded-lg text-sm font-bold"
+                        >
+
+                            <option value="">
+                                -- Seleccionar color --
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- REPARACIÓN -->
+
+                    <div>
+
+                        <label
+                            class="block text-[10px] font-black text-slate-400 mb-1 uppercase"
+                        >
+                            REPARACIÓN
+                        </label>
+
+                        <select
+                            class="select-reparacion campo-oscuro w-full px-3 py-2 rounded-lg text-sm font-bold"
+                        >
+
+                            <option value="NO">
+                                NO
+                            </option>
+
+                            <option value="SI">
+                                SI
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- AGREGAR -->
+
+                    <div>
+
+                        <button
+                            id="btn-agregar-entrega"
+                            type="button"
+                            class="btn-principal w-full bg-blue-600 hover:bg-blue-700 text-white font-black px-4 py-2 rounded-lg text-sm shadow"
+                        >
+                            ➕ AGREGAR
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+
+
+
+        <div class="grid-reservas-disponibles">
+<!-- =================================================
+             RESERVAS DE PRODUCCIÓN
+        ================================================== -->
+
+        <div
+            id="seccion-reservas-produccion"
+            class="reservas-card mb-5 hidden"
+        >
+            <div class="bg-emerald-700 px-4 py-3 flex items-center justify-between">
+                <div>
+                    <h2 class="text-sm font-black text-white">📦 RESERVAS DE PRODUCCIÓN</h2>
+                    <p id="reservas-subtitulo" class="text-[10px] text-emerald-100">Taller seleccionado</p>
+                </div>
+                <span id="reservas-contador" class="text-xs font-black bg-emerald-900 px-2 py-1 rounded-full">0</span>
+            </div>
+
+            <div class="reservas-columnas">
+                <div>ARTÍCULO</div>
+                <div>CANT.</div>
+                <div>COLOR</div>
+                <div>PRODUCCIÓN</div>
+                <div>ACCIÓN</div>
+            </div>
+            <div id="lista-reservas-produccion"></div>
+        </div>
+
+
+        <!-- =================================================
+             ARTÍCULOS DISPONIBLES
+        ================================================== -->
+
+        <div
+            id="seccion-articulos-disponibles"
+            class="disponibles-card mb-5 hidden"
+        >
+            <div class="bg-cyan-700 px-4 py-3 flex items-center justify-between">
+                <div>
+                    <h2 class="text-sm font-black text-white">📦 ARTÍCULOS DISPONIBLES</h2>
+                    <p class="text-[10px] text-cyan-100">Producciones disponibles para retirar</p>
+                </div>
+                <span
+                    id="disponibles-contador"
+                    class="text-xs font-black bg-cyan-900 px-2 py-1 rounded-full"
+                >0</span>
+            </div>
+
+            <div class="disponibles-columnas">
+                <div>ARTÍCULO</div>
+                <div class="text-center">CANT.</div>
+                <div>COLOR</div>
+                <div class="text-center">PRODUCCIÓN</div>
+                <div class="text-center">ACCIÓN</div>
+            </div>
+
+            <div id="lista-articulos-disponibles"></div>
+        </div>
+
+
+        
+</div>
+
+<!-- =================================================
+             PIE
+        ================================================== -->
+
+        <footer
+            class="text-center text-[11px] text-slate-500 py-4"
+        >
+
+            PowerBy SerPer &amp; ChatGPT
+
+        </footer>
+
+
+    </section>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script src="/app.js"></script>
+<script>
+window.formatearFechaDDMMAAAA = function(valor){
+    const s = String(valor ?? '').trim();
+    if (!s) return '';
+
+    if (/^\d{4}-\d{2}-\d{2}$/.test(s)) {
+        const [y,m,d] = s.split('-');
+        return `${d}/${m}/${y}`;
+    }
+
+    if (/^\d{4}-\d{2}-\d{2}T/.test(s)) {
+        const [fecha] = s.split('T');
+        const [y,m,d] = fecha.split('-');
+        return `${d}/${m}/${y}`;
+    }
+
+    return s;
+};
+</script>
+
+
+<script>
+/* ============================================================
+   GOOD COMPANY — DISPONIBLES DESDE INDEX
+
+   Al pulsar AGREGAR:
+   - toma la fila exacta de TAREAS_ARTICULOS
+   - carga artículo/cantidad/color en REGISTRAR SALIDA
+   - deja seleccionada esa producción en reservaSeleccionada
+   - el registrarEgreso() existente crea la SALE
+   - el flujo existente actualiza fechaSalida + MOVIMIENTO_ID
+
+   No se reemplaza registrarEgreso().
+============================================================ */
+
+(function(){
+
+    function escaparDisponible(valor){
+        return String(valor ?? '')
+            .replace(/&/g,'&amp;')
+            .replace(/</g,'&lt;')
+            .replace(/>/g,'&gt;')
+            .replace(/"/g,'&quot;')
+            .replace(/'/g,'&#039;');
+    }
+
+    function mostrarFechaDisponible(valor){
+        return window.formatearFechaDDMMAAAA
+            ? window.formatearFechaDDMMAAAA(valor)
+            : String(valor||'').trim();
+    }
+
+    async function cargarArticulosDisponiblesIndex(){
+
+        const contenedor=document.getElementById(
+            'seccion-articulos-disponibles'
+        );
+        const lista=document.getElementById(
+            'lista-articulos-disponibles'
+        );
+        const contador=document.getElementById(
+            'disponibles-contador'
+        );
+
+        if(!contenedor || !lista) return;
+
+        const tallerSelect=document.getElementById('select-taller');
+        const tallerId=tallerSelect?.value || '';
+
+        if(!tallerId){
+            contenedor.classList.add('hidden');
+            lista.innerHTML='';
+            if(contador) contador.textContent='0';
+            return;
+        }
+
+        try{
+            const respuesta=await fetch(
+                '/api/tareas/disponibles',
+                {cache:'no-store'}
+            );
+
+            const datos=await respuesta.json();
+
+            if(!respuesta.ok || datos.success!==true){
+                throw new Error(
+                    datos.error ||
+                    'No se pudieron cargar los artículos disponibles.'
+                );
+            }
+
+            const disponibles=Array.isArray(datos.disponibles)
+                ? datos.disponibles
+                : [];
+
+            if(contador){
+                contador.textContent=String(disponibles.length);
+            }
+
+            contenedor.classList.remove('hidden');
+
+            if(!disponibles.length){
+                lista.innerHTML=`
+                    <div class="px-4 py-4 text-center text-xs text-slate-500 font-bold">
+                        No hay artículos disponibles para retirar.
+                    </div>
+                `;
+                return;
+            }
+
+            let fechaAnterior='';
+            lista.innerHTML=disponibles.map((item,i)=>{
+                const fechaActual=String(item.fechaProduccion||'').trim();
+                const separador=fechaAnterior && fechaAnterior!==fechaActual
+                    ? '<div class="disponible-separador"></div>'
+                    : '';
+                fechaAnterior=fechaActual;
+
+                return `${separador}
+                <div class="disponible-row">
+                    <div class="disponible-art">
+                        ${escaparDisponible(item.articulo)}
+                    </div>
+
+                    <div class="disponible-cantidad">
+                        ${Number(item.cantidad)||0}
+                    </div>
+
+                    <div class="disponible-color">
+                        ${escaparDisponible(item.color || '—')}
+                    </div>
+
+                    <div class="disponible-fecha">
+                        ${escaparDisponible(
+                            mostrarFechaDisponible(item.fechaProduccion)
+                        )}
+                    </div>
+
+                    <button
+                        type="button"
+                        class="disponible-add"
+                        data-disponible-index="${i}"
+                    >
+                        ➕ AGREGAR
+                    </button>
+                </div>`;
+            }).join('');
+
+            lista.querySelectorAll('.disponible-add').forEach((boton,i)=>{
+                boton.addEventListener('click',()=>{
+                    cargarDisponibleEnFormulario(disponibles[i]);
+                });
+            });
+
+        }catch(error){
+            console.error(
+                '❌ ERROR CARGANDO DISPONIBLES:',
+                error
+            );
+
+            contenedor.classList.remove('hidden');
+            lista.innerHTML=`
+                <div class="px-4 py-4 text-center text-xs text-red-400 font-bold">
+                    ⚠️ ${escaparDisponible(error.message)}
+                </div>
+            `;
+            if(contador) contador.textContent='0';
+        }
+    }
+
+    function cargarDisponibleEnFormulario(item){
+
+        if(!item || !item.idArticuloTarea){
+            alert('❌ No se encontró la producción disponible.');
+            return;
+        }
+
+        const articulo=document.querySelector('.input-articulo');
+        const cantidad=document.querySelector('.input-cantidad');
+        const color=document.querySelector('.select-color');
+        const reparacion=document.querySelector('.select-reparacion');
+
+        if(!articulo || !cantidad || !color || !reparacion){
+            alert('❌ No encontré el formulario REGISTRAR SALIDA.');
+            return;
+        }
+
+        articulo.value=String(item.articulo||'');
+        cantidad.value=String(Number(item.cantidad)||0);
+        reparacion.value='NO';
+
+        // Limpiamos el color anterior para no arrastrar
+        // un color de otra salida.
+        color.value='';
+
+        const colorDisponible=String(item.color||'')
+            .trim()
+            .toUpperCase();
+
+        // Si tenemos color concreto y existe en el select,
+        // lo cargamos automáticamente.
+        if(
+            colorDisponible &&
+            colorDisponible!=='VARIOS'
+        ){
+            const opcion=[...color.options].find(
+                o=>String(o.value||'').trim().toUpperCase()===colorDisponible
+            );
+
+            if(opcion){
+                color.value=opcion.value;
+            }
+        }
+
+        // Guardamos también el ID exacto de TAREAS_ARTICULOS
+        // en el botón AGREGAR. registrarEgreso() lo usará al
+        // registrar la salida, evitando cualquier ambigüedad.
+        const btnAgregarDisponible = document.getElementById('btn-agregar-entrega');
+        if (btnAgregarDisponible) {
+            btnAgregarDisponible.dataset.disponibleId =
+                String(item.idArticuloTarea || '').trim();
+        }
+
+        // Reutilizamos exactamente el mecanismo de RESERVAS
+        // que ya tiene registrarEgreso().
+        reservaSeleccionada={
+            idArticuloTarea:String(item.idArticuloTarea),
+            tareaId:String(item.idTarea||''),
+            articulo:String(item.articulo||'').trim(),
+            cantidad:Number(item.cantidad)||0,
+            color:colorDisponible,
+            fechaProduccion:String(item.fechaProduccion||''),
+            fechaSalida:''
+        };
+
+        // Si el artículo no trae color y el usuario lo selecciona
+        // manualmente, actualizamos la selección exacta.
+        color.onchange=function(){
+            if(
+                reservaSeleccionada &&
+                String(reservaSeleccionada.idArticuloTarea)===
+                String(item.idArticuloTarea)
+            ){
+                reservaSeleccionada.color=
+                    String(color.value||'')
+                        .trim()
+                        .toUpperCase();
+            }
+        };
+
+        document.getElementById('form-egreso')?.scrollIntoView({
+            behavior:'smooth',
+            block:'center'
+        });
+
+        articulo.focus();
+
+        console.log(
+            '📦 DISPONIBLE CARGADO EN EGRESO:',
+            reservaSeleccionada
+        );
+    }
+
+    function conectarDisponibles(){
+
+        const selectTaller=document.getElementById(
+            'select-taller'
+        );
+
+        if(!selectTaller) return;
+
+        selectTaller.addEventListener(
+            'change',
+            ()=>{
+                setTimeout(
+                    cargarArticulosDisponiblesIndex,
+                    250
+                );
+            }
+        );
+
+        if(selectTaller.value){
+            cargarArticulosDisponiblesIndex();
+        }
+    }
+
+    // Esperamos a que app.js y sus listeners terminen de
+    // registrar el DOMContentLoaded.
+    if(document.readyState==='loading'){
+        document.addEventListener(
+            'DOMContentLoaded',
+            conectarDisponibles
+        );
+    }else{
+        conectarDisponibles();
+    }
+
+    // Exponer solo la recarga; no reemplazamos ninguna función
+    // existente de app.js.
+    window.cargarArticulosDisponiblesIndex=
+        cargarArticulosDisponiblesIndex;
+
+})();
+</script>
+
+
+
+
+<script id="normalizar-orden-reservas-index">
+(() => {
+    function normalizarFilasReservas() {
+        document.querySelectorAll('.reserva-row').forEach(row => {
+            const art = row.querySelector('.reserva-art');
+            const cant = row.querySelector('.reserva-cantidad');
+            const color = row.querySelector('.reserva-color');
+            const fecha = row.querySelector('.reserva-fecha');
+            const boton = row.querySelector('.reserva-add');
+
+            if (!art || !cant || !color || !fecha || !boton) return;
+
+            [art, cant, color, fecha, boton].forEach(el => row.appendChild(el));
+        });
+    }
+
+    const observar = () => {
+        normalizarFilasReservas();
+
+        const cont = document.getElementById('lista-reservas-produccion');
+        if (!cont) return;
+
+        const observer = new MutationObserver(() => normalizarFilasReservas());
+        observer.observe(cont, {childList:true, subtree:true});
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', observar);
+    } else {
+        observar();
+    }
+})();
+</script>
+
+
+<script id="gc-aviso-pagos-directo-script">
+(() => {
+    function actualizarAvisoPagos(cantidad) {
+        const boton = document.getElementById('btn-pagos-index');
+        if (!boton) return;
+
+        // El número representa TALLERES distintos pendientes, no tareas.
+        const total = Number(cantidad) || 0;
+        const hayPendientes = total > 0;
+
+        boton.classList.toggle('gc-pagos-nuevo', hayPendientes);
+
+        if (hayPendientes) {
+            boton.title =
+                `⚠️ HAY ${total} TALLER${total === 1 ? '' : 'ES'} PENDIENTE${total === 1 ? '' : 'S'} DE PAGO`;
+        } else {
+            boton.title = '';
+        }
+    }
+
+    function iniciarAvisoPagos() {
+        if (!window.EventSource) return;
+
+        const eventos = new EventSource('/api/pagos/eventos');
+
+        eventos.addEventListener('pagos', (event) => {
+            try {
+                const data = JSON.parse(event.data);
+                actualizarAvisoPagos(data.pendientes || 0);
+            } catch (error) {
+                console.warn('⚠️ AVISO PAGOS:', error);
+            }
+        });
+
+        eventos.onerror = () => {
+            // EventSource reconecta solo. No hacemos polling.
+            console.warn('⚠️ Aviso PAGOS: reconectando...');
+        };
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', iniciarAvisoPagos);
+    } else {
+        iniciarAvisoPagos();
+    }
+})();
+</script>
+
+
+<script id="ordenar-articulos-menor-mayor-index">
+(() => {
+    /*
+      GOOD COMPANY
+      ORDENAR SOLO LAS 3 TABLAS SUPERIORES POR ARTÍCULO.
+
+      NO usamos MutationObserver porque app.js actualiza estas tablas
+      al seleccionar el taller y observar esos cambios puede interferir
+      con su propia carga.
+
+      Hacemos una comprobación muy liviana cada 700 ms y solo movemos
+      filas cuando realmente están desordenadas.
+    */
+
+    const IDS = [
+        'tabla-pendientes',
+        'tabla-reparaciones',
+        'tabla-muestras'
+    ];
+
+    function claveArticulo(fila) {
+        const texto = String(
+            fila?.cells?.[0]?.textContent || ''
+        ).trim();
+
+        // Artículos numéricos: comparación numérica.
+        const numero = Number(
+            texto.replace(/[^\d-]/g, '')
+        );
+
+        if (Number.isFinite(numero) && texto !== '') {
+            return {
+                numerico: true,
+                valor: numero,
+                texto: texto
+            };
+        }
+
+        // Respaldo para cualquier artículo alfanumérico.
+        return {
+            numerico: false,
+            valor: texto
+        };
+    }
+
+    function comparar(a, b) {
+        const A = claveArticulo(a);
+        const B = claveArticulo(b);
+
+        if (A.numerico && B.numerico) {
+            return A.valor - B.valor;
+        }
+
+        if (A.numerico && !B.numerico) return -1;
+        if (!A.numerico && B.numerico) return 1;
+
+        return String(A.valor).localeCompare(
+            String(B.valor),
+            'es',
+            {
+                numeric: true,
+                sensitivity: 'base'
+            }
+        );
+    }
+
+    function ordenar(id) {
+        const tbody = document.getElementById(id);
+        if (!tbody) return;
+
+        const filas = Array.from(tbody.children)
+            .filter(el => el.tagName === 'TR');
+
+        if (filas.length < 2) return;
+
+        let desordenada = false;
+
+        for (let i = 1; i < filas.length; i++) {
+            if (comparar(filas[i - 1], filas[i]) > 0) {
+                desordenada = true;
+                break;
+            }
+        }
+
+        // MUY IMPORTANTE:
+        // si ya está ordenada, no modificamos absolutamente nada.
+        if (!desordenada) return;
+
+        filas.sort(comparar);
+
+        // Un único movimiento por fila, sin observers.
+        const fragment = document.createDocumentFragment();
+
+        for (const fila of filas) {
+            fragment.appendChild(fila);
+        }
+
+        tbody.appendChild(fragment);
+    }
+
+    function ordenarLasTres() {
+        for (const id of IDS) {
+            ordenar(id);
+        }
+    }
+
+    function iniciar() {
+        // Primer intento después de que app.js haya tenido tiempo
+        // de cargar el taller seleccionado.
+        setTimeout(ordenarLasTres, 300);
+
+        // Comprobación periódica muy liviana.
+        // No observa ni intercepta ningún evento de app.js.
+        setInterval(ordenarLasTres, 700);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener(
+            'DOMContentLoaded',
+            iniciar,
+            { once: true }
+        );
+    } else {
+        iniciar();
+    }
+})();
+</script>
+
+<style id="gc-modal-ingreso-estetica">
+/* ============================================================
+   GOOD COMPANY — MODALES NUEVO INGRESO
+   Reemplaza visualmente prompt/confirm solo para INGRESAR.
+============================================================ */
+
+.gc-ingreso-overlay{
+    position:fixed;
+    inset:0;
+    z-index:999999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(2,6,23,.78);
+    backdrop-filter:blur(7px);
+    -webkit-backdrop-filter:blur(7px);
+}
+
+.gc-ingreso-modal{
+    width:min(560px,94vw);
+    max-height:92vh;
+    overflow:auto;
+    background:
+        radial-gradient(circle at top,rgba(30,64,175,.16),transparent 42%),
+        #08111f;
+    border:1px solid rgba(96,165,250,.48);
+    border-radius:18px;
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.65),
+        0 0 0 1px rgba(15,23,42,.8) inset;
+    color:#e5edf9;
+    font-family:inherit;
+}
+
+.gc-ingreso-logo{
+    display:flex;
+    justify-content:center;
+    padding:20px 20px 4px;
+}
+
+.gc-ingreso-logo img{
+    height:68px;
+    width:auto;
+    object-fit:contain;
+}
+
+.gc-ingreso-head{
+    text-align:center;
+    padding:4px 26px 18px;
+    border-bottom:1px solid rgba(71,85,105,.45);
+}
+
+.gc-ingreso-icon{
+    width:58px;
+    height:58px;
+    margin:0 auto 10px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    background:rgba(37,99,235,.13);
+    border:1px solid rgba(59,130,246,.7);
+    box-shadow:0 0 24px rgba(37,99,235,.22);
+}
+
+.gc-ingreso-icon.green{
+    background:rgba(16,185,129,.12);
+    border-color:rgba(34,197,94,.75);
+    box-shadow:0 0 25px rgba(34,197,94,.2);
+}
+
+.gc-ingreso-title{
+    font-size:25px;
+    line-height:1.1;
+    font-weight:900;
+    color:#fff;
+    letter-spacing:.3px;
+}
+
+.gc-ingreso-subtitle{
+    margin-top:5px;
+    font-size:13px;
+    color:#94a3b8;
+    font-weight:700;
+}
+
+.gc-ingreso-body{
+    padding:20px 26px 10px;
+}
+
+.gc-ingreso-section{
+    color:#38bdf8;
+    font-size:13px;
+    font-weight:900;
+    letter-spacing:.45px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:12px;
+}
+
+.gc-ingreso-section::after{
+    content:"";
+    height:1px;
+    flex:1;
+    background:rgba(71,85,105,.45);
+}
+
+.gc-ingreso-taller{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:0 0 15px;
+    margin-bottom:16px;
+    border-bottom:1px solid rgba(71,85,105,.35);
+    font-size:15px;
+    font-weight:900;
+}
+
+.gc-ingreso-taller .label{
+    color:#38bdf8;
+}
+
+.gc-ingreso-taller .value{
+    color:#fff;
+}
+
+.gc-ingreso-info{
+    border:1px solid rgba(71,85,105,.6);
+    border-radius:13px;
+    padding:13px 15px;
+    background:rgba(15,23,42,.68);
+}
+
+.gc-ingreso-info-row{
+    display:grid;
+    grid-template-columns:24px 1fr auto;
+    gap:9px;
+    align-items:center;
+    min-height:32px;
+    font-size:14px;
+}
+
+.gc-ingreso-info-row .ico{
+    color:#94a3b8;
+    text-align:center;
+}
+
+.gc-ingreso-info-row .label{
+    color:#aebbd0;
+    font-weight:700;
+}
+
+.gc-ingreso-info-row .value{
+    color:#fff;
+    font-weight:900;
+}
+
+.gc-ingreso-question{
+    color:#fff;
+    font-size:20px;
+    font-weight:900;
+    margin:4px 0 5px;
+}
+
+.gc-ingreso-helper{
+    color:#94a3b8;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:12px;
+}
+
+.gc-ingreso-input{
+    width:100%;
+    box-sizing:border-box;
+    background:#0b1728;
+    color:#fff;
+    border:1px solid #3b82f6;
+    border-radius:11px;
+    padding:13px 15px;
+    font-size:24px;
+    font-weight:900;
+    outline:none;
+    box-shadow:0 0 0 2px rgba(59,130,246,.08);
+}
+
+.gc-ingreso-input:focus{
+    box-shadow:0 0 0 3px rgba(59,130,246,.18);
+}
+
+.gc-ingreso-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    padding:18px 26px 24px;
+    margin-top:8px;
+    border-top:1px solid rgba(71,85,105,.38);
+}
+
+.gc-ingreso-btn{
+    min-height:52px;
+    border-radius:11px;
+    border:1px solid rgba(71,85,105,.65);
+    font-size:15px;
+    font-weight:900;
+    cursor:pointer;
+    transition:.15s;
+}
+
+.gc-ingreso-btn.cancel{
+    background:#172235;
+    color:#cbd5e1;
+}
+
+.gc-ingreso-btn.accept{
+    background:#2563eb;
+    border-color:#3b82f6;
+    color:#fff;
+}
+
+.gc-ingreso-btn.normal{
+    background:#16a34a;
+    border-color:#22c55e;
+}
+
+.gc-ingreso-btn.sinarmar{
+    background:#dc2626;
+    border-color:#ef4444;
+}
+
+.gc-ingreso-btn:hover{
+    transform:translateY(-1px);
+    filter:brightness(1.08);
+}
+
+.gc-ingreso-choice{
+    width:100%;
+    box-sizing:border-box;
+    text-align:left;
+    padding:15px 17px;
+    margin:0 0 12px;
+    border-radius:13px;
+    background:#0b1728;
+    cursor:pointer;
+    transition:.15s;
+}
+
+.gc-ingreso-choice.normal{
+    border:2px solid #16a34a;
+}
+
+.gc-ingreso-choice.sinarmar{
+    border:2px solid #dc2626;
+}
+
+.gc-ingreso-choice:hover,
+.gc-ingreso-choice.selected{
+    transform:translateY(-1px);
+    background:#101f34;
+}
+
+.gc-ingreso-choice-inner{
+    display:grid;
+    grid-template-columns:42px 52px 1fr;
+    gap:12px;
+    align-items:center;
+}
+
+.gc-radio{
+    width:25px;
+    height:25px;
+    border-radius:50%;
+    border:2px solid currentColor;
+    position:relative;
+    box-sizing:border-box;
+}
+
+.gc-radio::after{
+    content:"";
+    position:absolute;
+    inset:5px;
+    border-radius:50%;
+    background:currentColor;
+    opacity:0;
+    transform:scale(.5);
+    transition:.12s;
+}
+
+.gc-ingreso-choice.selected .gc-radio::after{
+    opacity:1;
+    transform:scale(1);
+}
+
+.gc-choice-icon{
+    font-size:35px;
+    text-align:center;
+}
+
+.gc-choice-title{
+    font-size:18px;
+    font-weight:900;
+}
+
+.gc-choice-text{
+    margin-top:3px;
+    color:#cbd5e1;
+    font-size:13px;
+    font-weight:700;
+}
+
+.gc-choice-badge{
+    display:inline-block;
+    margin-top:7px;
+    padding:4px 8px;
+    border-radius:999px;
+    background:rgba(15,23,42,.9);
+    font-size:11px;
+    font-weight:900;
+}
+
+.gc-ingreso-tip{
+    text-align:center;
+    color:#94a3b8;
+    font-size:12px;
+    font-weight:700;
+    padding:0 20px 17px;
+}
+
+@media(max-width:520px){
+    .gc-ingreso-body{padding:17px 18px 8px}
+    .gc-ingreso-actions{padding:15px 18px 20px}
+    .gc-ingreso-title{font-size:22px}
+    .gc-ingreso-question{font-size:18px}
+    .gc-ingreso-info-row{font-size:12px}
+    .gc-ingreso-choice-inner{
+        grid-template-columns:32px 42px 1fr;
+        gap:8px;
+    }
+}
+<style id="gc-index-ajuste-visual-v4">
+/* INDEX: selector de talleres + modal más compacto */
+#select-taller{
+  font-size:16px !important;
+}
+#select-taller option{
+  font-size:16px !important;
+}
+
+.gc-ingreso-overlay{
+  padding:12px;
+}
+.gc-ingreso-modal{
+  max-height:88vh;
+}
+.gc-ingreso-logo{
+  padding:10px 18px 2px;
+}
+.gc-ingreso-logo img{
+  height:52px;
+}
+.gc-ingreso-head{
+  padding:2px 22px 12px;
+}
+.gc-ingreso-icon{
+  width:46px;
+  height:46px;
+  margin:0 auto 6px;
+  font-size:23px;
+}
+.gc-ingreso-title{
+  font-size:23px;
+}
+.gc-ingreso-subtitle{
+  margin-top:3px;
+  font-size:12px;
+}
+.gc-ingreso-body{
+  padding:12px 22px 6px;
+}
+.gc-ingreso-taller{
+  padding-bottom:10px;
+  margin-bottom:10px;
+  font-size:14px;
+}
+.gc-ingreso-info{
+  padding:9px 12px;
+}
+.gc-ingreso-info-row{
+  min-height:27px;
+  font-size:13px;
+}
+.gc-ingreso-question{
+  font-size:18px;
+  margin:3px 0 4px;
+}
+.gc-ingreso-helper{
+  font-size:12px;
+  margin-bottom:8px;
+}
+.gc-ingreso-input{
+  padding:10px 13px;
+  font-size:22px;
+}
+.gc-ingreso-choice{
+  padding:10px 13px;
+  margin-bottom:8px;
+}
+.gc-ingreso-choice-inner{
+  grid-template-columns:34px 42px 1fr;
+  gap:9px;
+}
+.gc-choice-icon{
+  font-size:29px;
+}
+.gc-choice-title{
+  font-size:16px;
+}
+.gc-choice-text{
+  font-size:11px;
+}
+.gc-ingreso-actions{
+  gap:10px;
+  padding:12px 22px 16px;
+  margin-top:4px;
+}
+.gc-ingreso-btn{
+  min-height:46px;
+  font-size:14px;
+}
+.gc-ingreso-tip{
+  font-size:11px;
+  padding:0 16px 10px;
+}
+
+
+/* ============================================================
+   INDEX V11 — NUEVO INGRESO RESPONSIVE CELULAR / TABLET
+   Solo afecta pantallas chicas. Escritorio queda intacto.
+============================================================ */
+@media (max-width: 768px){
+  .gc-ingreso-overlay{
+    padding:8px !important;
+    align-items:center !important;
+  }
+  .gc-ingreso-modal{
+    width:calc(100vw - 16px) !important;
+    max-width:520px !important;
+    max-height:calc(100dvh - 16px) !important;
+    border-radius:14px !important;
+    overflow-y:auto !important;
+    overscroll-behavior:contain;
+  }
+  .gc-ingreso-logo{
+    padding:6px 12px 0 !important;
+  }
+  .gc-ingreso-logo img{
+    height:38px !important;
+  }
+  .gc-ingreso-head{
+    padding:0 14px 8px !important;
+  }
+  .gc-ingreso-title{
+    font-size:20px !important;
+    line-height:1 !important;
+  }
+  .gc-ingreso-subtitle{
+    font-size:10px !important;
+    margin-top:3px !important;
+  }
+  .gc-ingreso-body{
+    padding:8px 14px 4px !important;
+  }
+  .gc-ingreso-taller{
+    padding-bottom:7px !important;
+    margin-bottom:7px !important;
+    font-size:13px !important;
+  }
+  .gc-ingreso-info{
+    padding:6px 9px !important;
+    border-radius:10px !important;
+  }
+  .gc-ingreso-info-row{
+    min-height:23px !important;
+    font-size:12px !important;
+    grid-template-columns:20px 1fr auto !important;
+    gap:6px !important;
+  }
+  .gc-ingreso-section{
+    font-size:11px !important;
+    margin-bottom:6px !important;
+  }
+  .gc-ingreso-body .gc-ingreso-section[style]{
+    margin-top:10px !important;
+  }
+  .gc-ingreso-question{
+    font-size:15px !important;
+    margin:2px 0 2px !important;
+  }
+  .gc-ingreso-body .gc-ingreso-question[style]{
+    font-size:14px !important;
+  }
+  .gc-ingreso-helper{
+    font-size:10px !important;
+    margin-bottom:5px !important;
+  }
+  .gc-ingreso-input{
+    padding:8px 10px !important;
+    font-size:19px !important;
+    border-radius:9px !important;
+  }
+  .gc-ingreso-choice{
+    padding:7px 8px !important;
+    margin-bottom:0 !important;
+    border-radius:10px !important;
+  }
+  .gc-ingreso-choice-inner{
+    grid-template-columns:24px 30px 1fr !important;
+    gap:5px !important;
+  }
+  .gc-radio{
+    width:20px !important;
+    height:20px !important;
+  }
+  .gc-radio::after{ inset:4px !important; }
+  .gc-choice-icon{
+    font-size:23px !important;
+  }
+  .gc-choice-title{
+    font-size:13px !important;
+  }
+  .gc-choice-text{
+    font-size:9px !important;
+    margin-top:1px !important;
+  }
+  .gc-choice-badge{
+    margin-top:3px !important;
+    padding:2px 5px !important;
+    font-size:9px !important;
+  }
+  .gc-ingreso-actions{
+    padding:8px 14px 9px !important;
+    margin-top:2px !important;
+  }
+  .gc-ingreso-btn{
+    min-height:40px !important;
+    font-size:13px !important;
+  }
+  .gc-ingreso-tip{
+    display:none !important;
+  }
+}
+
+@media (max-width: 420px), (max-height: 720px){
+  .gc-ingreso-overlay{
+    padding:4px !important;
+    align-items:flex-start !important;
+  }
+  .gc-ingreso-modal{
+    width:calc(100vw - 8px) !important;
+    max-height:calc(100dvh - 8px) !important;
+    margin-top:4px !important;
+  }
+  .gc-ingreso-logo{
+    display:none !important;
+  }
+  .gc-ingreso-head{
+    padding:9px 12px 7px !important;
+  }
+  .gc-ingreso-title{
+    font-size:18px !important;
+  }
+  .gc-ingreso-body{
+    padding:7px 12px 3px !important;
+  }
+  .gc-ingreso-info-row{
+    min-height:21px !important;
+  }
+  .gc-ingreso-body .gc-ingreso-section[style]{
+    margin-top:8px !important;
+  }
+  .gc-ingreso-choice-inner{
+    grid-template-columns:20px 26px 1fr !important;
+  }
+  .gc-choice-icon{
+    font-size:20px !important;
+  }
+  .gc-choice-title{
+    font-size:12px !important;
+  }
+  .gc-choice-text{
+    font-size:8.5px !important;
+  }
+  .gc-ingreso-actions{
+    padding:6px 12px 7px !important;
+  }
+  .gc-ingreso-btn{
+    min-height:38px !important;
+  }
+}
+
+</style>
+
+<script id="gc-modal-ingreso-script">
+(() => {
+    /*
+      GOOD COMPANY — CARTEL UNIFICADO DE INGRESO
+
+      Todo ocurre en UN SOLO CARTEL:
+      - cantidad recibida
+      - NORMAL / SIN ARMAR
+      - NORMAL seleccionado por defecto
+      - ACEPTAR registra directamente
+      - ENTER = ACEPTAR
+      - ESC = cancelar
+
+      No se modifica la API ni el resto de la aplicación.
+    */
+
+    const LOGO =
+        'https://raw.githubusercontent.com/serpereyra1981-GC/LOGOS/2a857363c00ab37e7fe8d1fb265a6c0681251949/LOGO%20TRANSPARENTE%20BLANCO.png';
+
+    function esc(v){
+        return String(v ?? '')
+            .replace(/&/g,'&amp;')
+            .replace(/</g,'&lt;')
+            .replace(/>/g,'&gt;')
+            .replace(/"/g,'&quot;')
+            .replace(/'/g,'&#039;');
+    }
+
+    function tallerActual(){
+        const select = document.getElementById('select-taller');
+        if (!select) return '';
+        return String(
+            select.options[select.selectedIndex]?.textContent || ''
+        ).trim();
+    }
+
+    function cerrar(overlay){
+        if (overlay?.parentNode) {
+            overlay.parentNode.removeChild(overlay);
+        }
+    }
+
+    function abrirIngreso(pendiente, esReparacion){
+        return new Promise(resolve => {
+            const codigo =
+                typeof obtenerCodigoArticulo === 'function'
+                    ? obtenerCodigoArticulo(pendiente)
+                    : String(
+                        pendiente.codigo ||
+                        pendiente.articulo_codigo ||
+                        pendiente.articulo ||
+                        ''
+                    ).trim();
+
+            const cantidadPendiente =
+                Number(pendiente.cantidad_pendiente) || 0;
+
+            const color =
+                String(pendiente.color || '')
+                    .trim()
+                    .toUpperCase();
+
+            const fecha =
+                typeof formatearFecha === 'function'
+                    ? formatearFecha(pendiente.fecha_salida)
+                    : String(pendiente.fecha_salida || '-');
+
+            const taller = tallerActual();
+
+            if (cantidadPendiente <= 0) {
+                alert('❌ No queda cantidad pendiente.');
+                resolve(null);
+                return;
+            }
+
+            const overlay = document.createElement('div');
+            overlay.className = 'gc-ingreso-overlay';
+
+            overlay.innerHTML = `
+                <div class="gc-ingreso-modal" role="dialog" aria-modal="true">
+
+                    <div class="gc-ingreso-logo">
+                        <img src="${LOGO}" alt="GOOD COMPANY">
+                    </div>
+
+                    <div class="gc-ingreso-head">
+                        <button type="button" class="gc-ingreso-close" id="gc-cerrar-ingreso" aria-label="Cerrar">×</button>
+                        <div class="gc-ingreso-title">NUEVO INGRESO</div>
+                        <div class="gc-ingreso-subtitle">
+                            Registrar unidades recibidas
+                        </div>
+                    </div>
+
+                    <div class="gc-ingreso-body">
+
+                        <div class="gc-ingreso-taller">
+                            <span>🏭</span>
+                            <span class="label">TALLER:</span>
+                            <span class="value">${esc(taller)}</span>
+                        </div>
+
+                        <div class="gc-ingreso-info">
+                            <div class="gc-ingreso-info-row">
+                                <span class="ico">📦</span>
+                                <span class="label">ARTÍCULO</span>
+                                <span class="value">${esc(codigo)}</span>
+                            </div>
+                            <div class="gc-ingreso-info-row">
+                                <span class="ico">🎨</span>
+                                <span class="label">COLOR</span>
+                                <span class="value">${esc(color)}</span>
+                            </div>
+                            <div class="gc-ingreso-info-row">
+                                <span class="ico">📅</span>
+                                <span class="label">SALIDA</span>
+                                <span class="value">${esc(fecha)}</span>
+                            </div>
+                            <div class="gc-ingreso-info-row">
+                                <span class="ico">📋</span>
+                                <span class="label">PENDIENTE</span>
+                                <span class="value">${esc(cantidadPendiente)}</span>
+                            </div>
+                        </div>
+
+                        <div class="gc-ingreso-section" style="margin-top:20px">
+                            UNIDADES RECIBIDAS
+                        </div>
+
+                        <div class="gc-ingreso-question">
+                            ¿Cuántas unidades trajo?
+                        </div>
+
+                        <div class="gc-ingreso-helper">
+                            Ingresá la cantidad de unidades recibidas.
+                        </div>
+
+                        <input
+                            id="gc-cantidad-ingreso"
+                            class="gc-ingreso-input"
+                            type="number"
+                            min="1"
+                            max="${cantidadPendiente}"
+                            value="${cantidadPendiente}"
+                            autocomplete="off"
+                         inputmode="numeric" pattern="[0-9]*">
+<div id="gc-cantidad-stepper" class="gc-cantidad-stepper" aria-label="Ajustar cantidad">
+  <button type="button" id="gcCantidadMenos" aria-label="Reducir cantidad">−</button>
+  <button type="button" id="gcCantidadMas" aria-label="Aumentar cantidad">+</button>
+</div>
+
+
+                        ${
+                            (!esReparacion && color !== 'MUESTRA')
+                            ? `
+                            <div class="gc-ingreso-section" style="margin-top:20px">
+                                TIPO DE UNIDADES RECIBIDAS
+                            </div>
+
+                            <div class="gc-ingreso-question" style="font-size:17px">
+                                Seleccioná si son normales o sin armar.
+                            </div>
+
+                            <div class="gc-ingreso-helper">
+                                NORMAL queda seleccionado por defecto.
+                            </div>
+
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+                                <button
+                                    type="button"
+                                    class="gc-ingreso-choice normal selected"
+                                    id="gc-op-normal"
+                                >
+                                    <div class="gc-ingreso-choice-inner"
+                                         style="color:#22c55e">
+                                        <div class="gc-radio"></div>
+                                        <div class="gc-choice-icon">📦</div>
+                                        <div>
+                                            <div class="gc-choice-title">
+                                                NORMALES
+                                            </div>
+                                            <div class="gc-choice-text">
+                                                Unidades completas.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="gc-ingreso-choice sinarmar"
+                                    id="gc-op-sinarmar"
+                                >
+                                    <div class="gc-ingreso-choice-inner"
+                                         style="color:#ef4444">
+                                        <div class="gc-radio"></div>
+                                        <div class="gc-choice-icon">📦</div>
+                                        <div>
+                                            <div class="gc-choice-title">
+                                                SIN ARMAR
+                                            </div>
+                                            <div class="gc-choice-text">
+                                                Unidades sin armar.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </button>
+
+                            </div>
+                            `
+                            : ''
+                        }
+
+                    </div>
+
+                    <div class="gc-ingreso-actions"
+                         style="grid-template-columns:1fr">
+
+                        <button
+                            type="button"
+                            class="gc-ingreso-btn accept"
+                            id="gc-aceptar"
+                        >
+                            ✓ &nbsp; ACEPTAR
+                        </button>
+
+                    </div>
+
+                    <div class="gc-ingreso-tip">
+                        ⓘ &nbsp; Atajo de teclado: &nbsp; <b>Enter</b> = Aceptar &nbsp; | &nbsp; <b>Esc</b> = Cancelar
+                    </div>
+
+                </div>
+            `;
+
+            document.body.appendChild(overlay);
+
+            // Controles +/- de cantidad (el modal se crea dinámicamente).
+            const stepperMenos = overlay.querySelector('#gcCantidadMenos');
+            const stepperMas = overlay.querySelector('#gcCantidadMas');
+
+            function actualizarStep(cantidad) {
+                const max = Number(cantidadPendiente) || 0;
+                let v = Number.parseInt(cantidad, 10);
+                if (!Number.isFinite(v)) v = 0;
+                v = Math.max(1, Math.min(v, max));
+
+                input.value = String(v);
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+                input.dispatchEvent(new Event('change', { bubbles: true }));
+
+                if (stepperMenos) stepperMenos.disabled = v <= 1;
+                if (stepperMas) stepperMas.disabled = v >= max;
+            }
+
+            if (stepperMenos) {
+                stepperMenos.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    actualizarStep(Number(input.value || cantidadPendiente) - 1);
+                });
+            }
+
+            if (stepperMas) {
+                stepperMas.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    actualizarStep(Number(input.value || 0) + 1);
+                });
+            }
+
+            const input = overlay.querySelector('#gc-cantidad-ingreso');
+
+            // Limitar también la cantidad escrita manualmente.
+            if (input) {
+                const maxCantidadIngreso = Number(cantidadPendiente) || 0;
+                input.setAttribute('max', String(maxCantidadIngreso));
+
+                let avisoCantidad = overlay.querySelector('#gc-aviso-cantidad');
+                if (!avisoCantidad) {
+                    avisoCantidad = document.createElement('div');
+                    avisoCantidad.id = 'gc-aviso-cantidad';
+                    avisoCantidad.setAttribute('role', 'alert');
+                    avisoCantidad.style.cssText =
+                        'display:none;margin-top:7px;text-align:right;font-size:13px;font-weight:800;color:#ff5b5b;';
+                    input.parentElement.appendChild(avisoCantidad);
+                }
+
+                const validarCantidad = () => {
+                    let v = parseInt(input.value, 10);
+                    if (!Number.isFinite(v)) return;
+
+                    if (v > maxCantidadIngreso) {
+                        input.value = String(maxCantidadIngreso);
+                        avisoCantidad.textContent =
+                            'No podés superar las ' + maxCantidadIngreso + ' unidades pendientes.';
+                        avisoCantidad.style.display = 'block';
+                        clearTimeout(input._gcAvisoTimer);
+                        input._gcAvisoTimer = setTimeout(() => {
+                            avisoCantidad.style.display = 'none';
+                        }, 2200);
+                    }
+
+                    if (v < 1) input.value = '1';
+
+                    if (stepperMenos) stepperMenos.disabled = Number(input.value) <= 1;
+                    if (stepperMas) stepperMas.disabled = Number(input.value) >= maxCantidadIngreso;
+                };
+
+                input.addEventListener('input', validarCantidad);
+                input.addEventListener('change', validarCantidad);
+                input.addEventListener('blur', validarCantidad);
+            }
+            const aceptar = overlay.querySelector('#gc-aceptar');
+            const normal = overlay.querySelector('#gc-op-normal');
+            const sinArmar = overlay.querySelector('#gc-op-sinarmar');
+
+            let seleccion = 'NORMAL';
+            let terminado = false;
+
+            function pintar(){
+                if (!normal || !sinArmar) return;
+                normal.classList.toggle(
+                    'selected',
+                    seleccion === 'NORMAL'
+                );
+                sinArmar.classList.toggle(
+                    'selected',
+                    seleccion === 'SIN_ARMAR'
+                );
+            }
+
+            if (normal) {
+                normal.addEventListener('click', () => {
+                    seleccion = 'NORMAL';
+                    pintar();
+                });
+            }
+
+            if (sinArmar) {
+                sinArmar.addEventListener('click', () => {
+                    seleccion = 'SIN_ARMAR';
+                    pintar();
+                });
+            }
+
+            const finalizar = valor => {
+                if (terminado) return;
+                terminado = true;
+                document.removeEventListener('keydown', teclado, true);
+                cerrar(overlay);
+                resolve(valor);
+            };
+
+            const teclado = event => {
+                if (event.key === 'Escape') {
+                    event.preventDefault();
+                    finalizar(null);
+                } else if (event.key === 'Enter') {
+                    event.preventDefault();
+                    aceptar.click();
+                }
+            };
+
+            aceptar.addEventListener('click', () => {
+                const cantidad = Number(input.value);
+
+                if (
+                    !Number.isInteger(cantidad) ||
+                    cantidad <= 0 ||
+                    cantidad > cantidadPendiente
+                ) {
+                    input.focus();
+                    input.select();
+                    return;
+                }
+
+                finalizar({
+                    cantidad,
+                    tipo: seleccion
+                });
+            });
+
+            const cerrarIngreso = overlay.querySelector('#gc-cerrar-ingreso');
+
+            if (cerrarIngreso) {
+                cerrarIngreso.addEventListener('click', () => {
+                    finalizar(null);
+                });
+            }
+
+            overlay.addEventListener('click', event => {
+                if (event.target === overlay) {
+                    finalizar(null);
+                }
+            });
+
+            document.addEventListener('keydown', teclado, true);
+
+            pintar();
+
+            setTimeout(() => {
+                input.focus();
+                input.select();
+            }, 30);
+        });
+    }
+
+    window.ingresarPendiente = async function(pendiente, esReparacion) {
+        try {
+            if (!pendiente) return;
+
+            const codigo =
+                typeof obtenerCodigoArticulo === 'function'
+                    ? obtenerCodigoArticulo(pendiente)
+                    : String(
+                        pendiente.codigo ||
+                        pendiente.articulo_codigo ||
+                        pendiente.articulo ||
+                        ''
+                    ).trim();
+
+            const cantidadPendiente =
+                Number(pendiente.cantidad_pendiente) || 0;
+
+            const color =
+                String(pendiente.color || '')
+                    .trim()
+                    .toUpperCase();
+
+            if (cantidadPendiente <= 0) {
+                alert('❌ No queda cantidad pendiente.');
+                return;
+            }
+
+            let cantidad = 1;
+            let tipo = 'NORMAL';
+
+            if (color === 'MUESTRA') {
+                cantidad = 1;
+            } else {
+                const resultado = await abrirIngreso(
+                    pendiente,
+                    esReparacion
+                );
+
+                if (!resultado) return;
+
+                cantidad = resultado.cantidad;
+                tipo = resultado.tipo;
+            }
+
+            const tallerSelect =
+                document.getElementById('select-taller');
+
+            const tallerId = tallerSelect?.value;
+
+            if (!tallerId) {
+                throw new Error('No hay taller seleccionado.');
+            }
+
+            const reparacion =
+                Boolean(esReparacion);
+
+            const sinArmar =
+                !reparacion &&
+                color !== 'MUESTRA' &&
+                tipo === 'SIN_ARMAR';
+
+            document.querySelectorAll('.btn-ingresar')
+                .forEach(boton => {
+                    boton.disabled = true;
+                });
+
+            const respuesta = await fetch(
+                `/api/talleres/${encodeURIComponent(tallerId)}/entradas`,
+                {
+                    method:'POST',
+                    headers:{
+                        'Content-Type':'application/json'
+                    },
+                    body:JSON.stringify({
+                        articulo: codigo,
+                        cantidad: cantidad,
+                        color: color,
+                        reparacion: reparacion ? 'SI' : 'NO',
+                        sin_armar: sinArmar ? 'SI' : 'NO',
+                        muestra: color === 'MUESTRA' ? 'SI' : 'NO'
+                    })
+                }
+            );
+
+            let resultado = {};
+            try {
+                resultado = await respuesta.json();
+            } catch (_) {}
+
+            if (!respuesta.ok) {
+                throw new Error(
+                    resultado.error ||
+                    'No se pudo registrar el ingreso.'
+                );
+            }
+
+            if (typeof mostrarToast === 'function') {
+                mostrarToast(
+                    '✅ INGRESO REGISTRADO CORRECTAMENTE',
+                    2000
+                );
+            } else {
+                alert('✅ INGRESO REGISTRADO CORRECTAMENTE');
+            }
+
+            if (typeof window.gcMarcarIngresoParaFinalizar === 'function') {
+                window.gcMarcarIngresoParaFinalizar(tallerId);
+            }
+
+            await cargarPendientes(tallerId);
+
+        } catch (error) {
+            console.error(
+                '❌ ERROR AL INGRESAR PENDIENTE:',
+                error
+            );
+
+            alert(
+                '❌ ERROR:\n\n' +
+                error.message
+            );
+
+        } finally {
+            document.querySelectorAll('.btn-ingresar')
+                .forEach(boton => {
+                    boton.disabled = false;
+                });
+        }
+    };
+})();
+</script>
+
+<style id="gc-index-1080p-ajuste">
+/* ============================================================
+   GOOD COMPANY — APROVECHAMIENTO DE PANTALLA INDEX
+   Exclusivo de index.html. No modifica el zoom del navegador.
+============================================================ */
+@media (min-width: 1600px) {
+    body {
+        zoom: 1.02;
+    }
+}
+@media (min-width: 1900px) {
+    body {
+        zoom: 1.04;
+    }
+}
+</style>
+
+
+<style id="gc-ingreso-close-style">
+.gc-ingreso-head{
+    position:relative;
+}
+.gc-ingreso-close{
+    position:absolute;
+    top:10px;
+    right:14px;
+    width:34px;
+    height:34px;
+    border:0;
+    background:transparent;
+    color:#94a3b8;
+    font-size:28px;
+    line-height:34px;
+    cursor:pointer;
+    border-radius:8px;
+    transition:.15s;
+    z-index:5;
+}
+.gc-ingreso-close:hover{
+    color:#fff;
+    background:rgba(148,163,184,.12);
+}
+</style>
+
+
+<style id="gc-impresion-taller">
+/* ============================================================
+   GOOD COMPANY — INFORME DE PENDIENTES
+   DISEÑO SEGÚN MODELO DEL USUARIO
+   La impresión se genera en una ventana independiente.
+============================================================ */
+</style>
+
+<script id="gc-impresion-taller-script">
+(() => {
+    function esc(v){
+        return String(v ?? '')
+            .replace(/&/g,'&amp;')
+            .replace(/</g,'&lt;')
+            .replace(/>/g,'&gt;')
+            .replace(/"/g,'&quot;')
+            .replace(/'/g,'&#039;');
+    }
+
+    function leerTabla(id){
+        const tbody=document.getElementById(id);
+        if(!tbody) return [];
+        return [...tbody.querySelectorAll('tr')].map(tr=>{
+            const td=tr.querySelectorAll('td');
+            if(td.length<4) return null;
+            return {
+                art:String(td[0].textContent||'').trim(),
+                cant:String(td[1].textContent||'').trim(),
+                color:String(td[2].textContent||'').trim(),
+                salida:String(td[3].textContent||'').trim()
+            };
+        }).filter(Boolean);
+    }
+
+    function numeroCantidad(v){
+        const n=Number(String(v).replace(/\./g,'').replace(',','.'));
+        return Number.isFinite(n)?n:0;
+    }
+
+    function total(lista){
+        return lista.reduce((s,r)=>s+numeroCantidad(r.cant),0);
+    }
+
+    function formatoNumero(n){
+        return Number.isInteger(n)
+            ? String(n)
+            : String(n).replace('.',',');
+    }
+
+    function tallerActual(){
+        const s=document.getElementById('select-taller');
+        return String(s?.options?.[s.selectedIndex]?.textContent||'').trim() || 'TALLER';
+    }
+
+    function bloque(titulo,lista){
+        const filas=lista.length
+            ? lista.map(r=>`
+                <tr>
+                    <td>${esc(r.art)}</td>
+                    <td>${esc(r.cant)}</td>
+                    <td>${esc(r.color)}</td>
+                    <td>${esc(r.salida)}</td>
+                </tr>`).join('')
+            : `<tr><td colspan="4" class="sin-registros">SIN REGISTROS</td></tr>`;
+
+        return `
+        <section class="bloque">
+            <div class="bloque-titulo">
+                <div class="titulo-seccion">${esc(titulo)}</div>
+                <div class="barra-seccion"></div>
+                <div class="total-seccion">${esc(formatoNumero(total(lista)))}</div>
+            </div>
+            <table>
+                <colgroup>
+                    <col style="width:22%">
+                    <col style="width:23%">
+                    <col style="width:28%">
+                    <col style="width:27%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>ARTICULO</th>
+                        <th>CANTIDAD</th>
+                        <th>COLOR</th>
+                        <th>FECHA DE SALIDA</th>
+                    </tr>
+                </thead>
+                <tbody>${filas}</tbody>
+            </table>
+        </section>`;
+    }
+
+    function construir(taller,fecha,hora,p,r,m){
+        return `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>INFORME DE PENDIENTES — ${esc(taller)}</title>
+<style>
+@page{size:A4 portrait;margin:0;}
+*{box-sizing:border-box;}
+html,body{
+    width:210mm;
+    height:297mm;
+    min-height:297mm;
+    margin:0;
+    padding:0;
+    background:#fff;
+}
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    color:#111;
+    -webkit-print-color-adjust:exact !important;
+    print-color-adjust:exact !important;
+}
+.hoja{
+    width:210mm;
+    height:297mm;
+    min-height:297mm;
+    max-height:297mm;
+    padding:18mm 20mm 15mm;
+    margin:0 auto;
+    background:#fff;
+    box-sizing:border-box;
+    overflow:hidden;
+    break-after:auto;
+    page-break-after:auto;
+}
+.titulo-principal{
+    height:9mm;
+    border-radius:1.6mm;
+    background:linear-gradient(#292929,#050505);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    font-weight:900;
+    line-height:1;
+    letter-spacing:.1px;
+}
+.datos{
+    display:grid;
+    grid-template-columns:1.8fr .9fr .72fr;
+    gap:4mm;
+    margin:1.2mm 4mm 8.5mm;
+}
+.dato{
+    height:6.4mm;
+    border:1px solid #222;
+    border-radius:1.2mm;
+    display:flex;
+    align-items:center;
+    padding:0 3mm;
+    font-size:10px;
+    font-weight:900;
+    line-height:1;
+}
+.dato .etiqueta{
+    margin-right:3mm;
+    font-size:9px;
+    font-style:italic;
+    font-weight:700;
+}
+.dato .valor{
+    flex:1;
+    text-align:center;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+.bloque{
+    border:1px solid #aaa;
+    border-radius:3.2mm;
+    overflow:hidden;
+    margin-bottom:6.2mm;
+    background:#fff;
+    break-inside:avoid;
+    page-break-inside:avoid;
+}
+.bloque-titulo{
+    height:9.2mm;
+    display:flex;
+    align-items:center;
+    padding-top:1.1mm;
+}
+.titulo-seccion{
+    flex:0 0 42%;
+    height:7.5mm;
+    margin-left:.5mm;
+    border-radius:1.7mm 1.7mm 0 0;
+    background:#777373;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:15px;
+    font-weight:900;
+    line-height:1;
+}
+.barra-seccion{
+    flex:1;
+    height:2.8mm;
+    margin-top:4.7mm;
+    background:#777373;
+}
+.total-seccion{
+    flex:0 0 18%;
+    height:7.5mm;
+    margin-right:.5mm;
+    border-radius:1.7mm 1.7mm 0 0;
+    background:#777373;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:16px;
+    font-weight:900;
+    line-height:1;
+}
+table{width:100%;border-collapse:collapse;table-layout:fixed;}
+thead th{
+    height:5.3mm;
+    padding:1mm;
+    background:#3e3e3e;
+    color:#fff;
+    font-size:10px;
+    font-weight:900;
+    line-height:1;
+    text-align:center;
+    white-space:nowrap;
+}
+tbody td{
+    height:7mm;
+    padding:1.2mm 1.5mm;
+    color:#111;
+    font-size:14px;
+    font-weight:700;
+    line-height:1;
+    text-align:center;
+    white-space:nowrap;
+}
+tbody tr:last-child td{padding-bottom:2.2mm;}
+.sin-registros{height:9mm;color:#555;font-weight:700;}
+@media print{
+    @page{size:A4 portrait;margin:0;}
+    html,body{
+        width:210mm !important;
+        height:297mm !important;
+        min-height:297mm !important;
+        max-height:297mm !important;
+        margin:0 !important;
+        padding:0 !important;
+        overflow:hidden !important;
+    }
+    .hoja{
+        width:210mm !important;
+        height:297mm !important;
+        min-height:297mm !important;
+        max-height:297mm !important;
+        margin:0 auto !important;
+        overflow:hidden !important;
+        break-after:auto !important;
+        page-break-after:auto !important;
+    }
+}
+</style>
+
+<style id="gc-index-responsive-clean-v25">
+/* ============================================================
+   GOOD COMPANY — RESPONSIVE LIMPIO v25
+   OBJETIVO:
+   - Teléfonos
+   - iPhone / iPad
+   - Tablets
+   - PC SIN CAMBIOS
+   No modifica la lógica de la aplicación.
+============================================================ */
+
+/* ------------------------------------------------------------
+   TABLET + MÓVIL
+------------------------------------------------------------ */
+@media (max-width: 768px){
+
+    html, body{
+        width:100% !important;
+        max-width:100% !important;
+        overflow-x:hidden !important;
+        -webkit-text-size-adjust:100% !important;
+    }
+
+    body{
+        padding-bottom:96px !important;
+    }
+
+    /* El contenedor principal nunca debe crear ancho lateral */
+    body > div.w-\[94\%\]{
+        width:100% !important;
+        max-width:none !important;
+        box-sizing:border-box !important;
+        padding-left:10px !important;
+        padding-right:10px !important;
+        overflow:visible !important;
+    }
+
+    #seccion-operaciones{
+        min-width:0 !important;
+        width:100% !important;
+    }
+
+    /* --------------------------------------------------------
+       CABECERA
+    -------------------------------------------------------- */
+    header.panel{
+        width:100% !important;
+        box-sizing:border-box !important;
+    }
+
+    /* --------------------------------------------------------
+       LAS TRES TABLAS SUPERIORES
+       Conservamos el aspecto de la foto 1.
+    -------------------------------------------------------- */
+    .categoria-card{
+        width:100% !important;
+        max-width:100% !important;
+        min-width:0 !important;
+        box-sizing:border-box !important;
+    }
+
+    .categoria-card .overflow-x-auto{
+        width:100% !important;
+        max-width:100% !important;
+        overflow-x:hidden !important;
+    }
+
+    .tabla-mercaderia{
+        width:100% !important;
+        max-width:100% !important;
+        table-layout:fixed !important;
+    }
+
+    /* --------------------------------------------------------
+       RESERVAS / DISPONIBLES
+       El problema era que usábamos columnas fijas. Ahora todas
+       las columnas se adaptan al ancho disponible.
+    -------------------------------------------------------- */
+    .grid-reservas-disponibles{
+        display:grid !important;
+        grid-template-columns:1fr !important;
+        width:100% !important;
+        gap:12px !important;
+        min-width:0 !important;
+        box-sizing:border-box !important;
+    }
+
+    .grid-reservas-disponibles > *{
+        width:100% !important;
+        min-width:0 !important;
+        max-width:100% !important;
+        box-sizing:border-box !important;
+    }
+
+    .reservas-card,
+    .disponibles-card{
+        width:100% !important;
+        min-width:0 !important;
+        max-width:100% !important;
+        box-sizing:border-box !important;
+    }
+
+    .reservas-columnas,
+    .reserva-row,
+    .disponibles-columnas,
+    .disponible-row{
+        width:100% !important;
+        max-width:100% !important;
+        box-sizing:border-box !important;
+
+        /* proporciones adaptables:
+           ART | CANT | COLOR | FECHA | ACCIÓN */
+        grid-template-columns:
+            0.95fr
+            0.72fr
+            1.38fr
+            1.18fr
+            1.32fr !important;
+
+        gap:3px !important;
+        padding-left:6px !important;
+        padding-right:6px !important;
+    }
+
+    .reservas-columnas,
+    .disponibles-columnas{
+        min-height:31px !important;
+        height:31px !important;
+        padding-top:6px !important;
+        padding-bottom:6px !important;
+        overflow:hidden !important;
+    }
+
+    .reservas-columnas > div,
+    .disponibles-columnas > div,
+    .reserva-row > div,
+    .reserva-row > button,
+    .disponible-row > div,
+    .disponible-row > button{
+        min-width:0 !important;
+        width:auto !important;
+        max-width:100% !important;
+        overflow:hidden !important;
+        box-sizing:border-box !important;
+    }
+
+    /* Encabezados chicos, firmes y sin invadir otra columna */
+    .reservas-columnas,
+    .disponibles-columnas,
+    .reservas-columnas div,
+    .disponibles-columnas div{
+        font-size:9px !important;
+        line-height:1 !important;
+        white-space:nowrap !important;
+        text-overflow:clip !important;
+    }
+
+    /* Filas */
+    .reserva-row,
+    .disponible-row{
+        min-height:34px !important;
+        height:34px !important;
+        padding-top:5px !important;
+        padding-bottom:5px !important;
+        font-size:10px !important;
+        line-height:1 !important;
+        overflow:hidden !important;
+    }
+
+    .reserva-art,
+    .disponible-art{
+        font-size:12px !important;
+        line-height:1 !important;
+        white-space:nowrap !important;
+        overflow:hidden !important;
+        text-overflow:ellipsis !important;
+    }
+
+    .reserva-cantidad,
+    .reserva-color,
+    .reserva-fecha,
+    .disponible-cantidad,
+    .disponible-color,
+    .disponible-fecha{
+        font-size:10px !important;
+        line-height:1 !important;
+        white-space:nowrap !important;
+        overflow:hidden !important;
+        text-overflow:ellipsis !important;
+    }
+
+    /* Botones: siempre quedan dentro de su propia columna */
+    .reserva-add,
+    .disponible-add{
+        justify-self:stretch !important;
+        width:100% !important;
+        min-width:0 !important;
+        max-width:100% !important;
+        height:27px !important;
+        min-height:27px !important;
+        padding:4px 2px !important;
+        border-radius:6px !important;
+        font-size:9px !important;
+        line-height:1 !important;
+        white-space:nowrap !important;
+        overflow:hidden !important;
+        text-overflow:clip !important;
+        box-sizing:border-box !important;
+    }
+
+    /* El formulario tampoco puede desbordar */
+    #form-egreso,
+    #form-egreso > div{
+        width:100% !important;
+        max-width:100% !important;
+        min-width:0 !important;
+    }
+
+    #form-egreso input,
+    #form-egreso select,
+    #form-egreso button{
+        max-width:100% !important;
+        box-sizing:border-box !important;
+    }
+
+    /* --------------------------------------------------------
+       MENÚ/USUARIO FIJO
+       El cuadro lo crea auth.js; lo posicionamos sin tapar
+       el contenido y dejamos un "colchón" inferior real.
+    -------------------------------------------------------- */
+    #gc-session-box{
+        position:fixed !important;
+        left:10px !important;
+        right:10px !important;
+        bottom:max(10px, env(safe-area-inset-bottom)) !important;
+        width:auto !important;
+        max-width:none !important;
+        margin:0 !important;
+        z-index:999999 !important;
+        box-sizing:border-box !important;
+        display:flex !important;
+        align-items:center !important;
+        justify-content:space-between !important;
+    }
+
+    /* En caso de que el contenedor use un wrapper interno */
+    #gc-session-box > div{
+        max-width:100% !important;
+        box-sizing:border-box !important;
+    }
+
+    /* El espacio final evita que el fijo tape la última tarjeta */
+    footer{
+        padding-bottom:110px !important;
+    }
+}
+
+/* ------------------------------------------------------------
+   TELÉFONOS ESTRECHOS
+------------------------------------------------------------ */
+@media (max-width:480px){
+
+    body{
+        padding-bottom:102px !important;
+    }
+
+    body > div.w-\[94\%\]{
+        padding-left:7px !important;
+        padding-right:7px !important;
+    }
+
+    header.panel{
+        padding:8px !important;
+        margin-bottom:10px !important;
+    }
+
+    header.panel img{
+        height:29px !important;
+        max-width:70px !important;
+    }
+
+    header.panel h1{
+        font-size:16px !important;
+        white-space:nowrap !important;
+        letter-spacing:0 !important;
+    }
+
+    .gc-index-refresh{
+        width:39px !important;
+        height:39px !important;
+        flex:0 0 39px !important;
+        font-size:25px !important;
+    }
+
+    section.panel:has(#select-taller){
+        padding:8px !important;
+        margin-bottom:11px !important;
+    }
+
+    section.panel:has(#select-taller) #select-taller{
+        height:44px !important;
+        font-size:16px !important;
+    }
+
+    /* Tabla: el contenido de cada celda jamás sale de su columna */
+    .tabla-mercaderia{
+        table-layout:fixed !important;
+    }
+
+    .tabla-mercaderia th,
+    .tabla-mercaderia td{
+        box-sizing:border-box !important;
+        overflow:hidden !important;
+        text-overflow:clip !important;
+        white-space:nowrap !important;
+        padding-left:2px !important;
+        padding-right:2px !important;
+    }
+
+    .tabla-mercaderia thead th{
+        font-size:9px !important;
+        padding-top:6px !important;
+        padding-bottom:6px !important;
+    }
+
+    .tabla-mercaderia tbody td{
+        font-size:10px !important;
+        padding-top:5px !important;
+        padding-bottom:5px !important;
+    }
+
+    .tabla-mercaderia tbody td:first-child{
+        font-size:12px !important;
+    }
+
+    .tabla-mercaderia tbody td:nth-child(4){
+        font-size:9px !important;
+    }
+
+    .tabla-mercaderia .btn-ingresar{
+        width:100% !important;
+        max-width:100% !important;
+        min-width:0 !important;
+        padding:6px 1px !important;
+        font-size:8px !important;
+        line-height:1 !important;
+    }
+
+    /* RESERVAS / DISPONIBLES: todavía un poco más compactas */
+    .reservas-columnas,
+    .reserva-row,
+    .disponibles-columnas,
+    .disponible-row{
+        grid-template-columns:
+            0.92fr
+            0.68fr
+            1.24fr
+            1.08fr
+            1.18fr !important;
+
+        gap:2px !important;
+        padding-left:4px !important;
+        padding-right:4px !important;
+    }
+
+    .reservas-columnas,
+    .disponibles-columnas{
+        height:29px !important;
+        min-height:29px !important;
+        font-size:8px !important;
+    }
+
+    .reserva-row,
+    .disponible-row{
+        height:32px !important;
+        min-height:32px !important;
+        padding-top:5px !important;
+        padding-bottom:5px !important;
+    }
+
+    .reserva-art,
+    .disponible-art{
+        font-size:11px !important;
+    }
+
+    .reserva-cantidad,
+    .reserva-color,
+    .reserva-fecha,
+    .disponible-cantidad,
+    .disponible-color,
+    .disponible-fecha{
+        font-size:9px !important;
+    }
+
+    .reserva-add,
+    .disponible-add{
+        height:25px !important;
+        min-height:25px !important;
+        padding:3px 1px !important;
+        font-size:8px !important;
+    }
+
+    footer{
+        padding-bottom:115px !important;
+        font-size:10px !important;
+    }
+
+    /* Session box aún más compacto en teléfonos */
+    #gc-session-box{
+        left:7px !important;
+        right:7px !important;
+        bottom:max(7px, env(safe-area-inset-bottom)) !important;
+    }
+}
+
+/* ------------------------------------------------------------
+   iPAD/TABLET: un poco más de aire que en teléfono
+------------------------------------------------------------ */
+@media (min-width:481px) and (max-width:768px){
+
+    .reservas-columnas,
+    .disponibles-columnas,
+    .reserva-row,
+    .disponible-row{
+        padding-left:8px !important;
+        padding-right:8px !important;
+    }
+
+    .reservas-columnas,
+    .disponibles-columnas{
+        font-size:10px !important;
+    }
+
+    .reserva-art,
+    .disponible-art{
+        font-size:13px !important;
+    }
+
+    .reserva-cantidad,
+    .reserva-color,
+    .reserva-fecha,
+    .disponible-cantidad,
+    .disponible-color,
+    .disponible-fecha{
+        font-size:10px !important;
+    }
+
+    .reserva-add,
+    .disponible-add{
+        font-size:10px !important;
+    }
+}
+</style>
+
+</head>
+<body>
+<div class="hoja">
+    <div class="titulo-principal">INFORME DE PENDIENTES</div>
+    <div class="datos">
+        <div class="dato"><span class="etiqueta">Taller:</span><span class="valor">${esc(taller)}</span></div>
+        <div class="dato"><span class="etiqueta">Fecha:</span><span class="valor">${esc(fecha)}</span></div>
+        <div class="dato"><span class="etiqueta">Hora:</span><span class="valor">${esc(hora)}</span></div>
+    </div>
+    ${bloque('PENDIENTES',p)}
+    ${bloque('REPARACIONES',r)}
+    ${bloque('MUESTRAS',m)}
+</div>
+
+
+
+
+
+
+
+<\/body>
+<\/html>`;
+    }
+
+    window.imprimirPendientesTaller=function(){
+        const select=document.getElementById('select-taller');
+        if(!select || !select.value){
+            alert('Seleccioná un taller antes de imprimir.');
+            return;
+        }
+
+        const p=leerTabla('tabla-pendientes');
+        const r=leerTabla('tabla-reparaciones');
+        const m=leerTabla('tabla-muestras');
+        const now=new Date();
+        const fecha=now.toLocaleDateString('es-AR');
+        const hora=now.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+
+        const ventana=window.open('','_blank','width=794,height=1123');
+        if(!ventana){
+            alert('El navegador bloqueó la ventana de impresión. Permití las ventanas emergentes para GOOD COMPANY.');
+            return;
+        }
+
+        ventana.document.open();
+        ventana.document.write(construir(tallerActual(),fecha,hora,p,r,m));
+        ventana.document.close();
+        ventana.focus();
+
+        setTimeout(()=>{
+            try{ventana.print();}catch(error){console.error('❌ ERROR IMPRIMIENDO INFORME:',error);}
+        },400);
+
+        ventana.addEventListener('afterprint',()=>{
+            setTimeout(()=>{try{ventana.close();}catch(_){}},150);
+        });
+    };
+})();
+</script>
+
+<style id="gc-taller-dropdown-auto">
+/* Selector de talleres: control compacto + desplegable que se adapta a la cantidad de talleres */
+#select-taller.gc-native-hidden{
+  position:absolute !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+  width:1px !important;
+  height:1px !important;
+}
+.gc-taller-picker{position:relative;width:100%;}
+.gc-taller-trigger{
+  width:100%; min-height:42px; padding:10px 40px 10px 12px; border-radius:.5rem;
+  border:1px solid #475569; background:#1e293b; color:#f8fafc; text-align:left;
+  font-size:16px; line-height:1.25; font-weight:700; cursor:pointer; position:relative;
+}
+.gc-taller-trigger::after{
+  content:'▾'; position:absolute; right:13px; top:50%; transform:translateY(-50%);
+  color:#cbd5e1; font-size:18px; pointer-events:none;
+}
+.gc-taller-trigger:focus{outline:none; border-color:#3b82f6; box-shadow:0 0 0 2px rgba(59,130,246,.2);}
+.gc-taller-menu{
+  position:fixed; z-index:99999; display:none; overflow-y:auto; overflow-x:hidden;
+  background:#1e293b; border:1px solid #475569; border-radius:8px;
+  box-shadow:0 14px 35px rgba(0,0,0,.45); padding:4px 0;
+}
+.gc-taller-menu.open{display:block;}
+.gc-taller-option{
+  box-sizing:border-box; min-height:30px; padding:5px 12px; display:flex; align-items:center;
+  color:#f8fafc; font-size:16px; line-height:20px; cursor:pointer; white-space:nowrap;
+}
+.gc-taller-option:hover,.gc-taller-option.active{background:#475569;}
+</style>
+<script>
+(function(){
+  function initTallerPicker(){
+    const select=document.getElementById('select-taller');
+    if(!select || select.dataset.gcPickerReady==='1') return;
+    select.dataset.gcPickerReady='1';
+    select.classList.add('gc-native-hidden');
+
+    const wrap=document.createElement('div');
+    wrap.className='gc-taller-picker';
+    select.parentNode.insertBefore(wrap, select);
+    wrap.appendChild(select);
+
+    const trigger=document.createElement('button');
+    trigger.type='button'; trigger.className='gc-taller-trigger';
+    trigger.setAttribute('aria-haspopup','listbox');
+    wrap.appendChild(trigger);
+
+    const menu=document.createElement('div');
+    menu.className='gc-taller-menu'; menu.setAttribute('role','listbox');
+    document.body.appendChild(menu);
+
+    function options(){ return Array.from(select.options); }
+    function refresh(){
+      const opts=options();
+      const current=select.options[select.selectedIndex];
+      trigger.textContent=current ? current.textContent.trim() : '-- Seleccionar taller --';
+      menu.innerHTML='';
+      opts.forEach((opt,i)=>{
+        const el=document.createElement('div');
+        el.className='gc-taller-option'+(i===select.selectedIndex?' active':'');
+        el.setAttribute('role','option'); el.dataset.value=opt.value; el.dataset.index=i;
+        el.textContent=opt.textContent.trim();
+        el.addEventListener('mousedown',e=>e.preventDefault());
+        el.addEventListener('click',()=>{
+          select.selectedIndex=i;
+          select.dispatchEvent(new Event('change',{bubbles:true}));
+          close(); refresh();
+        });
+        menu.appendChild(el);
+      });
+    }
+    function position(){
+      const r=trigger.getBoundingClientRect();
+      const count=options().length;
+      const row=30, pad=8;
+      const bottomReserve=Math.min(115, Math.max(72, Math.floor(window.innerHeight*.10)));
+      const viewportGap=8;
+      const desired=Math.min(Math.max(count,1)*row+pad, Math.floor(window.innerHeight*.82));
+      const spaceBelow=Math.max(0,window.innerHeight-r.bottom-viewportGap-bottomReserve);
+      const spaceAbove=Math.max(0,r.top-viewportGap);
+      let top, height;
+
+      // Prefer below only when there is enough room without covering the
+      // fixed user controls at the bottom. Otherwise open upward.
+      if(spaceBelow >= Math.min(desired,row*3)){
+        top=r.bottom+4;
+        height=Math.min(desired,spaceBelow);
+      }else if(spaceAbove >= Math.min(desired,row*3)){
+        height=Math.min(desired,spaceAbove);
+        top=r.top-height-4;
+      }else{
+        // Very short screens: use whichever side has more room.
+        if(spaceBelow >= spaceAbove){
+          top=r.bottom+4; height=spaceBelow;
+        }else{
+          height=spaceAbove; top=r.top-height-4;
+        }
+      }
+
+      menu.style.left=r.left+'px';
+      menu.style.width=r.width+'px';
+      menu.style.top=Math.max(4,top)+'px';
+      menu.style.maxHeight=Math.max(row*3,Math.floor(height))+'px';
+    }
+    function open(){ refresh(); position(); menu.classList.add('open'); trigger.setAttribute('aria-expanded','true'); }
+    function close(){ menu.classList.remove('open'); trigger.setAttribute('aria-expanded','false'); }
+    trigger.addEventListener('click',e=>{e.stopPropagation(); menu.classList.contains('open')?close():open();});
+    document.addEventListener('click',e=>{if(!wrap.contains(e.target) && !menu.contains(e.target)) close();});
+    window.addEventListener('resize',()=>{if(menu.classList.contains('open')) position();});
+    window.addEventListener('scroll',()=>{if(menu.classList.contains('open')) position();},true);
+    const mo=new MutationObserver(refresh); mo.observe(select,{childList:true,subtree:true,attributes:true});
+    select.addEventListener('change',refresh);
+    refresh();
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initTallerPicker); else initTallerPicker();
+})();
+</script>
+
+<!-- MENÚ DE MÓDULOS PARA MÓVIL Y TABLET -->
+<div id="gcIndexMobileBackdrop" class="gc-index-mobile-backdrop"></div>
+<nav id="gcIndexMobileMenu" class="gc-index-mobile-menu" aria-label="Módulos">
+  <a id="gcMobPrincipal" href="/index.html"><span>PRINCIPAL</span></a>
+  <a id="gcMobProduccion" href="/produccion.html"><span>PRODUCCIÓN</span></a>
+  <a id="gcMobTareas" href="/tareas.html"><span>TAREAS</span></a>
+  <a id="gcMobTalleres" href="/talleres.html"><span>TALLERES</span></a>
+  <a id="gcMobPagos" href="/pagos.html"><span>PAGOS</span></a>
+  <a id="gcMobBd" href="/bd.html"><span>BD</span></a>
+  <a id="gcMobRollos" href="/rollos.html"><span>ROLLOS</span></a>
+</nav>
+<script>
+(function(){
+  const btn=document.getElementById('gcIndexHamburger');
+  const menu=document.getElementById('gcIndexMobileMenu');
+  const backdrop=document.getElementById('gcIndexMobileBackdrop');
+  if(!btn||!menu||!backdrop)return;
+  function toggle(open){
+    menu.classList.toggle('gc-open',open); backdrop.classList.toggle('gc-open',open);
+    btn.setAttribute('aria-expanded',String(open)); btn.textContent=open?'✕':'☰';
+  }
+  btn.addEventListener('click',()=>toggle(!menu.classList.contains('gc-open')));
+  backdrop.addEventListener('click',()=>toggle(false));
+  menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>toggle(false)));
+  function syncPermissions(){
+    const map=[['gcMobProduccion','a[href="/produccion.html"]'],['gcMobTareas','a[href="/tareas.html"]'],['gcMobTalleres','a[href="/talleres.html"]'],['gcMobPagos','a[href="/pagos.html"]'],['gcMobBd','a[href="/bd.html"]']];
+    const desktop=[...document.querySelectorAll('.gc-index-desktop-modules button')];
+    const byPath={};
+    desktop.forEach(b=>{ const oc=b.getAttribute('onclick')||''; const m=oc.match(/href\s*=\s*['"]([^'"]+)/); if(m)byPath[m[1]]=b; });
+    map.forEach(([id,sel])=>{ const a=document.getElementById(id); const path=a.getAttribute('href'); const source=byPath[path]; if(source){ const hidden=getComputedStyle(source).display==='none' || source.offsetParent===null; a.classList.toggle('gc-hidden',hidden); } });
+  }
+  syncPermissions();
+  setTimeout(syncPermissions,500); setTimeout(syncPermissions,1500);
+  window.addEventListener('resize',()=>{if(window.innerWidth>768)toggle(false);});
+})();
+</script>
+
+<script id="gc-agregar-directo-confirmacion-v2">
+/* ============================================================
+   AGREGAR DIRECTO A CONFIRMACIÓN
+   RESERVAS / DISPONIBLES -> carga todo como antes y luego abre
+   el mismo cartel de REGISTRAR SALIDA.
+============================================================ */
+(() => {
+    document.addEventListener('click', event => {
+        const botonFila = event.target?.closest?.('.reserva-add, .disponible-add');
+        if (!botonFila) return;
+
+        // El listener propio de la fila corre antes que este listener
+        // delegado. Esperamos al siguiente turno para que termine de
+        // cargar artículo, cantidad, color e identidad de producción.
+        setTimeout(() => {
+            const botonPrincipal = document.getElementById('btn-agregar-entrega');
+            if (!botonPrincipal) return;
+            botonPrincipal.click();
+        }, 0);
+    }, false);
+})();
+</script>
+
+<script id="gc-finalizar-ingreso-v3">
+(() => {
+    const talleresConIngresoPendiente = new Set();
+
+    function actualizarBoton() {
+        const select = document.getElementById('select-taller');
+        const boton = document.getElementById('gc-btn-finalizar-ingreso');
+        if (!select || !boton) return;
+
+        const tallerId = String(select.value || '').trim();
+        const pendiente = !!tallerId &&
+            talleresConIngresoPendiente.has(tallerId);
+
+        boton.classList.toggle('hidden', !pendiente);
+        boton.classList.toggle('gc-finalizar-nuevo', pendiente);
+    }
+
+    window.gcMarcarIngresoParaFinalizar = function(tallerId) {
+        const id = String(tallerId || '').trim();
+        if (!id) return;
+        talleresConIngresoPendiente.add(id);
+        actualizarBoton();
+    };
+
+    async function finalizarIngreso() {
+        const select = document.getElementById('select-taller');
+        const boton = document.getElementById('gc-btn-finalizar-ingreso');
+        const tallerId = String(select?.value || '').trim();
+
+        if (!tallerId) {
+            alert('❌ Seleccioná un taller.');
+            return;
+        }
+
+        if (!talleresConIngresoPendiente.has(tallerId)) return;
+
+        boton.disabled = true;
+        boton.classList.remove('gc-finalizar-nuevo');
+        boton.textContent = '⏳ FINALIZANDO...';
+
+        try {
+            const respuesta = await fetch(
+                `/api/talleres/${encodeURIComponent(tallerId)}/finalizar-ingreso`,
+                {
+                    method:'POST',
+                    headers:{'Content-Type':'application/json'}
+                }
+            );
+
+            let resultado = {};
+            try { resultado = await respuesta.json(); } catch (_) {}
+
+            if (!respuesta.ok) {
+                throw new Error(
+                    resultado.error ||
+                    'No se pudo finalizar el ingreso.'
+                );
+            }
+
+            talleresConIngresoPendiente.delete(tallerId);
+            actualizarBoton();
+
+            if (typeof mostrarToast === 'function') {
+                mostrarToast(
+                    `✅ INGRESO DE ${resultado.taller || 'TALLER'} FINALIZADO. PAGOS FUE AVISADO.`,
+                    3000
+                );
+            } else {
+                alert(
+                    `✅ INGRESO DE ${resultado.taller || 'TALLER'} FINALIZADO. PAGOS FUE AVISADO.`
+                );
+            }
+        } catch (error) {
+            console.error('❌ ERROR FINALIZANDO INGRESO:', error);
+            alert('❌ ERROR:\n\n' + error.message);
+        } finally {
+            boton.disabled = false;
+            boton.textContent = '✅ FINALIZAR';
+            actualizarBoton();
+        }
+    }
+
+    function iniciar() {
+        const select = document.getElementById('select-taller');
+        const boton = document.getElementById('gc-btn-finalizar-ingreso');
+        if (!select || !boton) return;
+
+        boton.addEventListener('click', finalizarIngreso);
+        select.addEventListener('change', actualizarBoton);
+        actualizarBoton();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', iniciar);
+    } else {
+        iniciar();
+    }
+})();
+</script>
+
+
+
+<script id="gc-disponibles-v5">
+/* ============================================================
+   GOOD COMPANY — DISPONIBLES v5
+
+   SOLUCIÓN DEFINITIVA:
+   1) El botón AGREGAR conserva el ID_ARTICULO_TAREA exacto.
+   2) Al POST /salidas se agrega ese ID al body.
+   3) El servidor actualiza esa fila exacta de TAREAS_ARTICULOS.
+   4) Cuando termina la salida, se vuelve a consultar DISPONIBLES.
+
+   No modificamos registrarEgreso() ni el flujo de RESERVAS.
+============================================================ */
+(() => {
+    if (window.__gcDisponiblesV5) return;
+    window.__gcDisponiblesV5 = true;
+
+    const fetchOriginal = window.fetch.bind(window);
+
+    window.fetch = async function(input, init) {
+        const url = typeof input === 'string'
+            ? input
+            : String(input?.url || '');
+
+        const metodo = String(
+            init?.method ||
+            (typeof input !== 'string' ? input?.method : '') ||
+            'GET'
+        ).toUpperCase();
+
+        // Solo interceptamos la creación de una SALIDA.
+        if (
+            metodo === 'POST' &&
+            /\/api\/talleres\/[^/]+\/salidas(?:\?|$)/.test(url)
+        ) {
+            try {
+                const btn = document.getElementById(
+                    'btn-agregar-entrega'
+                );
+
+                const idDisponible = String(
+                    btn?.dataset?.disponibleId || ''
+                ).trim();
+
+                if (idDisponible && init?.body) {
+                    let body;
+
+                    if (typeof init.body === 'string') {
+                        body = JSON.parse(init.body);
+                    } else {
+                        body = init.body;
+                    }
+
+                    body.idArticuloTarea = idDisponible;
+
+                    init = {
+                        ...init,
+                        body: JSON.stringify(body)
+                    };
+
+                    console.log(
+                        '🔗 SALE: enviando ID_ARTICULO_TAREA exacto:',
+                        idDisponible
+                    );
+                }
+            } catch (e) {
+                console.warn(
+                    '⚠️ No se pudo agregar ID_ARTICULO_TAREA al POST:',
+                    e
+                );
+            }
+
+            const respuesta = await fetchOriginal(input, init);
+
+            // Clonamos la respuesta porque registrarEgreso() también
+            // necesita leerla.
+            try {
+                const copia = respuesta.clone();
+                const resultado = await copia.json();
+
+                if (
+                    respuesta.ok &&
+                    resultado?.success === true &&
+                    typeof window.cargarArticulosDisponiblesIndex === 'function'
+                ) {
+                    // El servidor ya terminó de escribir Google Sheets.
+                    // Damos un pequeño margen para que la lectura siguiente
+                    // vea la actualización.
+                    setTimeout(() => {
+                        window.cargarArticulosDisponiblesIndex();
+                    }, 700);
+                }
+            } catch (_) {
+                // No interferimos con la respuesta original.
+            }
+
+            return respuesta;
+        }
+
+        return fetchOriginal(input, init);
+    };
+})();
+</script>
+
+
+
+<!-- ============================================================
+     GOOD COMPANY — OJITO PARA VER FOTO DE ARTÍCULO
+     Solo visualización. No modifica ninguna lógica existente.
+     Imagen: https://raw.githubusercontent.com/serpereyra1981-GC/FOTOS/main/{ARTICULO}.jpg
+     Fallback: GC.jpg
+============================================================ -->
+<style id="gc-ojito-fotos-style">
+.gc-articulo-con-foto{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    gap:7px !important;
+    width:100% !important;
+    min-width:0 !important;
+}
+.gc-articulo-con-foto .gc-articulo-numero{
+    min-width:0 !important;
+}
+.gc-icon-foto{
+    display:block;
+    width:12px;
+    height:9px;
+    border:1.8px solid currentColor;
+    border-radius:2px;
+    position:relative;
+    box-sizing:border-box;
+}
+.gc-icon-foto::before{
+    content:"";
+    position:absolute;
+    width:4px;
+    height:4px;
+    border:1.5px solid currentColor;
+    border-radius:50%;
+    left:2px;
+    top:1px;
+    box-sizing:border-box;
+}
+.gc-icon-foto::after{
+    content:"";
+    position:absolute;
+    width:4px;
+    height:2px;
+    border-radius:2px 2px 0 0;
+    background:currentColor;
+    right:1px;
+    bottom:1px;
+}
+.gc-ojito-foto{
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    flex:0 0 auto !important;
+    width:23px !important;
+    height:23px !important;
+    padding:0 !important;
+    margin:0 !important;
+    border:1px solid rgba(100,116,139,.65) !important;
+    border-radius:6px !important;
+    background:rgba(30,41,59,.9) !important;
+    color:#cbd5e1 !important;
+    cursor:pointer !important;
+    font-size:13px !important;
+    line-height:1 !important;
+    box-shadow:0 2px 5px rgba(0,0,0,.20) !important;
+    transition:all .15s ease !important;
+}
+.gc-ojito-foto:hover{
+    background:#334155 !important;
+    color:#fff !important;
+    border-color:#64748b !important;
+    transform:translateY(-1px) !important;
+}
+.gc-ojito-foto:active{ transform:scale(.95) !important; }
+
+/* Visor */
+.gc-foto-overlay{
+    position:fixed !important;
+    inset:0 !important;
+    z-index:999999 !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    padding:24px !important;
+    background:rgba(2,6,23,.86) !important;
+    backdrop-filter:blur(4px) !important;
+}
+.gc-foto-modal{
+    position:relative !important;
+    width:min(88vw,470px) !important;
+    max-height:82vh !important;
+    background:rgba(15,23,42,.98) !important;
+    border:1px solid rgba(71,85,105,.85) !important;
+    border-radius:14px !important;
+    box-shadow:0 25px 70px rgba(0,0,0,.55) !important;
+    overflow:hidden !important;
+    display:flex !important;
+    flex-direction:column !important;
+}
+.gc-foto-head{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:space-between !important;
+    gap:12px !important;
+    padding:11px 14px !important;
+    background:rgba(2,6,23,.72) !important;
+    border-bottom:1px solid rgba(71,85,105,.55) !important;
+}
+.gc-foto-titulo{
+    color:#e2e8f0 !important;
+    font-size:14px !important;
+    font-weight:900 !important;
+    letter-spacing:.03em !important;
+}
+.gc-foto-subtitulo{
+    color:#64748b !important;
+    font-size:10px !important;
+    font-weight:700 !important;
+    margin-left:auto !important;
+}
+.gc-foto-cerrar{
+    width:30px !important;
+    height:30px !important;
+    flex:0 0 auto !important;
+    border:1px solid rgba(100,116,139,.65) !important;
+    border-radius:7px !important;
+    background:rgba(30,41,59,.9) !important;
+    color:#e2e8f0 !important;
+    font-size:20px !important;
+    line-height:1 !important;
+    cursor:pointer !important;
+}
+.gc-foto-cerrar:hover{ background:#334155 !important; }
+.gc-foto-body{
+    min-height:180px !important;
+    max-height:calc(82vh - 58px) !important;
+    padding:14px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    overflow:auto !important;
+}
+.gc-foto-imagen{
+    display:block !important;
+    max-width:390px !important;
+    max-height:65vh !important;
+    width:auto !important;
+    height:auto !important;
+    object-fit:contain !important;
+    border-radius:8px !important;
+    box-shadow:0 10px 35px rgba(0,0,0,.35) !important;
+    background:#fff !important;
+}
+.gc-foto-cargando{
+    color:#94a3b8 !important;
+    font-size:13px !important;
+    font-weight:800 !important;
+    padding:35px !important;
+}
+@media(max-width:640px){
+    .gc-ojito-foto{width:21px !important;height:21px !important;font-size:12px !important;}
+    .gc-articulo-con-foto{gap:4px !important;}
+    .gc-foto-overlay{padding:10px !important;}
+    .gc-foto-modal{width:92vw !important;max-height:84vh !important;}
+    .gc-foto-body{padding:8px !important;max-height:calc(84vh - 58px) !important;}
+    .gc-foto-titulo{font-size:12px !important;}
+    .gc-foto-subtitulo{display:none !important;}
+}
+</style>
+
+<script id="gc-ojito-fotos-script">
+(() => {
+    const FOTO_BASE = 'https://raw.githubusercontent.com/serpereyra1981-GC/FOTOS/main/';
+    const FOTO_FALLBACK = FOTO_BASE + 'GC.jpg';
+
+    function escAttr(value){
+        return String(value ?? '')
+            .replace(/&/g,'&amp;')
+            .replace(/"/g,'&quot;')
+            .replace(/</g,'&lt;')
+            .replace(/>/g,'&gt;');
+    }
+
+    function normalizarArticulo(valor){
+        let s = String(valor ?? '').trim();
+        // El artículo es el número que figura en la primera celda.
+        // Si hubiera texto adicional, usamos el primer bloque numérico.
+        const m = s.match(/\d+/);
+        return m ? m[0] : s;
+    }
+
+    function crearOjito(articulo){
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'gc-ojito-foto';
+        btn.title = 'Ver imagen del artículo ' + articulo;
+        btn.setAttribute('aria-label','Ver imagen del artículo ' + articulo);
+        btn.dataset.articulo = articulo;
+        btn.innerHTML = '<span class="gc-icon-foto" aria-hidden="true"></span>';
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            abrirFoto(articulo);
+        });
+        return btn;
+    }
+
+    function prepararCelda(celda){
+        if(!celda || celda.dataset.gcFotoPreparada === '1') return;
+
+        const texto = String(celda.textContent || '').trim();
+        const articulo = normalizarArticulo(texto);
+        if(!articulo) return;
+
+        celda.dataset.gcFotoPreparada = '1';
+
+        const contenido = document.createElement('span');
+        contenido.className = 'gc-articulo-numero';
+        // Conservamos exactamente el texto que ya tenía la celda.
+        while(celda.firstChild) contenido.appendChild(celda.firstChild);
+
+        const envoltorio = document.createElement('span');
+        envoltorio.className = 'gc-articulo-con-foto';
+        envoltorio.appendChild(contenido);
+        envoltorio.appendChild(crearOjito(articulo));
+        celda.appendChild(envoltorio);
+    }
+
+    function procesarFilas(){
+        // PENDIENTES / REPARACIONES / MUESTRAS
+        document.querySelectorAll('.tabla-mercaderia tbody tr').forEach(fila => {
+            const celda = fila.querySelector('td:first-child');
+            if(celda) prepararCelda(celda);
+        });
+
+        // RESERVAS DE PRODUCCIÓN
+        document.querySelectorAll('.reserva-row .reserva-art').forEach(prepararCelda);
+
+        // ARTÍCULOS DISPONIBLES
+        document.querySelectorAll('.disponible-row .disponible-art').forEach(prepararCelda);
+    }
+
+    function cerrarFoto(){
+        const overlay = document.getElementById('gc-foto-overlay');
+        if(overlay) overlay.remove();
+        document.body.style.overflow = '';
+    }
+
+    function abrirFoto(articulo){
+        cerrarFoto();
+
+        const overlay = document.createElement('div');
+        overlay.id = 'gc-foto-overlay';
+        overlay.className = 'gc-foto-overlay';
+        overlay.innerHTML = `
+            <div class="gc-foto-modal" role="dialog" aria-modal="true" aria-label="Imagen del artículo ${escAttr(articulo)}">
+                <div class="gc-foto-head">
+                    <div class="gc-foto-titulo">ARTÍCULO ${escAttr(articulo)}</div>
+                    <div class="gc-foto-subtitulo">VISTA DEL PRODUCTO</div>
+                    <button type="button" class="gc-foto-cerrar" aria-label="Cerrar">×</button>
+                </div>
+                <div class="gc-foto-body">
+                    <div class="gc-foto-cargando">Cargando imagen...</div>
+                    <img class="gc-foto-imagen" alt="Artículo ${escAttr(articulo)}" style="display:none">
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(overlay);
+        document.body.style.overflow = 'hidden';
+
+        const cerrar = () => cerrarFoto();
+        overlay.querySelector('.gc-foto-cerrar').addEventListener('click', cerrar);
+        overlay.addEventListener('click', (e) => {
+            if(e.target === overlay) cerrar();
+        });
+
+        const img = overlay.querySelector('.gc-foto-imagen');
+        const estado = overlay.querySelector('.gc-foto-cargando');
+        const urlArticulo = FOTO_BASE + encodeURIComponent(articulo) + '.jpg';
+        let usandoFallback = false;
+
+        img.onload = () => {
+            estado.style.display = 'none';
+            img.style.display = 'block';
+        };
+
+        img.onerror = () => {
+            if(!usandoFallback){
+                usandoFallback = true;
+                img.src = FOTO_FALLBACK;
+                return;
+            }
+            estado.textContent = 'No se pudo cargar la imagen.';
+            img.style.display = 'none';
+        };
+
+        img.src = urlArticulo;
+    }
+
+    function iniciar(){
+        procesarFilas();
+        const observer = new MutationObserver(() => procesarFilas());
+        observer.observe(document.body, {childList:true, subtree:true});
+
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'Escape') cerrarFoto();
+        });
+    }
+
+    if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', iniciar);
+    }else{
+        iniciar();
+    }
+})();
+</script>
+
+</body>
+
+</html>
+<style id="gc-ingreso-mobile-equilibrado-v12">
+/* Solo móvil/tablet: un poco más de aire en NUEVO INGRESO.
+   PC sin cambios. */
+@media (max-width: 768px){
+  .gc-ingreso-body{padding-top:11px !important;padding-bottom:7px !important;}
+  .gc-ingreso-taller{padding-bottom:9px !important;margin-bottom:9px !important;}
+  .gc-ingreso-info{padding:8px 10px !important;}
+  .gc-ingreso-info-row{min-height:25px !important;}
+  .gc-ingreso-section{margin-bottom:7px !important;}
+  .gc-ingreso-question{margin:4px 0 3px !important;}
+  .gc-ingreso-helper{margin-bottom:7px !important;}
+  .gc-ingreso-input{padding:9px 11px !important;}
+  .gc-ingreso-choice{padding:9px 10px !important;}
+  .gc-ingreso-actions{padding-top:10px !important;padding-bottom:11px !important;}
+}
+@media (max-width: 420px), (max-height: 720px){
+  .gc-ingreso-body{padding-top:9px !important;padding-bottom:5px !important;}
+  .gc-ingreso-info-row{min-height:23px !important;}
+  .gc-ingreso-choice{padding-top:8px !important;padding-bottom:8px !important;}
+  .gc-ingreso-actions{padding-top:8px !important;padding-bottom:9px !important;}
+}
+</style>
+
+
+<style id="gc-ingreso-mobile-v15">
+/* NUEVO INGRESO: un poco más alto y respirado SOLO en móvil/tablet.
+   La versión de PC no se modifica. */
+@media (max-width: 768px){
+  .gc-ingreso-body{
+    padding-top:16px !important;
+    padding-bottom:10px !important;
+  }
+  .gc-ingreso-taller{
+    padding-bottom:11px !important;
+    margin-bottom:11px !important;
+  }
+  .gc-ingreso-info{
+    padding:10px 11px !important;
+  }
+  .gc-ingreso-info-row{
+    min-height:28px !important;
+  }
+  .gc-ingreso-section{
+    margin-bottom:8px !important;
+  }
+  .gc-ingreso-question{
+    margin:6px 0 4px !important;
+  }
+  .gc-ingreso-helper{
+    margin-bottom:8px !important;
+  }
+  .gc-ingreso-input{
+    padding:11px 12px !important;
+  }
+  .gc-ingreso-choice{
+    padding:11px 10px !important;
+  }
+  .gc-ingreso-actions{
+    padding-top:12px !important;
+    padding-bottom:13px !important;
+  }
+  .gc-ingreso-btn{
+    min-height:44px !important;
+  }
+}
+
+@media (max-width: 420px), (max-height: 720px){
+  .gc-ingreso-body{
+    padding-top:12px !important;
+    padding-bottom:7px !important;
+  }
+  .gc-ingreso-info-row{
+    min-height:25px !important;
+  }
+  .gc-ingreso-choice{
+    padding-top:9px !important;
+    padding-bottom:9px !important;
+  }
+  .gc-ingreso-actions{
+    padding-top:9px !important;
+    padding-bottom:10px !important;
+  }
+  .gc-ingreso-btn{
+    min-height:40px !important;
+  }
+}
+</style>

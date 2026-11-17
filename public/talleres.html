@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<script src="/auth.js?v=10"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Good Company - Talleres</title>
+
+
+<style id="gc-talleres-index-estetica">
+:root{
+    --gc-bg:#0f172a;
+    --gc-panel:#0f172a;
+    --gc-panel-2:#1e293b;
+    --gc-border:#334155;
+    --gc-border-soft:#475569;
+    --gc-text:#e2e8f0;
+    --gc-muted:#94a3b8;
+    --gc-white:#fff;
+    --gc-green:#059669;
+    --gc-green-hover:#047857;
+    --gc-blue:#2563eb;
+    --gc-blue-hover:#1d4ed8;
+    --gc-red:#dc2626;
+    --gc-red-hover:#b91c1c;
+}
+
+*{box-sizing:border-box}
+
+html,body{
+    margin:0;
+    min-height:100%;
+}
+
+body{
+    background:var(--gc-bg) !important;
+    color:var(--gc-text) !important;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+.gc-talleres-wrap{
+    width:94%;
+    max-width:1600px;
+    margin:0 auto;
+    padding:16px 12px 28px;
+}
+
+.gc-topbar{
+    background:rgba(15,23,42,.96);
+    border:1px solid var(--gc-border);
+    border-radius:10px;
+    box-shadow:0 10px 25px rgba(0,0,0,.25);
+    padding:16px 18px;
+    margin-bottom:16px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+}
+
+.gc-brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.gc-brand-logo{
+    width:150px;
+    height:44px;
+    object-fit:contain;
+    object-position:left center;
+}
+
+.gc-brand-mark{
+    display:none;
+    width:42px;
+    height:42px;
+    border-radius:9px;
+    background:var(--gc-green);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+    font-size:15px;
+    letter-spacing:.5px;
+    box-shadow:0 3px 10px rgba(0,0,0,.25);
+}
+
+.gc-brand-title{
+    color:#fff;
+    font-size:20px;
+    font-weight:900;
+    line-height:1;
+    letter-spacing:.4px;
+}
+
+.gc-brand-sub{
+    color:var(--gc-muted);
+    font-size:13px;
+    font-weight:700;
+    margin-top:5px;
+}
+
+.gc-top-actions{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.gc-back{
+    border:0;
+    background:#334155;
+    color:#fff;
+    border-radius:7px;
+    padding:8px 12px;
+    font-size:11px;
+    font-weight:900;
+    cursor:pointer;
+    box-shadow:0 2px 5px rgba(0,0,0,.20);
+    transition:all .15s;
+}
+
+.gc-back:hover{
+    background:#475569;
+    transform:translateY(-1px);
+}
+
+.gc-db-badge{
+    background:#2563eb;
+    color:#fff;
+    border-radius:999px;
+    padding:6px 10px;
+    font-size:10px;
+    font-weight:900;
+}
+
+.gc-talleres-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:16px;
+    align-items:start;
+}
+
+.gc-card{
+    background:rgba(15,23,42,.96);
+    border:1px solid var(--gc-border);
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 10px 25px rgba(0,0,0,.25);
+    min-width:0;
+}
+
+.gc-card-head{
+    padding:11px 13px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    color:#fff;
+}
+
+.gc-card-head.blue{background:#2563eb}
+.gc-card-head.orange{background:#d97706}
+.gc-card-head.violet{background:#7c3aed}
+
+.gc-card-title{
+    font-size:17px;
+    font-weight:900;
+    letter-spacing:.4px;
+}
+
+.gc-card-count{
+    min-width:26px;
+    text-align:center;
+    font-size:15px;
+    font-weight:900;
+}
+
+.gc-card-body{
+    padding:13px;
+}
+
+.gc-add-row{
+    display:flex;
+    gap:7px;
+    margin-bottom:12px;
+}
+
+.gc-input{
+    flex:1;
+    min-width:0;
+    height:38px;
+    border:1px solid var(--gc-border-soft) !important;
+    border-radius:7px !important;
+    background:#1e293b !important;
+    color:#e2e8f0 !important;
+    padding:8px 10px !important;
+    font-size:14px !important;
+    font-weight:800 !important;
+    outline:none !important;
+    text-transform:uppercase;
+}
+
+.gc-input::placeholder{
+    color:#94a3b8;
+    opacity:1;
+}
+
+.gc-input:focus{
+    border-color:#64748b !important;
+    box-shadow:0 0 0 2px rgba(100,116,139,.18) !important;
+}
+
+.gc-add-btn{
+    width:38px;
+    height:38px;
+    border:0;
+    border-radius:7px;
+    color:#fff;
+    font-size:20px;
+    font-weight:900;
+    line-height:1;
+    cursor:pointer;
+    box-shadow:0 2px 5px rgba(0,0,0,.20);
+    transition:all .15s;
+}
+
+.gc-add-btn.blue{background:var(--gc-blue)}
+.gc-add-btn.blue:hover{background:var(--gc-blue-hover);transform:translateY(-1px)}
+.gc-add-btn.orange{background:#d97706}
+.gc-add-btn.orange:hover{background:#b45309;transform:translateY(-1px)}
+.gc-add-btn.green{background:var(--gc-green)}
+.gc-add-btn.green:hover{background:var(--gc-green-hover);transform:translateY(-1px)}
+.gc-add-btn.violet{background:#7c3aed}
+.gc-add-btn.violet:hover{background:#6d28d9;transform:translateY(-1px)}
+
+.gc-list{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.gc-list > div{
+    background:#1e293b !important;
+    border:1px solid var(--gc-border) !important;
+    border-radius:7px !important;
+    min-height:40px;
+    padding:8px 10px !important;
+    color:var(--gc-text);
+    transition:background .15s,border-color .15s;
+}
+
+.gc-list > div:hover{
+    background:#273449 !important;
+    border-color:#475569 !important;
+}
+
+.gc-list span{
+    color:#e2e8f0 !important;
+    font-size:14px !important;
+    font-weight:900 !important;
+}
+
+.gc-list button{
+    color:#f87171 !important;
+    font-size:14px !important;
+    background:transparent !important;
+    border:0 !important;
+    cursor:pointer;
+    padding:2px 5px !important;
+}
+
+.gc-list button:hover{
+    color:#fca5a5 !important;
+    background:rgba(220,38,38,.10) !important;
+    border-radius:5px !important;
+}
+
+@media(max-width:1023px){
+    .gc-talleres-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:640px){
+    .gc-talleres-wrap{
+        width:96%;
+        padding:10px 5px 20px;
+    }
+
+    .gc-topbar{
+        padding:12px;
+        align-items:flex-start;
+    }
+
+    .gc-brand-logo{width:130px;height:38px}
+    .gc-brand-title{font-size:17px}
+    .gc-brand-sub{font-size:10px}
+
+    .gc-top-actions{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .gc-back,.gc-db-badge{
+        text-align:center;
+    }
+}
+
+@media(min-width:1600px){
+    body{zoom:1.02}
+}
+@media(min-width:1900px){
+    body{zoom:1.04}
+}
+
+::-webkit-scrollbar{
+    width:8px;
+    height:8px;
+}
+::-webkit-scrollbar-track{
+    background:#0f172a;
+}
+::-webkit-scrollbar-thumb{
+    background:#475569;
+    border-radius:10px;
+}
+::-webkit-scrollbar-thumb:hover{
+    background:#64748b;
+}
+</style>
+
+<style id="gc-talleres-header-final">
+.gc-topbar{
+    min-height:68px;
+    padding:9px 16px;
+}
+.gc-brand{
+    min-width:250px;
+    display:flex;
+    align-items:center;
+}
+.gc-brand-logo{
+    height:62px !important;
+    width:auto !important;
+    object-fit:contain;
+    display:block;
+}
+.gc-page-title{
+    flex:1;
+    text-align:center;
+    color:#fff !important;
+    font-size:29px !important;
+    line-height:1 !important;
+    font-weight:900 !important;
+    letter-spacing:.8px;
+    text-transform:uppercase;
+}
+.gc-top-actions{
+    min-width:250px;
+    justify-content:flex-end;
+}
+@media(max-width:640px){
+    .gc-topbar{
+        min-height:62px;
+        padding:8px 10px;
+    }
+    .gc-brand{min-width:auto}
+    .gc-brand-logo{height:50px !important}
+    .gc-page-title{font-size:21px !important}
+    .gc-top-actions{min-width:auto}
+}
+</style>
+
+</head>
+<body>
+<div class="gc-talleres-wrap">
+
+<header class="gc-topbar">
+    <div class="gc-brand">
+        <img class="gc-brand-logo" src="data:image/png;base64,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" alt="GOOD COMPANY">
+    </div>
+
+    <div class="gc-page-title">TALLERES</div>
+
+    <div class="gc-top-actions">
+        <button onclick="window.location.href='/'" class="gc-back">← VOLVER</button>
+        <span class="gc-db-badge">SERPER BD</span>
+    </div>
+</header>
+
+<div class="gc-talleres-grid">
+
+<section class="gc-card">
+    <div class="gc-card-head blue">
+        <h2 class="gc-card-title">TALLERES</h2>
+        <span id="contador-talleres" class="gc-card-count">0</span>
+    </div>
+    <div class="gc-card-body">
+        <div class="gc-add-row">
+            <input id="nuevo-taller" type="text" placeholder="Nombre del taller..." class="gc-input">
+            <button id="btn-agregar-taller" class="gc-add-btn blue">+</button>
+        </div>
+        <div id="lista-talleres" class="gc-list"></div>
+    </div>
+</section>
+
+<section class="gc-card">
+    <div class="gc-card-head orange">
+        <h2 class="gc-card-title">COLORES</h2>
+        <span id="contador-colores" class="gc-card-count">0</span>
+    </div>
+    <div class="gc-card-body">
+        <div class="gc-add-row">
+            <input id="nuevo-color" type="text" placeholder="Nombre del color..." class="gc-input">
+            <button id="btn-agregar-color" class="gc-add-btn orange">+</button>
+        </div>
+        <div id="lista-colores" class="gc-list"></div>
+    </div>
+</section>
+
+<section class="gc-card">
+    <div class="gc-card-head violet">
+        <h2 class="gc-card-title">COLOR MATERIAL</h2>
+        <span id="contador-colores-material" class="gc-card-count">0</span>
+    </div>
+    <div class="gc-card-body">
+        <div class="gc-add-row">
+            <input id="nuevo-color-material" type="text" placeholder="Ej.: ROJO, AZUL, SUELA..." class="gc-input">
+            <button id="btn-agregar-color-material" class="gc-add-btn violet">+</button>
+        </div>
+        <div id="lista-colores-material" class="gc-list"></div>
+    </div>
+</section>
+
+</div>
+</div>
+
+<script src="talleres.js"></script>
+</body>
+
+</html>

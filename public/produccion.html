@@ -1,0 +1,1720 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<script src="/auth.js?v=10"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GOOD COMPANY - PRODUCCIÓN</title>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+    @page{size:A4 portrait;margin:7mm}
+body{
+    background:radial-gradient(circle at top,#1e3a8a 0%,#0f172a 35%,#020617 100%);
+    color:#e2e8f0;
+}
+.panel{
+    background:rgba(15,23,42,.94);
+    border:1px solid rgba(71,85,105,.65);
+    box-shadow:0 15px 35px rgba(0,0,0,.30);
+}
+.taller-btn{
+    width:100%;
+    text-align:left;
+    padding:10px 12px;
+    border-radius:9px;
+    font-size:12px;
+    font-weight:900;
+    transition:.15s;
+}
+.taller-btn:hover{background:#1e293b}
+.taller-btn.activo{background:#2563eb;color:white}
+.categoria{
+    background:rgba(15,23,42,.96);
+    border:1px solid #334155;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 10px 25px rgba(0,0,0,.25);
+}
+.tabla{
+    width:100%;
+    border-collapse:collapse;
+}
+.tabla th{
+    background:#1e293b;
+    color:#cbd5e1;
+    font-size:10px;
+    font-weight:900;
+    padding:8px 6px;
+    border-bottom:1px solid #475569;
+    white-space:nowrap;
+}
+.tabla td{
+    background:#0f172a;
+    color:#e2e8f0;
+    font-size:11px;
+    font-weight:700;
+    padding:8px 6px;
+    border-bottom:1px solid #334155;
+    white-space:nowrap;
+}
+.tabla tr:hover td{background:#1e293b}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:#0f172a}
+::-webkit-scrollbar-thumb{background:#475569;border-radius:10px}
+</style>
+</head>
+
+<body class="min-h-screen">
+
+<div class="max-w-[1600px] mx-auto p-3 md:p-4">
+
+<header class="panel rounded-xl px-4 py-3 mb-4">
+    <div class="flex items-center justify-between gap-4">
+        <img
+            src="https://raw.githubusercontent.com/serpereyra1981-GC/LOGOS/2a857363c00ab37e7fe8d1fb265a6c0681251949/LOGO%20TRANSPARENTE%20BLANCO.png"
+            class="h-10 md:h-12 w-auto"
+            alt="GOOD COMPANY"
+        >
+
+        <h1 class="text-xl md:text-2xl font-black tracking-wider text-white">
+            PRODUCCIÓN
+        </h1>
+
+        <button
+            onclick="window.location.href='/'"
+            class="bg-slate-700 hover:bg-slate-600 text-white font-black px-4 py-2 rounded-lg text-xs"
+        >
+            ← VOLVER
+        </button>
+    </div>
+</header>
+
+<div class="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-4">
+
+    <!-- TALLERES -->
+    <aside class="panel rounded-xl p-3 h-fit lg:sticky lg:top-4">
+        <div class="mb-3">
+            <div class="text-sm font-black text-white">🏭 TALLERES</div>
+            <div class="text-[10px] text-slate-400">Seleccioná uno o todos</div>
+        </div>
+
+        <div id="lista-talleres" class="space-y-1">
+            <div class="text-xs text-slate-500 p-2">Cargando...</div>
+        </div>
+    </aside>
+
+    <main>
+
+        <!-- BUSCADOR -->
+        <section class="panel rounded-xl p-4 mb-4">
+            <div class="flex flex-col md:flex-row md:items-end gap-3">
+                <div class="flex-1">
+                    <label class="block text-[10px] font-black text-slate-400 mb-1">
+                        🔎 BUSCAR ARTÍCULO EN PRODUCCIÓN
+                    </label>
+
+                    <input
+                        id="buscar-articulo"
+                        type="text"
+                        inputmode="numeric"
+                        autocomplete="off"
+                        placeholder="Ej: 1770"
+                        class="w-full bg-slate-800 border border-slate-600 text-white px-4 py-3 rounded-lg font-black"
+                    >
+                </div>
+
+                <button
+                    id="btn-buscar"
+                    type="button"
+                    class="bg-blue-600 hover:bg-blue-500 text-white font-black px-5 py-3 rounded-lg"
+                >
+                    🔎 BUSCAR
+                </button>
+            </div>
+
+            <div id="resultado-busqueda" class="mt-3 hidden"></div>
+        </section>
+
+        <div class="mb-3 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+            <div>
+                <div id="titulo-produccion" class="text-lg font-black text-white">
+                    PRODUCCIÓN — TODOS
+                </div>
+                <div id="resumen-produccion" class="text-xs text-slate-400">
+                    Cargando producción...
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2">
+                <button
+                    id="btn-orden-articulo"
+                    type="button"
+                    class="bg-blue-600 hover:bg-blue-500 text-white font-black px-3 py-2 rounded-lg text-xs"
+                >
+                    🔢 ORDENAR ARTÍCULO
+                </button>
+
+                <button
+                    id="btn-orden-taller"
+                    type="button"
+                    class="bg-slate-600 hover:bg-slate-500 text-white font-black px-3 py-2 rounded-lg text-xs"
+                >
+                    🏭 ORDENAR TALLER
+                </button>
+
+                <button
+                    id="btn-actualizar-produccion"
+                    type="button"
+                    class="bg-emerald-600 hover:bg-emerald-500 text-white font-black px-3 py-2 rounded-lg text-xs"
+                >
+                    🔄 ACTUALIZAR
+                </button>
+
+                <button
+                    id="btn-imprimir-informe-produccion"
+                    type="button"
+                    class="bg-slate-600 hover:bg-slate-500 text-white font-black px-3 py-2 rounded-lg text-xs"
+                >
+                    🖨️ INFORME
+                </button>
+
+                <span
+                    id="estado-cache-produccion"
+                    class="text-[10px] font-black text-slate-400 self-center"
+                >
+                    MEMORIA: cargando...
+                </span>
+            </div>
+        </div>
+
+        <!-- TRES SECCIONES -->
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-3">
+
+            <!-- PENDIENTES -->
+            <section class="categoria">
+                <div class="bg-blue-600 px-3 py-2 flex justify-between items-center">
+                    <span class="font-black text-white">📦 PENDIENTES</span>
+                    <span id="total-pendientes" class="text-xl font-black text-white">0</span>
+                </div>
+                <div class="overflow-x-auto max-h-[65vh]">
+                    <table class="tabla">
+                        <thead>
+                            <tr>
+                                <th>TALLER</th>
+                                <th>ART.</th>
+                                <th>CANT.</th>
+                                <th>COLOR</th>
+                                <th>SALIDA</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-pendientes"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- REPARACIONES -->
+            <section class="categoria">
+                <div class="bg-amber-600 px-3 py-2 flex justify-between items-center">
+                    <span class="font-black text-white">🔧 REPARACIONES</span>
+                    <span id="total-reparaciones" class="text-xl font-black text-white">0</span>
+                </div>
+                <div class="overflow-x-auto max-h-[65vh]">
+                    <table class="tabla">
+                        <thead>
+                            <tr>
+                                <th>TALLER</th>
+                                <th>ART.</th>
+                                <th>CANT.</th>
+                                <th>COLOR</th>
+                                <th>SALIDA</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-reparaciones"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- MUESTRAS -->
+            <section class="categoria">
+                <div class="bg-violet-600 px-3 py-2 flex justify-between items-center">
+                    <span class="font-black text-white">🏷️ MUESTRAS</span>
+                    <span id="total-muestras" class="text-xl font-black text-white">0</span>
+                </div>
+                <div class="overflow-x-auto max-h-[65vh]">
+                    <table class="tabla">
+                        <thead>
+                            <tr>
+                                <th>TALLER</th>
+                                <th>ART.</th>
+                                <th>CANT.</th>
+                                <th>COLOR</th>
+                                <th>SALIDA</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-muestras"></tbody>
+                    </table>
+                </div>
+            </section>
+
+        </div>
+    </main>
+</div>
+
+</div>
+
+<script>
+let talleres = [];
+let produccionPorTaller = {};
+let tallerActual = 'TODOS';
+let articulosCacheProduccion = [];
+window.articulosCacheProduccion = articulosCacheProduccion;
+
+const $ = id => document.getElementById(id);
+
+function texto(v){
+    return v === null || v === undefined ? '' : String(v).trim();
+}
+
+function escapar(v){
+    return texto(v)
+        .replaceAll('&','&amp;')
+        .replaceAll('<','&lt;')
+        .replaceAll('>','&gt;')
+        .replaceAll('"','&quot;')
+        .replaceAll("'","&#039;");
+}
+
+function numero(v){
+    const n = Number(v);
+    return Number.isFinite(n) ? n : 0;
+}
+
+function fechaMostrar(v){
+    if(!v) return '';
+    const s = texto(v);
+    if(/^\d{4}-\d{2}-\d{2}/.test(s)){
+        const [y,m,d] = s.substring(0,10).split('-');
+        return `${d}/${m}/${y}`;
+    }
+    return s;
+}
+
+const CACHE_PRODUCCION_KEY = 'gc_produccion_cache_v1';
+const CACHE_PRODUCCION_TTL = 1000 * 60 * 60 * 12; // 12 horas
+
+function leerCacheProduccion(){
+
+    try{
+
+        const raw =
+            localStorage.getItem(
+                CACHE_PRODUCCION_KEY
+            );
+
+        if(!raw){
+            return null;
+        }
+
+        const cache =
+            JSON.parse(raw);
+
+        if(
+            !cache ||
+            !cache.timestamp ||
+            !cache.talleres ||
+            !cache.produccionPorTaller
+        ){
+            return null;
+        }
+
+        return cache;
+
+    }catch(error){
+
+        console.warn(
+            '⚠️ No se pudo leer la memoria local de producción:',
+            error
+        );
+
+        return null;
+    }
+}
+
+function guardarCacheProduccion(){
+
+    try{
+
+        localStorage.setItem(
+            CACHE_PRODUCCION_KEY,
+            JSON.stringify({
+                timestamp: Date.now(),
+                talleres,
+                produccionPorTaller,
+                articulosCacheProduccion
+            })
+        );
+
+    }catch(error){
+
+        console.warn(
+            '⚠️ No se pudo guardar la memoria local de producción:',
+            error
+        );
+    }
+}
+
+function mostrarEstadoCache(textoEstado){
+
+    const estado =
+        $('estado-cache-produccion');
+
+    if(estado){
+        estado.textContent =
+            textoEstado;
+    }
+}
+
+function cargarDesdeMemoria(){
+
+    const cache =
+        leerCacheProduccion();
+
+    if(!cache){
+        return false;
+    }
+
+    talleres =
+        Array.isArray(cache.talleres)
+            ? cache.talleres
+            : [];
+
+    produccionPorTaller =
+        cache.produccionPorTaller || {};
+
+    articulosCacheProduccion =
+        Array.isArray(cache.articulosCacheProduccion)
+            ? cache.articulosCacheProduccion
+            : [];
+
+    window.articulosCacheProduccion =
+        articulosCacheProduccion;
+
+    renderTalleres();
+
+    seleccionarTaller('TODOS');
+
+    const fecha =
+        new Date(cache.timestamp);
+
+    mostrarEstadoCache(
+        `MEMORIA: ${fecha.toLocaleString('es-AR')}`
+    );
+
+    return true;
+}
+
+async function cargarTalleresDesdeSheet(){
+
+    const respuesta =
+        await fetch(
+            '/api/talleres',
+            {
+                cache:'no-store'
+            }
+        );
+
+    const data =
+        await respuesta.json();
+
+    if(
+        !respuesta.ok ||
+        data.success === false
+    ){
+        throw new Error(
+            data.error ||
+            'No se pudieron cargar los talleres.'
+        );
+    }
+
+    talleres =
+        Array.isArray(data)
+            ? data
+            : (
+                Array.isArray(data.talleres)
+                    ? data.talleres
+                    : []
+            );
+
+    talleres =
+        talleres
+            .map(t => {
+
+                if(typeof t === 'string'){
+                    return t;
+                }
+
+                return texto(
+                    t.nombre ||
+                    t.TALLER ||
+                    t.taller ||
+                    t.NOMBRE
+                );
+
+            })
+            .filter(Boolean);
+
+    talleres =
+        [...new Set(talleres)]
+            .sort(
+                (a,b) =>
+                    a.localeCompare(
+                        b,
+                        'es',
+                        {
+                            sensitivity:'base'
+                        }
+                    )
+            );
+
+    try{
+
+        const r =
+            await fetch(
+                '/api/articulos',
+                {
+                    cache:'no-store'
+                }
+            );
+
+        if(r.ok){
+
+            const d =
+                await r.json();
+
+            articulosCacheProduccion =
+                Array.isArray(d)
+                    ? d
+                    : (
+                        Array.isArray(d.articulos)
+                            ? d.articulos
+                            : []
+                    );
+
+            window.articulosCacheProduccion =
+                articulosCacheProduccion;
+        }
+
+    }catch(_){
+
+        // Artículos es opcional.
+
+    }
+
+    await cargarProduccionTodosDesdeSheet();
+
+    guardarCacheProduccion();
+
+    const fecha =
+        new Date();
+
+    mostrarEstadoCache(
+        `MEMORIA: ${fecha.toLocaleString('es-AR')}`
+    );
+}
+
+async function cargarTalleres(){
+
+    /*
+     * PRIMERA APERTURA:
+     * 1. Si existe memoria local, se muestra inmediatamente.
+     * 2. No se consulta Google Sheets.
+     *
+     * Si todavía no existe memoria, se hace la carga inicial.
+     */
+    const usoMemoria =
+        cargarDesdeMemoria();
+
+    if(usoMemoria){
+
+        $('resumen-produccion').textContent =
+            'Producción cargada desde memoria. Usá 🔄 ACTUALIZAR para leer Google Sheets.';
+
+        return;
+    }
+
+    $('resumen-produccion').textContent =
+        'Primera carga: leyendo Google Sheets...';
+
+    await cargarTalleresDesdeSheet();
+}
+
+async function cargarProduccionTodosDesdeSheet(){
+
+    $('resumen-produccion').textContent =
+        'Actualizando producción desde Google Sheets...';
+
+    const nuevoProduccionPorTaller = {};
+
+    const resultados =
+        await Promise.all(
+            talleres.map(
+                async taller => {
+
+                    try{
+
+                        return {
+                            taller,
+                            datos:
+                                await cargarProduccionTaller(
+                                    taller
+                                )
+                        };
+
+                    }catch(error){
+
+                        console.error(
+                            `❌ PRODUCCIÓN ${taller}:`,
+                            error
+                        );
+
+                        return {
+                            taller,
+                            datos:{
+                                pendientes:[],
+                                reparaciones:[],
+                                muestras:[]
+                            }
+                        };
+                    }
+                }
+            )
+        );
+
+    resultados.forEach(
+        ({taller,datos}) => {
+
+            nuevoProduccionPorTaller[taller] =
+                datos;
+
+        }
+    );
+
+    produccionPorTaller =
+        nuevoProduccionPorTaller;
+
+    seleccionarTaller('TODOS');
+}
+
+async function actualizarProduccionDesdeSheet(){
+
+    const boton =
+        $('btn-actualizar-produccion');
+
+    if(boton){
+
+        boton.disabled = true;
+
+        boton.textContent =
+            '⏳ ACTUALIZANDO...';
+    }
+
+    mostrarEstadoCache(
+        'MEMORIA: actualizando...'
+    );
+
+    try{
+
+        /*
+         * IMPORTANTE:
+         * Solamente este botón vuelve a consultar
+         * talleres, artículos y producción del servidor.
+         */
+        await cargarTalleresDesdeSheet();
+
+        mostrarEstadoCache(
+            `MEMORIA: ${new Date().toLocaleString('es-AR')}`
+        );
+
+    }catch(error){
+
+        console.error(
+            '❌ ERROR ACTUALIZANDO PRODUCCIÓN:',
+            error
+        );
+
+        alert(
+            '❌ No se pudo actualizar desde Google Sheets.\n\n' +
+            error.message
+        );
+
+        /*
+         * Si ya había memoria válida, conservamos
+         * lo que estaba mostrado.
+         */
+        if(
+            Object.keys(produccionPorTaller).length
+        ){
+
+            renderProduccion();
+
+        }
+
+    }finally{
+
+        if(boton){
+
+            boton.disabled = false;
+
+            boton.textContent =
+                '🔄 ACTUALIZAR';
+        }
+    }
+}
+
+
+function renderTalleres(){
+
+    const contenedor = $('lista-talleres');
+
+    contenedor.innerHTML = '';
+
+    const todos = document.createElement('button');
+    todos.type = 'button';
+    todos.className = 'taller-btn activo';
+    todos.dataset.taller = 'TODOS';
+    todos.textContent = 'TODOS';
+    todos.onclick = () => seleccionarTaller('TODOS');
+    contenedor.appendChild(todos);
+
+    talleres.forEach(nombre => {
+
+        const boton = document.createElement('button');
+
+        boton.type = 'button';
+        boton.className = 'taller-btn';
+        boton.dataset.taller = nombre;
+        boton.textContent = nombre;
+
+        boton.onclick = () =>
+            seleccionarTaller(nombre);
+
+        contenedor.appendChild(boton);
+    });
+}
+
+function normalizarRespuestaProduccion(data){
+
+    return {
+        pendientes:
+            Array.isArray(data?.pendientes)
+                ? data.pendientes
+                : [],
+
+        reparaciones:
+            Array.isArray(data?.reparaciones)
+                ? data.reparaciones
+                : [],
+
+        muestras:
+            Array.isArray(data?.muestras)
+                ? data.muestras
+                : []
+    };
+}
+
+async function cargarProduccionTaller(taller){
+
+    /*
+     * MISMA API QUE USA INDEX:
+     * /api/talleres/:tallerId/pendientes
+     *
+     * El backend existente es quien decide qué está
+     * realmente en producción.
+     */
+    const url =
+        `/api/talleres/${encodeURIComponent(taller)}/pendientes`;
+
+    const respuesta =
+        await fetch(url,{cache:'no-store'});
+
+    const data =
+        await respuesta.json();
+
+    if(!respuesta.ok){
+        throw new Error(
+            data.error ||
+            `No se pudo cargar la producción de ${taller}.`
+        );
+    }
+
+    return normalizarRespuestaProduccion(data);
+}
+
+async function cargarProduccionTodos(){
+
+    /*
+     * Compatibilidad: no fuerza una lectura de Sheets.
+     * La actualización real pasa por el botón.
+     */
+    return cargarDesdeMemoria();
+
+}
+
+function combinarTodos(){
+
+    const salida = {
+        pendientes:[],
+        reparaciones:[],
+        muestras:[]
+    };
+
+    Object.entries(produccionPorTaller)
+        .forEach(([taller,datos]) => {
+
+            ['pendientes','reparaciones','muestras']
+                .forEach(categoria => {
+
+                    datos[categoria].forEach(item => {
+
+                        salida[categoria].push({
+                            ...item,
+                            taller:
+                                texto(
+                                    item.taller ||
+                                    item.TALLER ||
+                                    taller
+                                ) || taller
+                        });
+
+                    });
+                });
+        });
+
+    return salida;
+}
+
+function datosActuales(){
+
+    if(tallerActual === 'TODOS'){
+        return combinarTodos();
+    }
+
+    return produccionPorTaller[tallerActual] || {
+        pendientes:[],
+        reparaciones:[],
+        muestras:[]
+    };
+}
+
+function obtenerArticulo(item){
+    /*
+     * INDEX usa codigo / articulo_codigo y, cuando no vienen,
+     * resuelve el codigo mediante articulo_id. PRODUCCION debe
+     * mostrar exactamente el mismo dato.
+     */
+    const directo =
+        item?.codigo ??
+        item?.articulo_codigo ??
+        item?.articulo ??
+        item?.ARTICULO ??
+        item?.art ??
+        item?.ART;
+
+    if(directo !== undefined && directo !== null && texto(directo) !== ''){
+        return texto(directo);
+    }
+
+    if(item?.articulo_id !== undefined && item?.articulo_id !== null){
+        const encontrado =
+            window.articulosCacheProduccion?.find(
+                a => String(a.id) === String(item.articulo_id)
+            );
+
+        if(encontrado){
+            return texto(encontrado.codigo ?? encontrado.id);
+        }
+    }
+
+    return '';
+}
+
+function obtenerCantidad(item){
+    return numero(
+        item.cantidad_pendiente ??
+        item.CANTIDAD_PENDIENTE ??
+        item.cantidad ??
+        item.CANTIDAD ??
+        item.cant ??
+        item.CANT
+    );
+}
+
+function obtenerColor(item){
+    return texto(
+        item.color ??
+        item.COLOR
+    );
+}
+
+function obtenerSalida(item){
+    return texto(
+        item.fecha_salida ??
+        item.FECHA_SALIDA ??
+        item.fecha ??
+        item.FECHA ??
+        item.salida ??
+        item.SALIDA
+    );
+}
+
+function renderTabla(id, items){
+
+    const tbody = $(id);
+
+    tbody.innerHTML = '';
+
+    if(!items.length){
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5"
+                    class="text-center text-slate-500 py-6">
+                    Sin producción
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+    items.forEach(item => {
+
+        const tr = document.createElement('tr');
+
+        tr.innerHTML = `
+            <td>${escapar(
+                item.taller ||
+                item.TALLER ||
+                ''
+            )}</td>
+
+            <td class="font-black text-white">
+                ${escapar(obtenerArticulo(item))}
+            </td>
+
+            <td class="text-center font-black text-white">
+                ${obtenerCantidad(item)}
+            </td>
+
+            <td>${escapar(obtenerColor(item))}</td>
+
+            <td class="text-center">
+                ${escapar(fechaMostrar(obtenerSalida(item)))}
+            </td>
+        `;
+
+        tbody.appendChild(tr);
+    });
+}
+
+
+// ============================================================
+// ORDENAMIENTO DE PRODUCCIÓN
+// ============================================================
+
+let ordenProduccionActual = 'articulo';
+
+function valorArticuloProduccion(item){
+    return String(
+        obtenerArticulo(item) ??
+        item?.codigo ??
+        item?.articulo_codigo ??
+        item?.articulo ??
+        ''
+    ).trim();
+}
+
+function valorTallerProduccion(item){
+    return String(
+        item?.taller ??
+        item?.TALLER ??
+        ''
+    ).trim();
+}
+
+function compararProduccion(a, b, campo){
+    const va =
+        campo === 'articulo'
+            ? valorArticuloProduccion(a)
+            : valorTallerProduccion(a);
+
+    const vb =
+        campo === 'articulo'
+            ? valorArticuloProduccion(b)
+            : valorTallerProduccion(b);
+
+    /*
+     * Artículos numéricos: 1810, 1855, 1912, 2010...
+     * Talleres: orden alfabético.
+     */
+    if(campo === 'articulo'){
+        const na = Number(va);
+        const nb = Number(vb);
+
+        if(
+            Number.isFinite(na) &&
+            Number.isFinite(nb)
+        ){
+            return na - nb;
+        }
+    }
+
+    return va.localeCompare(
+        vb,
+        'es',
+        {
+            numeric: true,
+            sensitivity: 'base'
+        }
+    );
+}
+
+function ordenarProduccion(lista, campo){
+    return [...(lista || [])].sort(
+        (a,b) =>
+            compararProduccion(
+                a,
+                b,
+                campo
+            )
+    );
+}
+
+function aplicarOrdenProduccion(campo){
+
+    ordenProduccionActual =
+        campo === 'taller'
+            ? 'taller'
+            : 'articulo';
+
+    /*
+     * IMPORTANTE:
+     * No hacemos otra consulta al servidor.
+     * Ordenamos inmediatamente lo que ya está cargado
+     * y volvemos a pintar las tres tablas.
+     */
+    renderProduccion();
+
+    const botonArticulo =
+        document.getElementById(
+            'btn-orden-articulo'
+        );
+
+    const botonTaller =
+        document.getElementById(
+            'btn-orden-taller'
+        );
+
+    if(botonArticulo){
+        botonArticulo.classList.toggle(
+            'ring-2',
+            ordenProduccionActual === 'articulo'
+        );
+    }
+
+    if(botonTaller){
+        botonTaller.classList.toggle(
+            'ring-2',
+            ordenProduccionActual === 'taller'
+        );
+    }
+}
+
+document
+    .getElementById('btn-orden-articulo')
+    .addEventListener(
+        'click',
+        () => aplicarOrdenProduccion('articulo')
+    );
+
+document
+    .getElementById('btn-orden-taller')
+    .addEventListener(
+        'click',
+        () => aplicarOrdenProduccion('taller')
+    );
+
+function renderProduccion(){
+
+    const datosOriginales = datosActuales();
+
+    /*
+     * El botón cambia ordenProduccionActual y esta función
+     * se ejecuta inmediatamente, por lo que las tablas se
+     * actualizan en el mismo instante del clic.
+     */
+    const datos = {
+        pendientes:
+            ordenarProduccion(
+                datosOriginales.pendientes,
+                ordenProduccionActual
+            ),
+        reparaciones:
+            ordenarProduccion(
+                datosOriginales.reparaciones,
+                ordenProduccionActual
+            ),
+        muestras:
+            ordenarProduccion(
+                datosOriginales.muestras,
+                ordenProduccionActual
+            )
+    };
+
+    $('titulo-produccion').textContent =
+        `PRODUCCIÓN — ${tallerActual}`;
+
+    const total =
+        datos.pendientes.length +
+        datos.reparaciones.length +
+        datos.muestras.length;
+
+    $('resumen-produccion').textContent =
+        `${total} registro(s) en producción`;
+
+    $('total-pendientes').textContent =
+        datos.pendientes.reduce((t,item) => t + obtenerCantidad(item), 0);
+
+    $('total-reparaciones').textContent =
+        datos.reparaciones.reduce((t,item) => t + obtenerCantidad(item), 0);
+
+    $('total-muestras').textContent =
+        datos.muestras.reduce((t,item) => t + obtenerCantidad(item), 0);
+
+    renderTabla(
+        'tabla-pendientes',
+        datos.pendientes
+    );
+
+    renderTabla(
+        'tabla-reparaciones',
+        datos.reparaciones
+    );
+
+    renderTabla(
+        'tabla-muestras',
+        datos.muestras
+    );
+
+    document
+        .querySelectorAll('.taller-btn')
+        .forEach(btn => {
+
+            btn.classList.toggle(
+                'activo',
+                btn.dataset.taller === tallerActual
+            );
+
+        });
+}
+
+function seleccionarTaller(taller){
+
+    tallerActual = taller;
+
+    renderProduccion();
+
+    limpiarBusqueda();
+}
+
+function todosLosItems(){
+
+    const datos = combinarTodos();
+
+    return [
+        ...datos.pendientes,
+        ...datos.reparaciones,
+        ...datos.muestras
+    ];
+}
+
+function buscarArticulo(){
+
+    const buscado =
+        texto(
+            $('buscar-articulo').value
+        ).toUpperCase();
+
+    const resultado =
+        $('resultado-busqueda');
+
+    if(!buscado){
+
+        resultado.classList.add('hidden');
+        resultado.innerHTML = '';
+
+        return;
+    }
+
+    /*
+     * La búsqueda SIEMPRE se hace sobre TODA la producción,
+     * aunque esté seleccionado un taller.
+     */
+    const encontrados =
+        todosLosItems()
+            .filter(item =>
+                obtenerArticulo(item)
+                    .toUpperCase() === buscado
+            );
+
+    if(!encontrados.length){
+
+        resultado.className =
+            'mt-3 rounded-xl border border-red-800 bg-red-950/40 p-4';
+
+        resultado.innerHTML = `
+            <div class="font-black text-red-300">
+                🔴 ARTÍCULO ${escapar(buscado)}
+                NO SE ENCUENTRA EN PRODUCCIÓN
+            </div>
+        `;
+
+        return;
+    }
+
+    const filas =
+        encontrados.map(item => `
+            <tr class="border-b border-slate-700">
+                <td class="px-3 py-2 font-black">
+                    ${escapar(
+                        item.taller ||
+                        item.TALLER ||
+                        ''
+                    )}
+                </td>
+                <td class="px-3 py-2 font-black">
+                    ${escapar(obtenerArticulo(item))}
+                </td>
+                <td class="px-3 py-2 text-center font-black">
+                    ${obtenerCantidad(item)}
+                </td>
+                <td class="px-3 py-2">
+                    ${escapar(obtenerColor(item))}
+                </td>
+                <td class="px-3 py-2">
+                    ${escapar(fechaMostrar(obtenerSalida(item)))}
+                </td>
+            </tr>
+        `).join('');
+
+    resultado.className =
+        'mt-3 rounded-xl border border-emerald-700 bg-emerald-950/40 p-4';
+
+    resultado.innerHTML = `
+        <div class="font-black text-emerald-300 mb-3">
+            🟢 ARTÍCULO ${escapar(buscado)}
+            EN PRODUCCIÓN
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-xs">
+                <thead>
+                    <tr class="text-left text-slate-400">
+                        <th class="px-3 py-2">TALLER</th>
+                        <th class="px-3 py-2">ART.</th>
+                        <th class="px-3 py-2">CANT.</th>
+                        <th class="px-3 py-2">COLOR</th>
+                        <th class="px-3 py-2">SALIDA</th>
+                    </tr>
+                </thead>
+                <tbody>${filas}</tbody>
+            </table>
+        </div>
+    `;
+}
+
+function limpiarBusqueda(){
+
+    $('buscar-articulo').value = '';
+    $('resultado-busqueda').className = 'mt-3 hidden';
+    $('resultado-busqueda').innerHTML = '';
+}
+
+$('btn-buscar').addEventListener(
+    'click',
+    buscarArticulo
+);
+
+$('buscar-articulo').addEventListener(
+    'keydown',
+    event => {
+        if(event.key === 'Enter'){
+            event.preventDefault();
+            buscarArticulo();
+        }
+    }
+);
+
+async function actualizarProduccion(){
+
+    const boton =
+        $('btn-actualizar-produccion');
+
+    if(boton){
+        boton.disabled = true;
+        boton.textContent = '⏳ ACTUALIZANDO...';
+    }
+
+    try{
+        await cargarProduccionTodos();
+    }
+    finally{
+        if(boton){
+            boton.disabled = false;
+            boton.textContent = '🔄 ACTUALIZAR';
+        }
+    }
+}
+
+$('btn-actualizar-produccion').addEventListener(
+    'click',
+    actualizarProduccionDesdeSheet
+);
+
+
+// ============================================================
+// INFORME PARA IMPRIMIR — MERCADERÍA EN PRODUCCIÓN
+//
+// HOJA 1:
+//   DISPONIBLES EN TALLERES
+//   - PENDIENTES actualmente en talleres.
+//   - Cantidad >= 10.
+//
+// HOJA 2:
+//   DISPONIBLES EN PRODUCCIÓN
+//   - TODO artículo de TAREAS_ARTICULOS que todavía esté
+//     físicamente en fábrica.
+//   - Incluye tareas PENDIENTES y COMPLETAS.
+//   - Incluye artículos RESERVADOS y SIN RESERVA.
+//   - Queda afuera solamente lo que tenga FECHA DE SALIDA
+//     o MOVIMIENTO_ID.
+//   - Cantidad >= 10.
+//
+// IMPORTANTE:
+//   Esto es únicamente para el INFORME de PRODUCCIÓN.
+//   NO cambia la lógica de INDEX ni de TAREAS.
+// ============================================================
+
+function fechaOrdenInforme(valor){
+    const s = texto(valor);
+
+    if(/^\d{4}-\d{2}-\d{2}/.test(s)){
+        const [y,m,d] = s.substring(0,10).split('-').map(Number);
+        return new Date(y,m-1,d).getTime();
+    }
+
+    if(/^\d{2}\/\d{2}\/\d{4}$/.test(s)){
+        const [d,m,y] = s.split('/').map(Number);
+        return new Date(y,m-1,d).getTime();
+    }
+
+    return Number.MAX_SAFE_INTEGER;
+}
+
+function fechaInformeDDMMAAAA(valor){
+    const s = texto(valor);
+
+    if(/^\d{4}-\d{2}-\d{2}/.test(s)){
+        const [y,m,d] = s.substring(0,10).split('-');
+        return `${d}/${m}/${y}`;
+    }
+
+    if(/^\d{2}\/\d{2}\/\d{4}$/.test(s)){
+        return s;
+    }
+
+    return s;
+}
+
+function numeroArticuloInforme(valor){
+    const n = Number(texto(valor));
+    return Number.isFinite(n) ? n : null;
+}
+
+function compararArticuloInforme(a,b){
+    const na = numeroArticuloInforme(a.articulo);
+    const nb = numeroArticuloInforme(b.articulo);
+
+    if(na !== null && nb !== null && na !== nb){
+        return na - nb;
+    }
+
+    const cmp = String(a.articulo).localeCompare(
+        String(b.articulo),
+        'es',
+        {numeric:true,sensitivity:'base'}
+    );
+
+    if(cmp !== 0) return cmp;
+
+    const fc = fechaOrdenInforme(a.fechaTarea) -
+               fechaOrdenInforme(b.fechaTarea);
+
+    if(fc !== 0) return fc;
+
+    return String(a.color||'').localeCompare(
+        String(b.color||''),
+        'es',
+        {sensitivity:'base'}
+    );
+}
+
+function escaparInforme(valor){
+    return String(valor ?? '')
+        .replace(/&/g,'&amp;')
+        .replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;')
+        .replace(/"/g,'&quot;')
+        .replace(/'/g,'&#039;');
+}
+
+// El endpoint de INFORME se mantiene exclusivo de PRODUCCIÓN.
+// La lógica del servidor debe devolver PENDIENTES + COMPLETAS.
+// Esta función simplemente consume todo lo que entregue.
+async function obtenerDatosTareasInforme(){
+
+    const respuesta = await fetch(
+        '/api/produccion/informe',
+        {cache:'no-store'}
+    );
+
+    const data = await respuesta.json();
+
+    if(!respuesta.ok || data.success === false){
+        throw new Error(
+            data.error ||
+            'No se pudieron cargar las tareas para el informe.'
+        );
+    }
+
+    return Array.isArray(data.tareas)
+        ? data.tareas
+        : [];
+}
+
+function construirInformeProduccion(pendientes, tareas){
+
+    const hoy = new Date();
+    const fechaHoy = hoy.toLocaleDateString('es-AR');
+    const registros = [];
+
+    // TALLERES: se mantienen las mismas condiciones actuales.
+    (pendientes || [])
+        .map(item => ({
+            articulo: obtenerArticulo(item),
+            cantidad: obtenerCantidad(item),
+            color: obtenerColor(item),
+            ubicacion: texto(item.taller || item.TALLER),
+            fecha: obtenerSalida(item),
+            estado: 'EN TALLER',
+            fechaOrden: obtenerSalida(item)
+        }))
+        .filter(item =>
+            item.cantidad >= 10 &&
+            item.ubicacion
+        )
+        .forEach(item => registros.push(item));
+
+    // FÁBRICA / PRODUCCIÓN: se mantienen las mismas condiciones actuales.
+    // Si tiene taller, se muestra ese taller; si no, se muestra FÁBRICA.
+    (tareas || [])
+        .map(item => ({
+            articulo: texto(item.articulo),
+            cantidad: numero(item.cantidad),
+            color: texto(item.color).toUpperCase(),
+            ubicacion: texto(item.taller).toUpperCase() || 'FÁBRICA',
+            fecha: texto(item.fechaTarea),
+            estado: texto(item.taller).toUpperCase()
+                ? 'RESERVADO'
+                : 'DISPONIBLE',
+            fechaOrden: texto(item.fechaTarea),
+            movimientoId: texto(item.movimientoId),
+            fechaSalida: texto(item.fechaSalida)
+        }))
+        .filter(item =>
+            item.cantidad >= 10 &&
+            !item.movimientoId &&
+            !item.fechaSalida
+        )
+        .forEach(item => registros.push(item));
+
+    // TODO UNIFICADO: ARTÍCULO -> FECHA -> COLOR -> UBICACIÓN.
+    registros.sort((a,b) => {
+        const cmpArt = compararArticuloInforme(a,b);
+        if(cmpArt !== 0) return cmpArt;
+
+        const fa = fechaOrdenInforme(a.fechaOrden);
+        const fb = fechaOrdenInforme(b.fechaOrden);
+        if(fa !== fb) return fa - fb;
+
+        const fc = String(a.color || '').localeCompare(
+            String(b.color || ''),
+            'es',
+            {sensitivity:'base'}
+        );
+        if(fc !== 0) return fc;
+
+        return String(a.ubicacion || '').localeCompare(
+            String(b.ubicacion || ''),
+            'es',
+            {sensitivity:'base'}
+        );
+    });
+
+    const totalCantidad = registros.reduce(
+        (total,item) => total + (Number(item.cantidad) || 0),
+        0
+    );
+
+    const filas = registros.map(item => `
+        <tr>
+            <td class="art">${escaparInforme(item.articulo)}</td>
+            <td class="num">${escaparInforme(item.cantidad)}</td>
+            <td>${escaparInforme(item.color)}</td>
+            <td class="ubicacion">${escaparInforme(item.ubicacion)}</td>
+            <td>${escaparInforme(fechaInformeDDMMAAAA(item.fecha))}</td>
+            <td>${escaparInforme(item.estado)}</td>
+        </tr>
+    `).join('');
+
+    return `<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>MERCADERÍA EN PRODUCCIÓN — ${escaparInforme(fechaHoy)}</title>
+<style>
+    @page{size:A4 portrait;margin:8mm}
+    *{box-sizing:border-box}
+    html,body{
+        margin:0;
+        padding:0;
+        background:#fff;
+        color:#111;
+        font-family:Arial,Helvetica,sans-serif;
+    }
+    body{font-size:13px}
+    .pagina{width:100%;min-height:281mm;position:relative}
+    .cabecera{
+        text-align:center;
+        margin-bottom:9px;
+        border-bottom:2px solid #111;
+        padding-bottom:7px;
+    }
+    .titulo{
+        font-size:24px;
+        font-weight:900;
+        letter-spacing:.5px;
+    }
+    .subtitulo{
+        font-size:14px;
+        font-weight:700;
+        margin-top:3px;
+    }
+    .bloque{border:1px solid #111;width:100%}
+    .bloque-titulo{
+        background:#111;
+        color:#fff;
+        text-align:center;
+        padding:7px 9px;
+        font-size:14px;
+        font-weight:900;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+    }
+    table{width:100%;border-collapse:collapse;table-layout:fixed}
+    th,td{
+        border-bottom:1px solid #aaa;
+        padding:6px 6px;
+        text-align:center;
+        vertical-align:middle;
+        line-height:1.15;
+    }
+    th{
+        background:#ddd;
+        font-size:12px;
+        font-weight:900;
+        white-space:nowrap;
+    }
+    td{font-size:13px}
+    .art{font-weight:900;font-size:15px}
+    .num{font-weight:900;white-space:nowrap}
+    .ubicacion{font-weight:900}
+    .pie{
+        display:flex;
+        justify-content:space-between;
+        margin-top:8px;
+        padding-top:6px;
+        border-top:2px solid #111;
+        font-weight:900;
+        font-size:12px;
+    }
+    .nota{font-size:11px;font-weight:700}
+    .vacio{padding:12px;font-weight:900;text-align:center}
+    @media print{
+        body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+        thead{display:table-header-group}
+        tr,td,th{break-inside:avoid;page-break-inside:avoid}
+    }
+</style>
+</head>
+<body>
+<section class="pagina">
+    <div class="cabecera">
+        <div class="titulo">MERCADERÍA EN PRODUCCIÓN</div>
+        <div class="subtitulo">FECHA ${escaparInforme(fechaHoy)}</div>
+    </div>
+
+    <section class="bloque">
+        <div class="bloque-titulo">
+            <span>DISPONIBLES EN PRODUCCIÓN</span>
+            <span>${totalCantidad.toLocaleString('es-AR')}</span>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th style="width:14%">ARTÍCULO</th>
+                    <th style="width:11%">CANT.</th>
+                    <th style="width:20%">COLOR</th>
+                    <th style="width:27%">UBICACIÓN</th>
+                    <th style="width:14%">FECHA</th>
+                    <th style="width:14%">ESTADO</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${filas || '<tr><td colspan="6" class="vacio">SIN ARTÍCULOS EN PRODUCCIÓN CON CANTIDAD ≥ 10</td></tr>'}
+            </tbody>
+        </table>
+    </section>
+
+    <div class="pie">
+        <span>GOOD COMPANY</span>
+        <span class="nota">Solo se muestran cantidades iguales o superiores a 10 unidades.</span>
+    </div>
+</section>
+
+<script>
+window.addEventListener('load',function(){
+    setTimeout(function(){
+        window.focus();
+        window.print();
+    },250);
+});
+window.addEventListener('afterprint',function(){
+    setTimeout(function(){
+        try{window.close();}catch(_){}
+    },200);
+});
+<\/script>
+</body>
+</html>`;
+}
+
+async function imprimirInformeProduccion(){
+
+    const boton = document.getElementById(
+        'btn-imprimir-informe-produccion'
+    );
+
+    if(boton){
+        boton.disabled = true;
+        boton.textContent = '⏳ PREPARANDO...';
+    }
+
+    try{
+        const datosActualesPendientes =
+            datosActuales().pendientes || [];
+
+        // TAREAS se consulta solo al pedir el informe.
+        const tareas =
+            await obtenerDatosTareasInforme();
+
+        const informe =
+            construirInformeProduccion(
+                datosActualesPendientes,
+                tareas
+            );
+
+        const ventana = window.open(
+            '',
+            '_blank',
+            'width=1400,height=900,scrollbars=yes'
+        );
+
+        if(!ventana){
+            throw new Error(
+                'El navegador bloqueó la ventana de impresión. Permití las ventanas emergentes para esta página.'
+            );
+        }
+
+        ventana.document.open();
+        ventana.document.write(informe);
+        ventana.document.close();
+
+    }catch(error){
+        console.error(
+            '❌ ERROR INFORME PRODUCCIÓN:',
+            error
+        );
+
+        alert(
+            '❌ No se pudo generar el informe.\n\n' +
+            error.message
+        );
+    }finally{
+        if(boton){
+            boton.disabled = false;
+            boton.textContent = '🖨️ INFORME';
+        }
+    }
+}
+
+document
+    .getElementById('btn-imprimir-informe-produccion')
+    .addEventListener(
+        'click',
+        imprimirInformeProduccion
+    );
+
+async function iniciar(){
+
+    try{
+
+        await cargarTalleres();
+
+    }
+    catch(error){
+
+        console.error(
+            '❌ ERROR PRODUCCIÓN:',
+            error
+        );
+
+        $('lista-talleres').innerHTML = `
+            <div class="text-xs text-red-400 p-2">
+                ❌ ${escapar(error.message)}
+            </div>
+        `;
+
+        $('resumen-produccion').textContent =
+            'No se pudo cargar la producción.';
+    }
+}
+
+iniciar();
+</script>
+
+</body>
+</html>

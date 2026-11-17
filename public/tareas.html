@@ -1,0 +1,2722 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<script src="/auth.js?v=10"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GOOD COMPANY - Tareas Entregadas y Disponibles</title>
+<style>
+*{box-sizing:border-box}
+:root{--panel:#101a2d;--line:#293b59;--text:#f5f7fb;--muted:#91a2bd;--purple:#7b35ed;--cyan:#13a6c7;--orange:#ed9700;--yellow:#f4c400;--blue:#2991e8;--green:#5ac64d}
+body{margin:0;background:linear-gradient(180deg,#071020,#081225);color:var(--text);font-family:Arial,Helvetica,sans-serif;min-height:100vh}
+button,input,select,textarea{font:inherit}
+.topbar{width:calc(100% - 24px);margin:10px auto 14px;padding:10px 16px;min-height:82px;border:1px solid var(--line);border-radius:14px;background:#0d192d;display:grid;grid-template-columns:140px 1fr auto;align-items:center;gap:18px}
+.logo{width:105px;height:62px;object-fit:contain}.title{font-size:24px;font-weight:900;white-space:nowrap;text-align:center}.nav{display:flex;gap:8px}
+.nav button{border:0;border-radius:9px;padding:12px 17px;color:#fff;font-weight:900;cursor:pointer;white-space:nowrap}
+.index{background:var(--cyan)}.pagos{background:var(--orange)}
+.page{width:calc(100% - 24px);margin:0 auto 30px}
+.toolbar{background:#0e192c;border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:16px;margin-bottom:10px}.toolbar-main{display:flex;align-items:center;justify-content:center;gap:10px;min-width:0}
+.toolbar select{background:#111e33;border:1px solid #344867;color:#fff;border-radius:8px;padding:10px 12px;outline:none}
+.month{min-width:175px}.btn{border:0;border-radius:8px;color:#fff;padding:11px 16px;font-weight:900;cursor:pointer}.new{background:var(--purple)}
+.legend{display:flex;justify-content:center;align-items:center;gap:18px;font-size:12px;white-space:nowrap}.legend span{display:flex;align-items:center;gap:6px}
+.dot{width:11px;height:11px;border-radius:50%;display:inline-block}.red{background:#f5f7fb;border:1px solid #cbd5e1}.orange{background:#f59e0b}.green{background:var(--green)}
+.grid{display:grid;grid-template-columns:repeat(7,minmax(190px,1fr));gap:8px;overflow-x:auto;padding-bottom:4px}
+.empty-board{grid-column:1/-1;min-height:330px;border:1px dashed #344867;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--muted);background:#0c1729}
+.empty-board strong{color:#d9e2ef;font-size:18px;margin-bottom:8px}
+.card{min-width:190px;background:#0d1627;border:1px solid #35466b;border-radius:9px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 6px 18px rgba(0,0,0,.22);transition:border-color .15s,box-shadow .15s}
+.head{background:linear-gradient(180deg,#3b0b8f 0%,#24105f 58%,#170d3e 100%);border-bottom:1px solid #6542a8;padding:0;position:relative;overflow:hidden}
+.date{min-height:52px;display:flex;align-items:center;justify-content:center;gap:8px;padding:7px 34px;text-align:center;font-size:19px;font-weight:900;letter-spacing:.25px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.35)}.date .date-icon{font-size:19px;opacity:.98;display:inline-flex;align-items:center}.gc-icon{width:20px;height:20px;display:inline-block;flex:0 0 auto}.gc-icon svg{width:100%;height:100%;display:block}.summary{display:grid;grid-template-columns:repeat(3,1fr);font-size:10px;font-weight:900;background:#130d38;border-top:1px solid rgba(167,122,255,.35)}
+.summary .metric-title,.summary .metric-value{min-width:0;text-align:center;display:flex;align-items:center;justify-content:center}
+.summary .metric-title{gap:5px;min-height:34px;padding:5px 3px;color:#fff;border-right:1px solid rgba(167,122,255,.28);font-size:10px;letter-spacing:.15px;text-align:center}.summary .metric-title .gc-icon{width:16px;height:16px;color:#d6b5ff}
+.summary .metric-title:last-child,.summary .metric-value:last-child{border-right:0}
+.summary .metric-value{min-height:42px;padding:5px 3px 7px;background:linear-gradient(180deg,#17113d 0%,#100c2b 100%);color:#fff;font-size:18px;border-right:1px solid rgba(167,122,255,.28);font-weight:900;text-align:center}
+.summary .metric-value .color-badge{display:inline-flex;align-items:center;justify-content:center;max-width:100%;padding:4px 9px;border-radius:7px;background:#0b1020;border:1px solid #7651b8;color:#fff;font-size:10px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.summary .metric-value .task-materials-btn{margin:0;padding:4px 7px;font-size:8px}
+.production-line{min-height:40px;display:flex;align-items:center;justify-content:center;gap:8px;padding:6px 8px;background:linear-gradient(180deg,#4a1ca0,#32146f);color:#fff;font-size:10px;font-weight:900;letter-spacing:.2px;text-align:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.production-line .production-icon{width:19px;height:19px;display:inline-flex}.production-line .production-icon svg{width:100%;height:100%}.production-line strong{font-size:15px;color:#d8b7ff;text-align:center}
+.menu{position:absolute;right:7px;top:6px;width:32px;height:32px;border:1px solid rgba(255,255,255,.18);border-radius:9px;background:rgba(0,0,0,.22);color:#fff;font-size:22px;cursor:pointer;z-index:3;line-height:28px;display:flex;align-items:center;justify-content:center;transition:.15s}.menu:hover{background:rgba(123,53,237,.5);border-color:#a978ff}.task-menu-bg{position:fixed;inset:0;background:rgba(0,0,0,.62);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:9000}.task-menu-card{width:min(360px,calc(100vw - 30px));background:linear-gradient(180deg,#111d32,#0b1425);border:1px solid #40516a;border-radius:16px;box-shadow:0 18px 50px rgba(0,0,0,.5);overflow:hidden}.task-menu-head{padding:16px 18px 13px;border-bottom:1px solid #293b59;text-align:center}.task-menu-head small{display:block;color:#91a2bd;font-size:11px;font-weight:800;margin-bottom:4px}.task-menu-head strong{display:block;color:#fff;font-size:21px;font-weight:900}.task-menu-actions{padding:10px}.task-menu-action{width:100%;display:flex;align-items:center;gap:13px;border:1px solid #293b59;background:#101b2e;color:#fff;border-radius:11px;padding:13px 14px;margin:7px 0;text-align:left;cursor:pointer;font-weight:900}.task-menu-action:hover{background:#172640;border-color:#7651b8}.task-menu-action .mi{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:#1c2b44;font-size:18px;flex:0 0 auto}.task-menu-action.danger{border-color:#69343d}.task-menu-action.danger:hover{background:#321a20;border-color:#a74755}.task-menu-action.danger .mi{background:#4a2029}.task-menu-close{width:calc(100% - 20px);margin:0 10px 12px;border:0;border-radius:10px;padding:11px;background:#202e44;color:#dbe5f2;font-weight:900;cursor:pointer}.task-confirm-bg{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:9100}.task-confirm-card{width:min(390px,calc(100vw - 30px));background:#101a2d;border:1px solid #6b3841;border-radius:16px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.6);text-align:center}.task-confirm-card h3{margin:0 0 8px;color:#fff;font-size:20px}.task-confirm-card p{margin:0 0 18px;color:#aebdd0;font-size:13px;line-height:1.45}.task-confirm-buttons{display:flex;gap:10px}.task-confirm-buttons button{flex:1;border:0;border-radius:10px;padding:12px;font-weight:900;cursor:pointer}.confirm-no{background:#26354c;color:#fff}.confirm-yes{background:#b73546;color:#fff}
+.th,.row{display:grid;grid-template-columns:.78fr 1.55fr 1.05fr;align-items:center}.th{background:#0a111d;color:#d58aff;font-size:10px;font-weight:900;padding:8px 6px;text-align:center}.th span{text-align:center;display:block}
+.row{min-height:38px;padding:2px 5px;border-bottom:1px solid #263650;font-size:11px;transition:background .15s,color .15s}.row.available{background:#0d1627;color:#fff}.row.reserved{background:rgba(255,193,7,.14);color:#ffe27a}.row.delivered{background:linear-gradient(90deg,rgba(22,101,52,.62),rgba(20,83,45,.42));color:#a8f58d}
+.article{font-size:12px;font-weight:900}.workshop{width:100%;min-width:0;background:#111d31;border:1px solid #344867;color:#fff;border-radius:5px;padding:5px 3px;font-size:10px;font-weight:800}.workshop.available{color:#fff;border-color:#64748b;background:#101a2b}.row.reserved .workshop{color:#ffe27a;border-color:#a97900;background:#211d0d}.row.delivered .workshop{color:#a8f58d;border-color:#3f8f52;background:#11271b}
+.status{text-align:right;font-size:10px;font-weight:900;white-space:nowrap}.status.available{color:#fff}.status.reserved{color:#ffd84d}.status.delivered{color:#7ff05f}
+
+/* Tema visual de la tarjeta: cuando toda la tarea está entregada o reservada, el color se extiende a toda la franja. */
+.card.theme-delivered{border-color:#287b45;box-shadow:0 6px 18px rgba(26,140,70,.12)}
+.card.theme-delivered .head{background:linear-gradient(180deg,#125b31 0%,#0e3d25 58%,#0a291a 100%);border-bottom-color:#2c8c4d}
+.card.theme-delivered .summary{background:#0d2b1b;border-top-color:rgba(90,198,77,.35)}
+.card.theme-delivered .summary .metric-title{color:#d9ffd0;border-right-color:rgba(90,198,77,.25)}
+.card.theme-delivered .summary .metric-title .gc-icon{color:#7ff05f}
+.card.theme-delivered .summary .metric-value{background:linear-gradient(180deg,#123821,#0c2819);color:#a8f58d;border-right-color:rgba(90,198,77,.25)}
+.card.theme-delivered .summary .metric-value .color-badge{border-color:#3f8f52;color:#a8f58d;background:#0d2116}
+.card.theme-delivered .production-line{background:linear-gradient(180deg,#1e7b3c,#12552b);color:#efffe9}
+.card.theme-delivered .production-line strong{color:#a8f58d}
+.card.theme-delivered .th{color:#7ff05f;background:#0a1b12}
+
+.card.theme-reserved{border-color:#a47b0a;box-shadow:0 6px 18px rgba(210,160,0,.10)}
+.card.theme-reserved .head{background:linear-gradient(180deg,#514400 0%,#342d05 58%,#211d05 100%);border-bottom-color:#b08a10}
+.card.theme-reserved .summary{background:#282207;border-top-color:rgba(255,193,7,.35)}
+.card.theme-reserved .summary .metric-title{color:#ffe27a;border-right-color:rgba(255,193,7,.25)}
+.card.theme-reserved .summary .metric-title .gc-icon{color:#ffd84d}
+.card.theme-reserved .summary .metric-value{background:linear-gradient(180deg,#302807,#211b06);color:#ffe27a;border-right-color:rgba(255,193,7,.25)}
+.card.theme-reserved .summary .metric-value .color-badge{border-color:#a97900;color:#ffe27a;background:#1b1908}
+.card.theme-reserved .production-line{background:linear-gradient(180deg,#a37d00,#725800);color:#fff8cf}
+.card.theme-reserved .production-line strong{color:#ffe27a}
+.card.theme-reserved .th{color:#ffd84d;background:#191704}
+
+.card.theme-available{border-color:#40516a}
+.card.theme-available .head{background:linear-gradient(180deg,#26344a 0%,#172337 58%,#101a2b 100%);border-bottom-color:#40516a}
+.card.theme-available .summary{background:#101a2b;border-top-color:rgba(148,163,184,.25)}
+.card.theme-available .summary .metric-title{color:#fff;border-right-color:rgba(148,163,184,.18)}
+.card.theme-available .summary .metric-title .gc-icon{color:#cbd5e1}
+.card.theme-available .summary .metric-value{background:linear-gradient(180deg,#142033,#0e1827);color:#fff;border-right-color:rgba(148,163,184,.18)}
+.card.theme-available .summary .metric-value .color-badge{border-color:#64748b;color:#fff;background:#0b1220}
+.card.theme-available .production-line{background:linear-gradient(180deg,#253349,#172235);color:#fff}
+.card.theme-available .production-line strong{color:#fff}
+.card.theme-available .th{color:#fff;background:#0b121d}
+.foot{margin-top:auto;border-top:1px solid var(--line);padding:8px;display:flex;gap:6px}.foot button{flex:1;border:0;background:transparent;color:#d486ff;font-weight:900;font-size:10px;cursor:pointer}
+.lower{margin-top:12px;display:grid;grid-template-columns:300px 1fr;gap:10px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:13px}.section-title{font-size:15px;font-weight:900;color:#d58aff;margin-bottom:10px}
+.search-line{display:flex;gap:7px}.search-line input{flex:1;min-width:0;background:#111d31;border:1px solid #344867;color:#fff;border-radius:7px;padding:10px}.search-btn{border:0;border-radius:7px;background:var(--cyan);color:#fff;font-weight:900;padding:0 14px;cursor:pointer}.search-info{margin-top:10px;color:var(--muted);font-size:12px;line-height:1.5}
+.history{width:100%;border-collapse:collapse;font-size:11px}.history th{background:#0a111d;color:#d58aff;text-align:left;padding:8px;font-size:9px}.history td{padding:8px;border-bottom:1px solid #263650}.empty{text-align:center;color:var(--muted);padding:22px}
+.color-detail-box{border:1px solid #344867;border-radius:8px;padding:10px;background:#0b1526}
+.color-detail-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.color-detail-head label{margin:0}.color-detail-head label span{color:#8fa2bd;font-size:10px}
+.color-add{padding:7px 10px!important;font-size:10px!important;white-space:nowrap}
+.color-detail-row{display:grid;grid-template-columns:1fr 110px 38px;gap:7px;margin-bottom:7px}
+.color-detail-row select,.color-detail-row input{width:100%;box-sizing:border-box;background:#111d31;border:1px solid #344867;color:#fff;border-radius:6px;padding:7px;font-weight:800}
+.color-remove{border:0;border-radius:6px;background:#57202b;color:#fff;font-weight:900;cursor:pointer}
+.color-detail-total{margin-top:4px;text-align:right;color:#63d85a;font-size:11px;font-weight:900}
+
+.task-date-preview{margin-top:5px;color:#5ac64d;font-size:11px;font-weight:800;min-height:14px}
+.task-field-help{margin-top:5px;color:#91a2bd;font-size:10px;line-height:1.35}
+.task-field-help strong{color:#5ac64d}
+.task-color-help{margin-top:4px;color:#91a2bd;font-size:10px;line-height:1.35}
+.task-color-help strong{color:#5ac64d}
+.color-detail-row .detail-color-wrap{position:relative;min-width:0}
+.color-detail-row .detail-color{width:100%;box-sizing:border-box;background:#111d31;border:1px solid #344867;color:#fff;border-radius:6px;padding:7px 9px;font-size:12px;font-weight:800;outline:none}
+.color-detail-row .detail-color-suggestions{display:none;position:absolute;z-index:1000;left:0;right:0;top:calc(100% + 2px);max-height:180px;overflow-y:auto;background:#111d31;border:1px solid #344867;border-radius:6px;box-shadow:0 8px 18px rgba(0,0,0,.35)}
+.color-detail-row .detail-color-suggestions.open{display:block}
+.color-detail-row .detail-color-suggestion{padding:6px 9px;font-size:11px;line-height:1.2;font-weight:700;color:#fff;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.color-detail-row .detail-color-suggestion:hover,.color-detail-row .detail-color-suggestion.active{background:#253858;color:#fff}
+.color-detail-row .detail-color:focus{border-color:#8b5cf6;box-shadow:0 0 0 2px rgba(139,92,246,.14)}
+#taskDay{width:100%;box-sizing:border-box;background:#111d31;border:1px solid #344867;color:#fff;border-radius:7px;padding:9px 12px;font-size:13px;font-weight:800;outline:none;text-align:center}
+#taskDay:focus{border-color:#8b5cf6;box-shadow:0 0 0 2px rgba(139,92,246,.18)}
+#taskDay::placeholder{color:#71839d}
+
+/* COLOR BASE — selector oscuro acorde a COLOR MATERIAL */
+#taskColor{
+    appearance:none;
+    -webkit-appearance:none;
+    width:100%;
+    box-sizing:border-box;
+    background:#111d31;
+    color:#f8fafc;
+    border:1px solid #344867;
+    border-radius:7px;
+    padding:9px 38px 9px 12px;
+    font-size:13px;
+    font-weight:800;
+    outline:none;
+    cursor:pointer;
+    background-image:
+      linear-gradient(45deg, transparent 50%, #94a3b8 50%),
+      linear-gradient(135deg, #94a3b8 50%, transparent 50%);
+    background-position:
+      calc(100% - 17px) 50%,
+      calc(100% - 11px) 50%;
+    background-size:6px 6px, 6px 6px;
+    background-repeat:no-repeat;
+}
+#taskColor:hover{
+    border-color:#64748b;
+}
+#taskColor:focus{
+    border-color:#8b5cf6;
+    box-shadow:0 0 0 2px rgba(139,92,246,.18);
+}
+#taskColor option{
+    background:#111d31;
+    color:#f8fafc;
+    font-weight:700;
+}
+
+
+/* Botón AGREGAR COLOR */
+.color-add{
+    background:#22c55e !important;
+    color:#ffffff !important;
+    border:1px solid #4ade80 !important;
+    font-weight:900 !important;
+    opacity:1 !important;
+    cursor:pointer !important;
+    box-shadow:0 2px 8px rgba(34,197,94,.20);
+}
+.color-add:hover{
+    background:#16a34a !important;
+}
+
+
+/* Resumen de materiales de la tarea */
+.task-materials{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:4px 5px;
+    margin:3px 7px 2px;
+}
+.task-material-chip{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    background:#17243a;
+    border:1px solid #344867;
+    border-radius:5px;
+    padding:3px 6px;
+    color:#e8edf7;
+    font-size:9px;
+    line-height:1.1;
+    font-weight:800;
+    white-space:nowrap;
+}
+.task-material-chip strong{
+    color:#a78bfa;
+    margin-left:3px;
+}
+
+/* BOTON VER COLORES */
+
+
+.task-materials-btn{
+    position:relative;
+    z-index:20;
+    pointer-events:auto !important;
+}
+
+.task-materials-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    margin:3px auto 4px;
+    padding:4px 9px;
+    border:1px solid #8b5cf6;
+    border-radius:6px;
+    background:#25104f;
+    color:#ddd6fe;
+    font-size:9px;
+    font-weight:900;
+    cursor:pointer;
+}
+.task-materials-btn:hover{
+    background:#6d28d9;
+    color:#fff;
+}
+.materials-modal{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    background:rgba(0,0,0,.76);
+    padding:18px;
+}
+.materials-modal-card{
+    width:min(405px,94vw);
+    max-height:88vh;
+    box-sizing:border-box;
+    background:#0f1b2e;
+    border:1px solid #344867;
+    border-radius:14px;
+    box-shadow:0 24px 70px rgba(0,0,0,.62);
+    padding:24px 28px 28px;
+    text-align:center;
+}
+.materials-logo-wrap{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-bottom:10px;
+}
+.materials-modal-logo{
+    display:block;
+    width:150px;
+    max-width:60%;
+    height:auto;
+    object-fit:contain;
+}
+.materials-modal-title{
+    color:#ffffff;
+    font-size:18px;
+    font-weight:900;
+    letter-spacing:.4px;
+    margin:4px 0 14px;
+}
+.materials-modal-title span{
+    color:#c4b5fd;
+}
+.materials-modal-body{
+    text-align:left;
+    max-height:46vh;
+    overflow-y:auto;
+    padding:2px 1px;
+}
+.materials-modal-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#152238;
+    border:1px solid #344867;
+    border-radius:7px;
+    padding:9px 11px;
+    margin-bottom:7px;
+    color:#f8fafc;
+    font-weight:800;
+}
+.materials-modal-row strong{
+    color:#a78bfa;
+}
+.materials-modal-total{
+    text-align:right;
+    color:#63d85a;
+    font-weight:900;
+    margin-top:10px;
+}
+.materials-modal-close-bottom{
+    width:100%;
+    margin-top:18px;
+    border:0;
+    border-radius:9px;
+    padding:11px 14px;
+    background:#1e293b;
+    color:#ffffff;
+    font-weight:900;
+    font-size:14px;
+    cursor:pointer;
+}
+.materials-modal-close-bottom:hover{
+    background:#334155;
+}
+
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.68);display:none;align-items:center;justify-content:center;z-index:100}.modal{width:min(620px,calc(100% - 30px));background:#101a2d;border:1px solid #3a4e70;border-radius:12px;padding:18px}.modal h2{margin:0 0 14px;font-size:20px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:11px;color:#9eb0ca;font-weight:800}.field input,.field textarea{background:#0b1527;color:#fff;border:1px solid #344867;border-radius:7px;padding:10px;outline:none}.field textarea{min-height:145px;resize:vertical}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}.cancel{background:#33445f}.save{background:var(--green)}
+.notice{position:fixed;right:20px;bottom:20px;background:#101a2d;border:1px solid #3a4e70;border-radius:8px;padding:12px 16px;display:none;z-index:200}
+@media(max-width:1100px){.title{font-size:20px}.grid{grid-template-columns:repeat(4,minmax(200px,1fr))}}@media(max-width:760px){.quick-search{width:100%;margin-left:0}.quick-search input{flex:1}.topbar{flex-wrap:wrap}.nav{width:100%;margin-left:0}.nav button{flex:1}.toolbar{display:flex;flex-wrap:wrap;justify-content:center}.toolbar-main{width:100%;flex-wrap:wrap;justify-content:center}.production-mini{margin-left:0;padding-left:0;border-left:0;justify-content:center}.legend{width:100%;justify-content:center}.lower{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}}
+
+.quick-search{display:flex;gap:6px;margin-left:28px;padding-left:24px;border-left:1px solid #344867}
+.quick-search input{width:190px;background:#111e33;border:1px solid #344867;color:#fff;border-radius:8px;padding:10px 11px;outline:none}
+.quick-search button{border:0;border-radius:8px;background:#13a6c7;color:#fff;font-weight:900;padding:0 13px;cursor:pointer}
+.production-mini{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-left:18px;
+    padding-left:18px;
+    border-left:1px solid #344867;
+    white-space:nowrap;
+    font-size:11px;
+    font-weight:800;
+    color:#b8c5d8;
+}
+.production-mini b{color:#d58aff}
+.production-mini strong{color:#5ac64d;font-size:17px;font-weight:900}
+
+.report-bg{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;z-index:300}
+.report{width:min(850px,calc(100% - 30px));max-height:85vh;overflow:auto;background:#101a2d;border:1px solid #3a4e70;border-radius:12px;padding:18px;box-shadow:0 20px 60px #000}
+.report-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #293b59;padding-bottom:10px;margin-bottom:10px}
+.report-head h2{margin:0;color:#d58aff;font-size:20px}
+.close-report{border:0;background:#33445f;color:#fff;border-radius:7px;padding:8px 12px;font-weight:900;cursor:pointer}
+.report-table{width:100%;border-collapse:collapse;font-size:12px}
+.report-table th{background:#0a111d;color:#d58aff;text-align:left;padding:9px;font-size:10px}
+.report-table td{padding:9px;border-bottom:1px solid #263650}
+.report-summary{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.report-chip{background:#0b1527;border:1px solid #293b59;border-radius:7px;padding:8px 11px;font-size:11px}
+.report-empty{text-align:center;color:#91a2bd;padding:30px}
+
+
+/* V20 — tarjeta neutra + color SOLO en la fila según estado */
+.card.theme-delivered,
+.card.theme-reserved,
+.card.theme-available,
+.card.theme-mixed{
+  border-color:#35466b;
+  box-shadow:0 6px 18px rgba(0,0,0,.22);
+}
+.card.theme-delivered .head,
+.card.theme-reserved .head,
+.card.theme-available .head,
+.card.theme-mixed .head{
+  background:linear-gradient(180deg,#26344a 0%,#172337 58%,#101a2b 100%);
+  border-bottom-color:#40516a;
+}
+.card.theme-delivered .summary,
+.card.theme-reserved .summary,
+.card.theme-available .summary,
+.card.theme-mixed .summary{
+  background:#101a2b;
+  border-top-color:rgba(148,163,184,.25);
+}
+.card.theme-delivered .summary .metric-title,
+.card.theme-reserved .summary .metric-title,
+.card.theme-available .summary .metric-title,
+.card.theme-mixed .summary .metric-title{
+  color:#fff;
+  border-right-color:rgba(148,163,184,.18);
+}
+.card.theme-delivered .summary .metric-title .gc-icon,
+.card.theme-reserved .summary .metric-title .gc-icon,
+.card.theme-available .summary .metric-title .gc-icon,
+.card.theme-mixed .summary .metric-title .gc-icon{color:#cbd5e1}
+.card.theme-delivered .summary .metric-value,
+.card.theme-reserved .summary .metric-value,
+.card.theme-available .summary .metric-value,
+.card.theme-mixed .summary .metric-value{
+  background:linear-gradient(180deg,#142033,#0e1827);
+  color:#fff;
+  border-right-color:rgba(148,163,184,.18);
+}
+.card.theme-delivered .summary .metric-value .color-badge,
+.card.theme-reserved .summary .metric-value .color-badge,
+.card.theme-available .summary .metric-value .color-badge,
+.card.theme-mixed .summary .metric-value .color-badge{
+  border-color:#64748b;color:#fff;background:#0b1220;
+}
+.card.theme-delivered .production-line,
+.card.theme-reserved .production-line,
+.card.theme-available .production-line,
+.card.theme-mixed .production-line{
+  background:linear-gradient(180deg,#253349,#172235);
+  color:#fff;
+}
+.card.theme-delivered .production-line strong,
+.card.theme-reserved .production-line strong,
+.card.theme-available .production-line strong,
+.card.theme-mixed .production-line strong{color:#d8b7ff}
+.card.theme-delivered .th,
+.card.theme-reserved .th,
+.card.theme-available .th,
+.card.theme-mixed .th{color:#d58aff;background:#0a111d}
+
+/* ENTREGADO — verde suave pero claramente visible */
+.row.delivered{
+  background:linear-gradient(90deg,rgba(44,140,70,.62),rgba(39,119,60,.42)) !important;
+  color:#d9ffd0 !important;
+  border-bottom-color:rgba(100,220,120,.28);
+}
+.row.delivered .article{color:#e8ffe3}
+.row.delivered .workshop{
+  color:#efffea;
+  border-color:#4d965a;
+  background:#10251a;
+}
+.row.delivered .status{color:#9cff78}
+
+/* RESERVADO — naranja/ámbar, solo la fila */
+.row.reserved{
+  background:linear-gradient(90deg,rgba(194,120,0,.58),rgba(155,91,0,.38)) !important;
+  color:#fff1c4 !important;
+  border-bottom-color:rgba(255,177,45,.30);
+}
+.row.reserved .article{color:#fff4ce}
+.row.reserved .workshop{
+  color:#fff3c7;
+  border-color:#c07b12;
+  background:#241a0b;
+}
+.row.reserved .status{color:#ffc247}
+
+/* SIN TALLER — neutro, limpio y blanco */
+.row.available{
+  background:#0d1627 !important;
+  color:#fff !important;
+  border-bottom-color:#263650;
+}
+.row.available .article{color:#fff}
+.row.available .workshop{
+  color:#fff;
+  border-color:#64748b;
+  background:#101a2b;
+}
+.row.available .status{color:#fff}
+
+
+/* ==========================================================
+   TAREAS — BARRA PRINCIPAL V2
+   Distribución amplia y prolija. No cambia ninguna lógica.
+   ========================================================== */
+.toolbar{
+    grid-template-columns:minmax(900px,1fr) 300px auto;
+    gap:22px;
+    padding:10px 14px;
+    align-items:center;
+}
+
+.toolbar-main{
+    justify-content:flex-start;
+    gap:25px;
+    min-width:0;
+}
+
+.toolbar select{
+    padding:10px 12px;
+}
+
+.year-compact{
+    min-width:86px!important;
+    width:86px!important;
+}
+
+.month-compact{
+    min-width:140px!important;
+    width:140px!important;
+}
+
+.task-compact{
+    min-width:140px;
+    padding:10px 14px;
+    font-size:12px;
+    white-space:nowrap;
+}
+
+.query-select{
+    min-width:180px!important;
+    width:180px!important;
+    font-size:12px;
+    font-weight:900;
+    margin-left:8px;
+}
+
+.article-query{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    border-left:1px solid #344867;
+    padding-left:14px;
+}
+
+.article-query input{
+    width:160px;
+    height:39px;
+    box-sizing:border-box;
+    background:#111e33;
+    border:1px solid #344867;
+    color:#fff;
+    border-radius:8px;
+    padding:10px 9px;
+    outline:none;
+    font-weight:800;
+}
+
+.article-query button{
+    height:39px;
+    border:0;
+    border-radius:8px;
+    background:#13a6c7;
+    color:#fff;
+    font-weight:900;
+    padding:0 12px;
+    cursor:pointer;
+    font-size:12px;
+}
+
+.quick-search{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    margin-left:4px;
+    padding-left:14px;
+    border-left:1px solid #344867;
+}
+
+.quick-search input{
+    width:250px;
+    height:39px;
+    box-sizing:border-box;
+    background:#111e33;
+    border:1px solid #344867;
+    color:#fff;
+    border-radius:8px;
+    padding:10px 9px;
+    outline:none;
+    font-weight:800;
+}
+
+.quick-search button{
+   height:39px;
+    border:0;
+    border-radius:8px;
+    background:#13a6c7;
+    color:#fff;
+    font-weight:900;
+    padding:0 12px;
+    cursor:pointer;
+    font-size:12px;
+}
+
+.production-mini{
+    min-width:0;
+    width:300px;
+    box-sizing:border-box;
+    margin-left:0;
+    padding-left:18px;
+    border-left:1px solid #344867;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    justify-content:center;
+    gap:4px;
+    font-size:12px;
+    font-weight:900;
+    line-height:1.2;
+    white-space:nowrap;
+}
+
+.production-mini b{
+    color:#d58aff;
+}
+
+.production-mini strong{
+    color:#5ac64d;
+    font-size:12px;
+    font-weight:900;
+}
+
+.legend{
+    display:flex;
+    justify-content:flex-start;
+    align-items:center;
+    gap:12px;
+    font-size:12px;
+    white-space:nowrap;
+}
+
+.legend span{
+    display:flex;
+    align-items:center;
+    gap:5px;
+}
+
+@media(max-width:1550px){
+    .toolbar{
+        grid-template-columns:minmax(780px,1fr) 270px auto;
+        gap:15px;
+    }
+
+    .quick-search input{
+        width:125px;
+    }
+
+    .production-mini{
+        width:270px;
+    }
+}
+
+@media(max-width:1250px){
+    .toolbar{
+        grid-template-columns:minmax(700px,1fr) 250px;
+    }
+
+    .legend{
+        grid-column:1/-1;
+        justify-content:center;
+        padding-top:2px;
+    }
+}
+
+@media(max-width:1200px){
+    .quick-search{
+        display:none;
+    }
+}
+
+@media(max-width:900px){
+    .toolbar{
+        display:flex;
+        flex-wrap:wrap;
+        justify-content:flex-start;
+    }
+
+    .toolbar-main{
+        width:100%;
+        flex-wrap:wrap;
+    }
+
+    .production-mini{
+        width:auto;
+        border-left:0;
+        padding-left:0;
+    }
+
+    .legend{
+        width:auto;
+        justify-content:flex-start;
+        padding-top:0;
+    }
+}
+
+@media(max-width:760px){
+    .year-compact{
+        min-width:82px!important;
+        width:82px!important;
+    }
+
+    .month-compact{
+        min-width:125px!important;
+        width:125px!important;
+    }
+
+    .query-select{
+        min-width:135px!important;
+        width:135px!important;
+    }
+
+    .article-query input{
+        width:90px;
+    }
+}
+
+
+/* ESTADO DE LA TAREA */
+.task-status-badge{
+    position:absolute;
+    left:7px;
+    top:7px;
+    z-index:5;
+    border-radius:6px;
+    padding:7px 9px;
+    color:#fff;
+    font-size:9px;
+    font-weight:900;
+    line-height:1;
+    cursor:pointer;
+    border:1px solid rgba(255,255,255,.25);
+    box-shadow:0 2px 8px rgba(0,0,0,.35);
+}
+.task-status-badge.pending{
+    background:#ed7d20;
+    border-color:#ffad58;
+    animation:gcPendienteTitila 1.15s ease-in-out infinite;
+}
+.task-status-badge.complete{
+    background:#58b947;
+    border-color:#82e66d;
+    animation:none;
+}
+@keyframes gcPendienteTitila{
+    0%,100%{opacity:1;transform:scale(1)}
+    50%{opacity:.38;transform:scale(.97)}
+}
+@media(prefers-reduced-motion:reduce){
+    .task-status-badge.pending{animation:none}
+}
+
+
+/* CORRECCION BUSCADORES DE ARTICULO — foco y escritura */
+.toolbar{position:relative;overflow:visible;}
+.toolbar-main{position:relative;z-index:50;}
+.article-query,.quick-search{position:relative;z-index:60;pointer-events:auto !important;}
+.article-query input,.quick-search input{position:relative;z-index:70;pointer-events:auto !important;user-select:text !important;-webkit-user-select:text !important;cursor:text !important;}
+.article-query button,.quick-search button{position:relative;z-index:70;pointer-events:auto !important;}
+.production-mini,.legend{position:relative;z-index:1;}
+
+
+/* ==========================================================
+   FOTO DE ARTICULO — acceso rapido
+   ========================================================== */
+.article-cell{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  min-width:0;
+}
+.article-photo-btn{
+  width:22px;
+  height:22px;
+  padding:0;
+  flex:0 0 22px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid #40516a;
+  border-radius:6px;
+  background:#162238;
+  color:#cbd5e1;
+  cursor:pointer;
+  transition:.15s;
+}
+.article-photo-btn:hover{
+  background:#243653;
+  border-color:#7b35ed;
+  color:#fff;
+  transform:translateY(-1px);
+}
+.article-photo-btn svg{width:13px;height:13px;display:block}
+.article-photo-modal{
+  position:fixed;
+  inset:0;
+  z-index:12000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background:rgba(0,0,0,.70);
+  backdrop-filter:blur(3px);
+}
+.article-photo-card{
+  position:relative;
+  width:min(430px,calc(100vw - 36px));
+  max-height:78vh;
+  padding:14px;
+  background:#101a2d;
+  border:1px solid #40516a;
+  border-radius:14px;
+  box-shadow:0 20px 60px rgba(0,0,0,.58);
+  text-align:center;
+}
+.article-photo-title{
+  margin:0 34px 10px;
+  color:#fff;
+  font-size:14px;
+  font-weight:900;
+  letter-spacing:.2px;
+}
+.article-photo-title span{color:#c4b5fd}
+.article-photo-image{
+  display:block;
+  width:auto;
+  max-width:100%;
+  max-height:62vh;
+  margin:0 auto;
+  object-fit:contain;
+  border-radius:8px;
+  background:#fff;
+}
+.article-photo-close{
+  position:absolute;
+  top:9px;
+  right:9px;
+  width:28px;
+  height:28px;
+  border:1px solid #40516a;
+  border-radius:7px;
+  background:#202e44;
+  color:#fff;
+  font-size:18px;
+  line-height:1;
+  cursor:pointer;
+}
+.article-photo-close:hover{background:#334155}
+.article-photo-fallback-note{
+  margin-top:7px;
+  color:#91a2bd;
+  font-size:9px;
+  font-weight:700;
+}
+
+</style>
+</head>
+<body>
+<header class="topbar">
+<img class="logo" src="data:image/png;base64,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" alt="GOOD COMPANY">
+<div class="title">TAREAS ENTREGADAS Y DISPONIBLES</div>
+<nav class="nav">
+<button class="index" onclick="location.href='/'">↕ INGRESOS / EGRESOS</button>
+<button class="pagos" onclick="location.href='/pagos.html'">💰 PAGOS</button>
+</nav>
+</header>
+
+<main class="page">
+<section class="toolbar">
+<div class="toolbar-main">
+    <select id="year" class="month year-compact"></select>
+    <select id="month" class="month month-compact"></select>
+    <button id="newProductionBtn" class="btn new task-compact" onclick="abrirNuevaTarea()">NUEVA TAREA</button>
+
+    <select id="workshopQuery" class="query-select" aria-label="Consultar artículos por taller">
+        <option value="">TALLER</option>
+    </select>
+
+    <div class="article-query">
+        <input id="workArticleQuery" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="🔎 ARTICULO">
+        <button type="button" id="workArticleQueryBtn">BUSCAR</button>
+    </div>
+
+    <div class="quick-search">
+        <input id="articleSearch" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="🔎 HISTORICO ARTICULO">
+        <button onclick="buscarArticulo()">BUSCAR</button>
+    </div>
+</div>
+
+<div class="production-mini">
+    <div>📊 PRODUCCIÓN ANUAL <b id="productionReportYear">2026</b> = <strong id="productionReportAnnual">0</strong></div>
+    <div>📊 PRODUCCIÓN <b id="productionReportMonth">AGOSTO</b> = <strong id="productionReportTotal">0</strong></div>
+</div>
+
+<div class="legend">
+    <span><i class="dot red"></i> Disponible</span>
+    <span><i class="dot orange"></i> Reservado</span>
+    <span><i class="dot green"></i> Entregado</span>
+</div>
+</section>
+<section id="tasksGrid" class="grid"></section>
+
+</main>
+
+<div id="modalBg" class="modal-bg"><div class="modal">
+<h2 id="modalTitle">NUEVA PRODUCCIÓN</h2>
+<div class="form-grid">
+<div class="field">
+  <label>DÍA DE LA TAREA</label>
+  <input id="taskDay" type="text" inputmode="numeric" maxlength="2" pattern="\d{1,2}" placeholder="DD" autocomplete="off">
+  <div id="taskDatePreview" class="task-date-preview"></div>
+</div>
+<div class="field">
+  <label>CANTIDAD POR ARTÍCULO</label>
+  <input id="taskQty" type="number" min="1" step="1" value="80" placeholder="80">
+  <div class="task-field-help">Valor por defecto: <strong>80</strong> (podés modificarlo)</div>
+</div>
+<div class="field">
+  <label>COLOR BASE</label>
+  <select id="taskColor"></select>
+</div>
+<div class="field full color-detail-box">
+  <div class="color-detail-head">
+    <label>COLOR MATERIAL / COLORES <span>(OPCIONAL — PARA TAREAS MULTICOLOR)</span></label>
+    <button type="button" class="btn color-add" onclick="agregarColorTarea()">＋ AGREGAR COLOR</button>
+  </div>
+  <div id="taskColorRows"></div>
+  <div class="task-color-help">Escribí el color si no está en la lista y presioná <strong>Enter</strong> para agregarlo.</div>
+  <div id="colorDetailTotal" class="color-detail-total">Total por artículo: 0</div>
+</div>
+<div class="field full"><label>ARTÍCULOS — UNO POR LÍNEA O PEGÁ DIRECTAMENTE DESDE EXCEL</label><textarea id="taskArticles" placeholder="1651&#10;1850&#10;2011&#10;2053&#10;&#10;O pegá directamente:&#10;1409 | BETO | 29/1/26&#10;1608 | ALVARO | 20/1/26"></textarea></div>
+<div class="field full" id="editRowsWrap" style="display:none;">
+<label>EDITAR ARTÍCULOS / TALLER / FECHA DE SALIDA</label>
+<div id="editRows" style="max-height:360px;overflow:auto;background:#07101e;border:1px solid #344867;border-radius:8px;padding:8px;"></div>
+</div>
+</div>
+<div class="modal-actions"><button class="btn cancel" onclick="cerrarModal()">CANCELAR</button><button id="modalSave" class="btn save" onclick="guardarTarea()">CREAR TAREA</button></div>
+</div></div>
+
+
+<div id="importBg" class="report-bg" onclick="if(event.target===this)cerrarImportacion()">
+<div class="report" style="width:min(760px,calc(100% - 30px));">
+    <div class="report-head">
+        <h2>📋 IMPORTAR HISTORIAL</h2>
+        <button class="close-report" onclick="cerrarImportacion()">✕ CERRAR</button>
+    </div>
+
+    <div style="color:#aebbd0;font-size:12px;line-height:1.5;margin-bottom:12px;">
+        Pegá directamente desde tu Excel el historial con este formato:
+        <b style="color:#fff;">ARTÍCULO | TALLER | FECHA</b>.
+        <br>
+        Esta carga es solamente para reconstruir el historial viejo.
+        <b style="color:#5ac64d;">No afecta la producción mensual.</b>
+    </div>
+
+    <textarea id="historyPaste"
+      style="width:100%;height:320px;resize:vertical;box-sizing:border-box;background:#07101e;color:#fff;border:1px solid #344867;border-radius:8px;padding:12px;font-family:Consolas,monospace;font-size:13px;outline:none;"
+      placeholder="1017    SALOME    14/8/26
+1608    ALVARO    13/8/26
+1850    OMAR      14/8/26"></textarea>
+
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px;">
+        <button class="close-report" onclick="cerrarImportacion()">CANCELAR</button>
+        <button class="btn new" onclick="procesarHistorialPegado()">📥 CARGAR HISTORIAL</button>
+    </div>
+</div>
+</div>
+
+<div id="workshopQueryBg" class="report-bg" onclick="if(event.target===this)cerrarConsultaProduccion()">
+  <div class="report" style="max-width:520px;">
+    <div class="report-head">
+      <h2 id="workshopQueryTitle">ARTÍCULOS QUE TRABAJA</h2>
+      <button class="close-report" type="button" onclick="cerrarConsultaProduccion()">✕ CERRAR</button>
+    </div>
+    <div id="workshopQueryContent"></div>
+  </div>
+</div>
+
+<div id="articleQueryBg" class="report-bg" onclick="if(event.target===this)cerrarConsultaArticulo()">
+  <div class="report" style="max-width:520px;">
+    <div class="report-head">
+      <h2 id="articleQueryTitle">TALLERES QUE CONFECCIONAN</h2>
+      <button class="close-report" type="button" onclick="cerrarConsultaArticulo()">✕ CERRAR</button>
+    </div>
+    <div id="articleQueryContent"></div>
+  </div>
+</div>
+
+<div id="reportBg" class="report-bg" onclick="if(event.target===this)cerrarInforme()">
+<div class="report">
+    <div class="report-head">
+        <h2 id="reportTitle">INFORME DEL ARTÍCULO</h2>
+        <button class="close-report" onclick="cerrarInforme()">✕ CERRAR</button>
+    </div>
+    <div id="reportContent"></div>
+</div>
+</div>
+<div id="notice" class="notice"></div>
+
+<script>
+const STORAGE='gc_tareas_v1';
+let talleres=[];
+let colores=[];
+let coloresMaterial=[];
+let editTaskIndex=null;
+const meses=['ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO','JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE'];
+
+function cargarAnos(){
+ const select=document.getElementById('year');
+ if(!select)return;
+
+ const tasks=loadTasks();
+ const years=new Set();
+
+ tasks.forEach(t=>{
+   if(t.fecha){
+     const y=String(t.fecha).slice(0,4);
+     if(/^\d{4}$/.test(y))years.add(y);
+   }
+ });
+
+ // Siempre dejamos disponible el año actual y 2026, aunque todavía
+ // no haya una tarea cargada en ese año.
+ years.add(String(new Date().getFullYear()));
+ years.add('2026');
+
+ const actual=String(select.value||new Date().getFullYear());
+
+ const lista=[...years].sort((a,b)=>Number(b)-Number(a));
+
+ select.innerHTML=lista.map(y=>
+   `<option value="${y}">${y}</option>`
+ ).join('');
+
+ if(lista.includes(actual)){
+   select.value=actual;
+ }else{
+   select.value=lista[0];
+ }
+
+ actualizarInformeProduccion();
+}
+
+function cargarMeses(){
+ const s=document.getElementById('month');
+ s.innerHTML=meses.map((m,i)=>`<option value="${i+1}">${m}</option>`).join('');
+ s.value=String(new Date().getMonth()+1);
+ s.onchange=render;
+}
+
+let tareasCache=[];
+
+function idTareaPorFechaCliente(fecha){
+ const m=String(fecha||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+ if(!m)return '';
+ return `${m[3]}${m[2]}${m[1]}`;
+}
+
+function normalizarIdTareaCliente(valor,fecha=''){
+ let s=String(valor??'').trim();
+ if(!s || s.toLowerCase()==='sync') s=idTareaPorFechaCliente(fecha);
+ s=s.replace(/-\d{2}$/,'');
+ // Google Sheets puede haber quitado el cero inicial de una fecha DDMMAAAA.
+ if(/^\d{7}$/.test(s))s='0'+s;
+ return s;
+}
+
+function normalizarTareaCliente(t){
+ const tarea={...(t||{})};
+ tarea.id=normalizarIdTareaCliente(tarea.id,tarea.fecha);
+
+ // TAREAS!E = estado de la tarea.
+ // Todo lo que no sea COMPLETO se considera PENDIENTE.
+ const estadoBruto=String(tarea.estado||'').trim().toUpperCase();
+ tarea.estado=(estadoBruto==='COMPLETO' || estadoBruto==='COMPLETADO' || estadoBruto==='COMPLETADA')
+   ? 'COMPLETO'
+   : 'PENDIENTE';
+
+ // COLOR BASE es siempre TAREAS!D. VARIOS nunca es válido.
+ const colorBaseBruto=String(tarea.color||'').trim().toUpperCase();
+ tarea.color=colorBaseBruto==='VARIOS' ? 'COLOR' : colorBaseBruto;
+
+ if(!Array.isArray(tarea.articulos))tarea.articulos=[];
+ if(!Array.isArray(tarea.colores))tarea.colores=[];
+ tarea.articulos=tarea.articulos.map(a=>({
+   id:String(a.id||''),
+   articulo:String(a.articulo||'').trim(),
+   taller:String(a.taller||'').trim(),
+   cantidad:Number(a.cantidad||tarea.cantidad||0),
+   color:String(a.color||'').trim().toUpperCase(),
+   fechaSalida:String(a.fechaSalida||''),
+   movimientoId:String(a.movimientoId||'')
+ }));
+ return tarea;
+}
+
+function loadTasks(){
+ // IMPORTANTE: nunca devolver la referencia de tareasCache.
+ // Las pantallas de alta/edición trabajan sobre una copia para que
+ // saveTasks pueda detectar exactamente qué cambió.
+ return tareasCache.map(t=>({
+   ...t,
+   colores:Array.isArray(t.colores)?t.colores.map(c=>({...c})):[],
+   articulos:Array.isArray(t.articulos)?t.articulos.map(a=>({...a})):[],
+ }));
+}
+
+function firmaTarea(t){
+ return JSON.stringify(normalizarTareaCliente(t));
+}
+
+async function saveTasks(t){
+ const nuevo=(Array.isArray(t)?t:[]).map(normalizarTareaCliente);
+ const anterior=tareasCache.map(normalizarTareaCliente);
+
+ try{
+   // Caso normal: una sola tarea fue creada/editada/eliminada.
+   const prevMap=new Map(anterior.map(x=>[x.id,x]));
+   const nextMap=new Map(nuevo.map(x=>[x.id,x]));
+   const agregadas=nuevo.filter(x=>!prevMap.has(x.id));
+   const eliminadas=anterior.filter(x=>!nextMap.has(x.id));
+   const modificadas=nuevo.filter(x=>prevMap.has(x.id)&&firmaTarea(prevMap.get(x.id))!==firmaTarea(x));
+
+   if(agregadas.length===1 && eliminadas.length===0 && modificadas.length===0){
+     const r=await fetch('/api/tareas',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tarea:agregadas[0]}),cache:'no-store'});
+     const data=await r.json().catch(()=>({}));
+     if(!r.ok||data.success!==true)throw new Error(data.error||'No se pudo guardar la tarea en Google Sheets.');
+     if(data.tarea){
+       const idx=nuevo.findIndex(x=>x===agregadas[0]);
+       if(idx>=0) nuevo[idx]=normalizarTareaCliente(data.tarea);
+     }
+   }else if(eliminadas.length===1 && agregadas.length===0 && modificadas.length===0){
+     const r=await fetch('/api/tareas/'+encodeURIComponent(eliminadas[0].id),{method:'DELETE',cache:'no-store'});
+     const data=await r.json().catch(()=>({}));
+     if(!r.ok||data.success!==true)throw new Error(data.error||'No se pudo eliminar la tarea de Google Sheets.');
+   }else if(modificadas.length===1 && agregadas.length===0 && eliminadas.length===0){
+     const x=modificadas[0];
+     const r=await fetch('/api/tareas/'+encodeURIComponent(x.id),{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({tarea:x}),cache:'no-store'});
+     const data=await r.json().catch(()=>({}));
+     if(!r.ok||data.success!==true)throw new Error(data.error||'No se pudo actualizar la tarea en Google Sheets.');
+   }else{
+     // No reconstruimos TAREAS completas para una operación normal.
+     // Si llegamos acá significa que hubo más de un cambio simultáneo;
+     // lo rechazamos para no arriesgar duplicados o modificaciones masivas.
+     throw new Error('Se detectaron varios cambios de tareas al mismo tiempo. No se realizó ninguna sincronización masiva.');
+   }
+
+   tareasCache=nuevo;
+   try{localStorage.setItem(STORAGE,JSON.stringify(tareasCache));}catch(_){ }
+   return tareasCache;
+ }catch(error){
+   // No cambiamos la caché principal si el servidor rechazó la operación.
+   console.error('❌ ERROR GUARDANDO TAREAS:',error);
+   throw error;
+ }
+}
+
+async function cargarTareasDesdeServidor(){
+ try{
+   const r=await fetch('/api/tareas',{cache:'no-store'});
+   const data=await r.json();
+   if(!r.ok)throw new Error(data.error||'No se pudieron cargar las tareas.');
+   tareasCache=(data.tareas||[]).map(normalizarTareaCliente);
+   try{localStorage.setItem(STORAGE,JSON.stringify(tareasCache));}catch(_){}
+   return tareasCache;
+ }catch(error){
+   console.error('❌ ERROR CARGANDO TAREAS:',error);
+   try{
+     const raw=localStorage.getItem(STORAGE);
+     const local=raw?JSON.parse(raw):[];
+     tareasCache=Array.isArray(local)?local.map(normalizarTareaCliente):[];
+   }catch(_){tareasCache=[];}
+   mostrarAviso('⚠️ TAREAS: no se pudo conectar con Google Sheets');
+   return tareasCache;
+ } }
+
+async function cargarTalleres(){
+ try{
+  const r=await fetch('/api/talleres');
+  if(!r.ok)throw new Error();
+  const data=await r.json();
+  const lista=Array.isArray(data)?data:(data.talleres||[]);
+  talleres=lista.map(x=>typeof x==='string'?x:(x.nombre||x.taller||'')).filter(Boolean);
+ }catch{
+  talleres=[];
+  mostrarAviso('No se pudieron cargar los talleres activos');
+ }
+}
+
+async function cargarColores(){
+ const endpoints=['/api/admin/colores','/api/colores'];
+ for(const endpoint of endpoints){
+  try{
+   const r=await fetch(endpoint);
+   if(!r.ok)continue;
+   const data=await r.json();
+   const lista=Array.isArray(data)?data:(data.colores||[]);
+   const listaNombres=lista.map(x=>typeof x==='string'?x:(x.nombre||x.color||x.descripcion||'')).filter(Boolean);
+   if(listaNombres.length){colores=[...new Set(listaNombres)];return}
+  }catch{}
+ }
+ colores=[];
+}
+
+async function cargarColoresMaterial(){
+ coloresMaterial=[];
+ try{
+   const r=await fetch('/api/colores-material');
+   if(!r.ok)throw new Error(`HTTP ${r.status}`);
+   const data=await r.json();
+   const lista=Array.isArray(data)?data:(data.coloresMaterial||data.colores_material||data.colores||[]);
+   coloresMaterial=[...new Set(
+     lista.map(x=>typeof x==='string'?x:(x.nombre||x.color||x.descripcion||'')).filter(Boolean)
+   )];
+   actualizarDatalistColoresMaterial();
+ }catch(error){
+   console.error('❌ Error cargando colores material:',error);
+   coloresMaterial=[];
+ }
+}
+
+function opcionesTaller(valor){
+ const v=String(valor||'').trim();
+
+ // Los talleres históricos pueden no existir en la lista actual.
+ // Si vienen del historial, igual deben mostrarse y conservarse.
+ let opciones=`<option value="">— SIN TALLER —</option>`;
+
+ if(v && !talleres.some(t=>String(t).trim().toUpperCase()===v.toUpperCase())){
+   opciones+=`<option value="${esc(v)}" selected>🕘 ${esc(v)} (HISTÓRICO)</option>`;
+ }
+
+ opciones+=talleres.map(t=>
+   `<option value="${esc(t)}" ${String(t).trim().toUpperCase()===v.toUpperCase()?'selected':''}>${esc(t)}</option>`
+ ).join('');
+
+ return opciones;
+}
+
+function opcionesColor(valor=''){
+ if(!colores.length){
+  return `<option value="">— CARGANDO COLORES —</option>`;
+ }
+ return `<option value="">— SELECCIONAR COLOR —</option>`+
+  colores.map(c=>`<option value="${esc(c)}" ${c===valor?'selected':''}>${esc(c)}</option>`).join('');
+}
+
+function opcionesColorMaterial(valor=''){
+ if(!coloresMaterial.length){
+  return `<option value="">— CARGANDO COLORES MATERIAL —</option>`;
+ }
+ return `<option value="">— SELECCIONAR COLOR —</option>`+
+  coloresMaterial.map(c=>`<option value="${esc(c)}" ${String(c).trim().toUpperCase()===String(valor).trim().toUpperCase()?'selected':''}>${esc(c)}</option>`).join('');
+}
+
+function cantidadNumerica(valor){
+ const n=Number(valor);
+ return Number.isFinite(n)?n:0;
+}
+
+function actualizarInformeProduccion(){
+ const year=Number(document.getElementById('year').value);
+ const month=Number(document.getElementById('month').value);
+
+ const tasks=loadTasks().filter(t=>{
+  if(!t.fecha || t.origen==='HISTORIAL')return false;
+  return /^\d{4}-\d{2}-\d{2}$/.test(String(t.fecha));
+ });
+
+ let totalAnual=0;
+ let totalMensual=0;
+
+ tasks.forEach(t=>{
+  const cantidad=cantidadNumerica(cantidadTareaPorArticulo(t));
+  const articulos=Array.isArray(t.articulos)?t.articulos.length:0;
+  const produccion=articulos*cantidad;
+  const y=Number(t.fecha.slice(0,4));
+  const mo=Number(t.fecha.slice(5,7));
+
+  if(y===year)totalAnual+=produccion;
+  if(y===year && mo===month)totalMensual+=produccion;
+ });
+
+ const nombreMes=meses[month-1]||'';
+
+ const yearEl=document.getElementById('productionReportYear');
+ const monthEl=document.getElementById('productionReportMonth');
+ const annualEl=document.getElementById('productionReportAnnual');
+ const totalEl=document.getElementById('productionReportTotal');
+
+ if(yearEl)yearEl.textContent=year;
+ if(monthEl)monthEl.textContent=nombreMes;
+ if(annualEl)annualEl.textContent=totalAnual.toLocaleString('es-AR');
+ if(totalEl)totalEl.textContent=totalMensual.toLocaleString('es-AR');
+}
+
+function render(){
+ actualizarInformeProduccion();
+ const grid=document.getElementById('tasksGrid');
+ const year=Number(document.getElementById('year').value);
+ const month=Number(document.getElementById('month').value);
+ const tasks=loadTasks()
+  .filter(t=>t.fecha && Number(t.fecha.slice(0,4))===year && Number(t.fecha.slice(5,7))===month)
+  .sort((a,b)=>a.fecha.localeCompare(b.fecha));
+
+ if(!tasks.length){
+  grid.innerHTML='<div class="empty-board"><strong>No hay tareas cargadas en este mes</strong><span>Usá «＋ NUEVA PRODUCCIÓN» para crear la primera.</span></div>';
+  return;
+ }
+ grid.innerHTML=tasks.map((t,ti)=>cardHtml(t,ti)).join('');
+}
+
+function cardHtml(t,ti){
+ const arts=t.articulos||[];
+ const esHistorial=t.origen==='HISTORIAL';
+ const cantidadPorArticulo=cantidadTareaPorArticulo(t);
+ const prod=esHistorial?0:arts.length*cantidadPorArticulo;
+ const fecha=t.fecha.split('-').reverse().join('/');
+ const filas=arts.map((a,ai)=>{
+  const entregado=!!a.fechaSalida;
+  const reservado=!!a.taller&&!entregado;
+  const estado=entregado?'delivered':reservado?'reserved':'available';
+  const texto=entregado
+     ? esc(`${a.fechaSalida.slice(8,10)}/${a.fechaSalida.slice(5,7)}/${a.fechaSalida.slice(2,4)}`)
+     : (reservado?'RESERVADO':'DISPONIBLE');
+  return `<div class="row ${estado}">
+   <div class="article-cell">
+    <b class="article">${esc(a.articulo)}</b>
+    <button type="button" class="article-photo-btn" data-article-photo="${esc(a.articulo)}" title="Ver foto del artículo" aria-label="Ver foto del artículo">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/>
+        <path d="M7 5.5 8.4 3.8h3.2L13 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.8"/>
+        <circle cx="17.2" cy="8.4" r="1" fill="currentColor"/>
+      </svg>
+    </button>
+   </div>
+   <select class="workshop ${estado==='available'?'available':''}" ${entregado?'disabled':''}
+    onchange="cambiarTallerPorId('${encodeURIComponent(t.id)}',${ai},this.value)">${opcionesTaller(a.taller||'')}</select>
+   <span class="status ${estado}">${texto} ●</span>
+  </div>`;
+ }).join('');
+ const estados=arts.map(a=>a.fechaSalida?'delivered':(a.taller?'reserved':'available'));
+ const tema=arts.length && estados.every(x=>x==='delivered')?'delivered':(arts.length && estados.every(x=>x==='reserved')?'reserved':(arts.length && estados.every(x=>x==='available')?'available':'mixed'));
+ const materiales=normalizarColoresDeTarea(t);
+ const colorPrincipal=t.color || '';
+ const colorHtml=esHistorial
+   ? '<span class="color-badge">HISTORIAL</span>'
+   : (materiales.length > 1
+      ? `<button type="button" class="task-materials-btn" data-ver-colores-id="${encodeURIComponent(String(t.id))}">🎨 VER COLORES</button>`
+      : `<span class="color-badge">${esc(colorPrincipal)}</span>`);
+ const estadoTarea=String(t.estado||'PENDIENTE').trim().toUpperCase()==='COMPLETO'
+   ? 'COMPLETO'
+   : 'PENDIENTE';
+ const claseEstado=estadoTarea==='COMPLETO' ? 'complete' : 'pending';
+
+ return `<article class="card theme-available">
+  <div class="head">
+   <button
+      type="button"
+      class="task-status-badge ${claseEstado}"
+      title="Click para cambiar entre PENDIENTE y COMPLETO"
+      onclick="cambiarEstadoTareaPorId('${encodeURIComponent(String(t.id))}')"
+   >${estadoTarea}</button>
+   <button class="menu" onclick="menuTareaPorId('${encodeURIComponent(t.id)}')">⋮</button>
+   <div class="date"><span class="date-icon gc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 9h18"/><path d="M8 13h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01" stroke-linecap="round"/></svg></span><span>${fecha}</span></div>
+   <div class="summary">
+    <div class="metric-title"><span class="gc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 3.5h6M8 8h8M8 12h8M8 16h5" stroke-linecap="round"/></svg></span><span>TAREAS</span></div>
+    <div class="metric-title"><span class="gc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/></svg></span><span>CANTIDAD</span></div>
+    <div class="metric-title"><span class="gc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a9 9 0 1 0 9 9c0-1.1-.9-2-2-2h-2.2a2 2 0 0 1-1.8-2.8l.5-1.2A2 2 0 0 0 13.7 3H12Z"/><circle cx="7.5" cy="11" r=".7"/><circle cx="10" cy="7.5" r=".7"/><circle cx="14" cy="6.8" r=".7"/></svg></span><span>COLOR</span></div>
+    <div class="metric-value"><span>${arts.length}</span></div>
+    <div class="metric-value"><span>${esHistorial ? '—' : cantidadPorArticulo.toLocaleString('es-AR')}</span></div>
+    <div class="metric-value">${colorHtml}</div>
+   </div>
+   <div class="production-line">${esHistorial ? '<span class="gc-icon production-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 3.5h6M8 8h8M8 12h8M8 16h5" stroke-linecap="round"/></svg></span><span>HISTORIAL</span>' : `<span class="production-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V9M10 19V5M16 19v-8M22 19H2" stroke-linecap="round"/><path d="m4 9 6-4 6 3 6-5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>PRODUCCIÓN</span><strong>${prod.toLocaleString('es-AR')}</strong>`}</div>
+  </div>
+  <div class="th"><span>ARTÍCULO</span><span>TALLER</span><span>ESTADO</span></div>
+  ${filas}
+  <div class="foot"><button onclick="agregarArticulo(${ti})">＋ AGREGAR ARTÍCULO</button></div>
+ </article>`;
+}
+
+function interpretarArticulosPegados(texto){
+ const raw=String(texto||'').replace(/\r/g,'');
+ const lineas=raw.split('\n');
+ const resultado=[];
+
+ function agregar(articulo,taller,fechaTexto){
+   articulo=normalizarArticuloHistorial(articulo);
+   taller=String(taller??'')
+      .replace(/\u00A0/g,' ')
+      .replace(/["“”'‘’]/g,'')
+      .trim()
+      .toUpperCase();
+
+   fechaTexto=String(fechaTexto??'')
+      .replace(/\u00A0/g,' ')
+      .trim();
+
+   if(!articulo || !/^\d+$/.test(articulo)) return;
+
+   if(/SELEC\.?\s*TALLER/i.test(taller)) taller='';
+
+   let fechaSalida='';
+   if(fechaTexto){
+     fechaSalida=normalizarFechaHistorial(fechaTexto);
+
+     // Si la fecha viene mal escrita (por ejemplo 9/0), NO eliminamos
+     // la fila. El artículo y el taller siguen siendo datos válidos.
+     // La fecha queda vacía para poder corregirla luego desde EDITAR.
+     if(!fechaSalida){
+       fechaSalida='';
+     }
+   }
+
+   resultado.push({articulo,taller,fechaSalida});
+ }
+
+ // 1) Primero procesamos cada línea como una fila de Excel/tabla.
+ //    Soporta TAB, |, ; y también espacios múltiples.
+ const pendientes=[];
+
+ for(let i=0;i<lineas.length;i++){
+   let s=lineas[i].trim();
+   if(!s) continue;
+
+   // Markdown separator / encabezado.
+   const limpio=s.replace(/\|/g,'').replace(/:/g,'').trim();
+   if(/^ART[ÍI]CULO\s+TALLER\s+FECHA$/i.test(limpio)) continue;
+   if(/^-+\s*-+\s*-+$/.test(limpio)) continue;
+
+   // Quitar barras exteriores de una tabla Markdown.
+   if(s.startsWith('|')) s=s.slice(1);
+   if(s.endsWith('|')) s=s.slice(0,-1);
+
+   let partes=null;
+
+   if(s.includes('|')){
+     partes=s.split('|').map(x=>x.replace(/\u00A0/g,' ').trim());
+   }else if(s.includes('\t')){
+     partes=s.split('\t').map(x=>x.replace(/\u00A0/g,' ').trim());
+   }else if(s.includes(';')){
+     partes=s.split(';').map(x=>x.replace(/\u00A0/g,' ').trim());
+   }else{
+     // Copiado como texto plano: artículo + taller + fecha.
+     // La fecha al final permite separar aunque no haya TAB.
+     const m=s.match(/^(\d+(?:\.0+)?)\s+(.+?)\s+(\d{1,2}[\/\-.]\d{1,2}[\/\-.]\d{2,4})$/);
+     if(m){
+       agregar(m[1],m[2],m[3]);
+       continue;
+     }
+
+     // Artículo solo.
+     const solo=s.match(/^(\d+(?:\.0+)?)$/);
+     if(solo){
+       agregar(solo[1],'','');
+       continue;
+     }
+
+     // Artículo + taller sin fecha.
+     const sinFecha=s.match(/^(\d+(?:\.0+)?)\s+(.+)$/);
+     if(sinFecha){
+       agregar(sinFecha[1],sinFecha[2],'');
+       continue;
+     }
+
+     // Si una celda vino con saltos de línea, la tratamos más abajo.
+     pendientes.push(s);
+     continue;
+   }
+
+   if(partes && partes.length>=3){
+     agregar(partes[0],partes[1],partes[2]);
+   }else if(partes && partes.length===2){
+     agregar(partes[0],partes[1],'');
+   }else if(partes && partes.length===1){
+     agregar(partes[0],'','');
+   }
+ }
+
+ // 2) Fallback para un pegado raro donde cada fila llegó como:
+ //    ARTICULO
+ //    TALLER
+ //    FECHA
+ //    ARTICULO
+ //    TALLER
+ //    FECHA
+ //    Se reconoce por la fecha en la tercera línea.
+ if(pendientes.length){
+   for(let i=0;i<pendientes.length;){
+     const a=pendientes[i]||'';
+     const b=pendientes[i+1]||'';
+     const c=pendientes[i+2]||'';
+
+     if(/^\d+(?:\.0+)?$/.test(a) && b){
+       agregar(a,b,c);
+       i+=3;
+     }else{
+       i++;
+     }
+   }
+ }
+
+ return resultado;
+}
+
+function renderFilasEdicion(articulos){
+ const cont=document.getElementById('editRows');
+ if(!cont)return;
+
+ if(!articulos.length){
+   cont.innerHTML='<div style="padding:15px;text-align:center;color:#aebbd0;">No hay artículos.</div>';
+   return;
+ }
+
+ cont.innerHTML=articulos.map((a,i)=>`
+   <div class="edit-row" data-edit-index="${i}"
+     style="display:grid;grid-template-columns:minmax(90px,.7fr) minmax(150px,1.4fr) minmax(130px,1fr);gap:8px;align-items:center;padding:7px 2px;border-bottom:1px solid #263650;">
+     <input class="edit-articulo" value="${esc(a.articulo||'')}"
+       style="width:100%;box-sizing:border-box;background:#111d30;color:#fff;border:1px solid #344867;border-radius:6px;padding:8px;font-weight:800;">
+     <select class="edit-taller"
+       style="width:100%;box-sizing:border-box;background:#111d30;color:#fff;border:1px solid #344867;border-radius:6px;padding:8px;font-weight:800;">
+       ${opcionesTaller(a.taller||'')}
+     </select>
+     <input class="edit-fecha" type="date" value="${esc(a.fechaSalida||'')}"
+       style="width:100%;box-sizing:border-box;background:#111d30;color:#fff;border:1px solid #344867;border-radius:6px;padding:8px;font-weight:800;">
+   </div>
+ `).join('');
+}
+
+function leerFilasEdicion(){
+ return [...document.querySelectorAll('#editRows .edit-row')].map(row=>{
+   const articulo=normalizarArticuloHistorial(row.querySelector('.edit-articulo')?.value||'');
+   const taller=(row.querySelector('.edit-taller')?.value||'').trim();
+   const fechaSalida=row.querySelector('.edit-fecha')?.value||'';
+
+   return {
+     articulo,
+     taller,
+     fechaSalida
+   };
+ }).filter(r=>r.articulo);
+}
+
+function obtenerColoresTarea(){
+ const filas=[...document.querySelectorAll('#taskColorRows .color-detail-row')];
+ return filas.map(f=>{
+   const color=(f.querySelector('.detail-color')?.value||'').trim().toUpperCase();
+   const cantidad=Number(f.querySelector('.detail-qty')?.value||0);
+   return {color,cantidad};
+ }).filter(x=>x.color && x.cantidad>0);
+}
+
+function actualizarTotalColoresTarea(){
+ const coloresTarea=obtenerColoresTarea();
+ const total=coloresTarea.reduce((s,x)=>s+Number(x.cantidad||0),0);
+ const el=document.getElementById('colorDetailTotal');
+ if(el)el.textContent=`Total por artículo: ${total.toLocaleString('es-AR')}`;
+ return total;
+}
+
+function actualizarDatalistColoresMaterial(){
+ const dl=document.getElementById('taskMaterialColors');
+ if(!dl)return;
+ dl.innerHTML=(coloresMaterial||[]).map(c=>`<option value="${esc(c)}"></option>`).join('');
+}
+
+function agregarColorTarea(color='',cantidad=''){
+ const wrap=document.getElementById('taskColorRows');
+ if(!wrap)return;
+
+ const row=document.createElement('div');
+ row.className='color-detail-row';
+ row.innerHTML=`
+   <div class="detail-color-wrap">
+     <input class="detail-color" value="${esc(color||'')}" placeholder="Escribí o elegí un color" autocomplete="off">
+     <div class="detail-color-suggestions"></div>
+   </div>
+   <input class="detail-qty" type="number" min="1" step="1" value="${cantidad||''}" placeholder="Cantidad">
+   <button type="button" class="color-remove" title="Quitar color">✕</button>
+ `;
+ row.querySelector('.color-remove').onclick=()=>{
+   row.remove();
+   actualizarTotalColoresTarea();
+ };
+ const cantidadInput=row.querySelector('.detail-qty');
+ const colorInput=row.querySelector('.detail-color');
+ const sugerencias=row.querySelector('.detail-color-suggestions');
+
+ const mostrarSugerencias=()=>{
+   const q=String(colorInput.value||'').trim().toUpperCase();
+   const lista=(coloresMaterial||[]).filter(c=>!q || String(c).toUpperCase().includes(q)).slice(0,30);
+   sugerencias.innerHTML=lista.map(c=>`<div class="detail-color-suggestion" data-color="${esc(c)}">${esc(c)}</div>`).join('');
+   sugerencias.querySelectorAll('.detail-color-suggestion').forEach(el=>{
+     el.addEventListener('mousedown',e=>{
+       e.preventDefault();
+       colorInput.value=el.dataset.color||'';
+       actualizarTotalColoresTarea();
+       sugerencias.classList.remove('open');
+       colorInput.focus();
+     });
+   });
+   sugerencias.classList.toggle('open',lista.length>0);
+ };
+ const cerrarSugerencias=()=>sugerencias.classList.remove('open');
+
+ cantidadInput.addEventListener('input',actualizarTotalColoresTarea);
+ colorInput.addEventListener('input',()=>{actualizarTotalColoresTarea();mostrarSugerencias();});
+ colorInput.addEventListener('focus',mostrarSugerencias);
+ colorInput.addEventListener('blur',()=>setTimeout(cerrarSugerencias,120));
+
+ colorInput.addEventListener('keydown',e=>{
+   if(e.key==='Enter'){
+     e.preventDefault();
+     if(!colorInput.value.trim())return;
+     cerrarSugerencias();
+     agregarColorTarea();
+     setTimeout(()=>{
+       const filas=wrap.querySelectorAll('.color-detail-row');
+       const ultima=filas[filas.length-1];
+       ultima?.querySelector('.detail-color')?.focus();
+     },0);
+   }
+ });
+
+ cantidadInput.addEventListener('keydown',e=>{
+   if(e.key==='Enter'){
+     e.preventDefault();
+     if(!colorInput.value.trim()){
+       colorInput.focus();
+       return;
+     }
+     agregarColorTarea();
+     setTimeout(()=>{
+       const filas=wrap.querySelectorAll('.color-detail-row');
+       const ultima=filas[filas.length-1];
+       ultima?.querySelector('.detail-color')?.focus();
+     },0);
+   }
+ });
+
+ wrap.appendChild(row);
+ actualizarTotalColoresTarea();
+}
+
+function renderColoresTarea(coloresTarea=[]){
+ const wrap=document.getElementById('taskColorRows');
+ if(!wrap)return;
+ wrap.innerHTML='';
+ (coloresTarea||[]).forEach(x=>agregarColorTarea(x.color||'',x.cantidad||''));
+ actualizarTotalColoresTarea();
+}
+
+function normalizarColoresDeTarea(t){
+ if(Array.isArray(t.colores) && t.colores.length){
+   return t.colores
+     .map(x=>({color:String(x.color||'').trim().toUpperCase(),cantidad:Number(x.cantidad||0)}))
+     .filter(x=>x.color && x.cantidad>0);
+ }
+ if(t.color && Number(t.cantidad||0)>0){
+   return [{color:String(t.color).trim().toUpperCase(),cantidad:Number(t.cantidad)}];
+ }
+ return [];
+}
+
+function textoColoresTarea(t){
+ const lista=normalizarColoresDeTarea(t);
+ if(!lista.length)return '';
+ return lista.map(x=>`${x.color} ${Number(x.cantidad).toLocaleString('es-AR')}`).join(' · ');
+}
+
+function cantidadTareaPorArticulo(t){
+ const lista=normalizarColoresDeTarea(t);
+ if(lista.length)return lista.reduce((s,x)=>s+Number(x.cantidad||0),0);
+ return Number(t.cantidad||0);
+}
+
+
+function verColoresTarea(id){
+ const tasks=loadTasks();
+ const t=tasks.find(x=>String(x.id)===String(id));
+ if(!t){
+   console.warn('No se encontró la tarea para VER COLORES:', id);
+   return;
+ }
+
+ const colores=normalizarColoresDeTarea(t);
+ if(!colores.length){
+   return;
+ }
+ const body=document.getElementById('materialsModalBody');
+ const title=document.getElementById('materialsModalTitle');
+ if(!body||!title)return;
+
+ const partesFecha=String(t.fecha||'').split('-');
+ const fechaMostrar=partesFecha.length===3
+   ? `${partesFecha[2]}-${partesFecha[1]}-${partesFecha[0]}`
+   : (t.fecha||'');
+ title.textContent='COLORES';
+ const fechaEl=document.getElementById('materialsModalDate');
+ if(fechaEl) fechaEl.textContent=fechaMostrar ? ` ${fechaMostrar}` : '';
+ body.innerHTML='';
+
+ colores.forEach(x=>{
+   const row=document.createElement('div');
+   row.className='materials-modal-row';
+   row.innerHTML=`<span>${esc(x.color)}</span><strong>${Number(x.cantidad).toLocaleString('es-AR')}</strong>`;
+   body.appendChild(row);
+ });
+
+ const total=colores.reduce((s,x)=>s+Number(x.cantidad||0),0);
+ const totalDiv=document.createElement('div');
+ totalDiv.className='materials-modal-total';
+ totalDiv.textContent=`TOTAL POR ARTÍCULO: ${total.toLocaleString('es-AR')}`;
+ body.appendChild(totalDiv);
+
+ document.getElementById('materialsModal').style.display='flex';
+}
+
+function cerrarColoresTarea(){
+ const modal=document.getElementById('materialsModal');
+ if(modal)modal.style.display='none';
+}
+
+function obtenerFechaTareaDesdeDia(){
+ const diaRaw=String(document.getElementById('taskDay')?.value||'').trim();
+ if(!/^\d{1,2}$/.test(diaRaw))return '';
+ const dia=Number(diaRaw);
+ const anio=Number(document.getElementById('year').value);
+ const mes=Number(document.getElementById('month').value);
+ if(!anio || !mes || dia<1 || dia>31)return '';
+ const fecha=`${anio}-${String(mes).padStart(2,'0')}-${String(dia).padStart(2,'0')}`;
+ const d=new Date(`${fecha}T00:00:00`);
+ if(d.getFullYear()!==anio || d.getMonth()+1!==mes || d.getDate()!==dia)return '';
+ return fecha;
+}
+
+function actualizarVistaFechaTarea(){
+ const preview=document.getElementById('taskDatePreview');
+ const diaRaw=String(document.getElementById('taskDay')?.value||'').trim();
+ const anio=Number(document.getElementById('year')?.value||0);
+ const mes=Number(document.getElementById('month')?.value||0);
+ if(!preview){return;}
+ if(!/^\d{1,2}$/.test(diaRaw)||!anio||!mes){
+   preview.textContent='';
+   return;
+ }
+ const dia=String(Number(diaRaw)).padStart(2,'0');
+ const fecha=`${anio}-${String(mes).padStart(2,'0')}-${dia}`;
+ const d=new Date(`${fecha}T00:00:00`);
+ if(d.getFullYear()!==anio||d.getMonth()+1!==mes||d.getDate()!==Number(diaRaw)){
+   preview.textContent='Día inválido para el mes seleccionado';
+   preview.style.color='#f59e0b';
+   return;
+ }
+ preview.style.color='#5ac64d';
+ preview.textContent=`Se guardará como: ${fecha}`;
+}
+
+function abrirNuevaTarea(){
+ editTaskIndex=null;
+ document.getElementById('modalTitle').textContent='NUEVA PRODUCCIÓN';
+ document.getElementById('modalSave').textContent='CREAR TAREA';
+ document.getElementById('taskDay').value='01';
+ actualizarVistaFechaTarea();
+ document.getElementById('taskQty').value='80';
+ const colorSel=document.getElementById('taskColor');
+ if(colorSel){
+   colorSel.innerHTML=opcionesColor();
+   colorSel.value='';
+ }
+ renderColoresTarea([]);
+ agregarColorTarea();
+ document.getElementById('taskArticles').value='';
+ document.getElementById('taskArticles').style.display='';
+ document.getElementById('editRowsWrap').style.display='none';
+ document.getElementById('modalBg').style.display='flex';
+}
+function abrirEditarTareaPorId(id){
+ const tasks=loadTasks();
+ const ti=tasks.findIndex(t=>String(t.id)===String(id));
+ if(ti===-1){
+   alert('No pude identificar exactamente esta tarea.');
+   return;
+ }
+ abrirEditarTarea(ti);
+}
+
+function abrirEditarTarea(ti){
+ const tasks=loadTasks();
+ const t=tasks[ti];
+ if(!t)return;
+
+ editTaskIndex=ti;
+ document.getElementById('modalTitle').textContent='EDITAR PRODUCCIÓN';
+ document.getElementById('modalSave').textContent='GUARDAR CAMBIOS';
+
+ const fechaEditar=String(t.fecha||'');
+ document.getElementById('taskDay').value=fechaEditar.split('-')[2]||'';
+ actualizarVistaFechaTarea();
+ const coloresTarea=normalizarColoresDeTarea(t);
+ const totalColores=coloresTarea.reduce((s,x)=>s+Number(x.cantidad||0),0);
+
+ document.getElementById('taskQty').value=totalColores||t.cantidad||'';
+ const colorBase=t.color || '';
+ document.getElementById('taskColor').innerHTML=opcionesColor(colorBase);
+ document.getElementById('taskColor').value=colorBase;
+ const coloresGuardados=Array.isArray(t.colores)?t.colores:[];
+ renderColoresTarea(coloresGuardados);
+ if(!coloresGuardados.length)agregarColorTarea();
+
+ document.getElementById('taskArticles').style.display='none';
+ document.getElementById('editRowsWrap').style.display='block';
+ renderFilasEdicion(t.articulos||[]);
+
+ document.getElementById('modalBg').style.display='flex';
+}
+function cerrarModal(){
+ document.getElementById('modalBg').style.display='none';
+ editTaskIndex=null;
+ const ta=document.getElementById('taskArticles');
+ const rw=document.getElementById('editRowsWrap');
+ if(ta)ta.style.display='';
+ if(rw)rw.style.display='none';
+ const cr=document.getElementById('taskColorRows');
+ if(cr)cr.innerHTML='';
+}
+
+async function guardarTarea(){
+ const fecha=obtenerFechaTareaDesdeDia();
+ const colorSimple=document.getElementById('taskColor').value.trim().toUpperCase();
+ const coloresTarea=obtenerColoresTarea();
+ const totalColores=coloresTarea.reduce((s,x)=>s+Number(x.cantidad||0),0);
+ const cantidadBase=Number(document.getElementById('taskQty').value||0);
+ const cantidad=coloresTarea.length ? totalColores : cantidadBase;
+
+ // IMPORTANTE: COLOR es el COLOR BASE de la tarea.
+ // TAREAS_COLORES contiene los colores de material y NO debe
+ // reemplazar el color base por VARIOS.
+ const color=colorSimple;
+
+ // NUEVA TAREA: admite lista simple o pegado de Excel.
+ if(editTaskIndex===null){
+   const textoArticulos=document.getElementById('taskArticles').value||'';
+   const registrosPegados=interpretarArticulosPegados(textoArticulos);
+
+   if(!fecha||!cantidad||(!colorSimple&&!coloresTarea.length)||!registrosPegados.length){
+    alert('Completá fecha, cantidad, color y al menos un artículo.');
+    return;
+   }
+
+   const tasks=loadTasks();
+   tasks.push({
+     id:'',
+     fecha,
+     cantidad,
+     color,
+     estado:'PENDIENTE',
+     colores:coloresTarea.length ? coloresTarea : [{color:colorSimple,cantidad:cantidad}],
+     articulos:registrosPegados.map(r=>({
+       articulo:r.articulo,
+       taller:r.taller||'',
+       fechaSalida:r.fechaSalida||''
+     }))
+   });
+
+   const botonGuardar=document.getElementById('modalSave');
+   if(botonGuardar){botonGuardar.disabled=true;botonGuardar.textContent='⏳ GUARDANDO...';}
+   try{
+     await saveTasks(tasks);
+   }catch(error){
+     if(botonGuardar){botonGuardar.disabled=false;botonGuardar.textContent='CREAR TAREA';}
+     console.error('❌ ERROR GUARDANDO NUEVA TAREA:',error);
+     alert('❌ NO SE PUDO GUARDAR EN GOOGLE SHEETS.\n\n'+error.message);
+     return;
+   }
+   if(botonGuardar)botonGuardar.disabled=false;
+   document.getElementById('year').value=fecha.slice(0,4);
+   document.getElementById('month').value=String(Number(fecha.slice(5,7)));
+   cerrarModal();
+   cargarAnos();
+   render();
+   mostrarAviso(`Tarea creada con ${registrosPegados.length} artículos`);
+   return;
+ }
+
+ // EDITAR: cada fila permite modificar ARTÍCULO, TALLER y FECHA DE SALIDA.
+ const editados=leerFilasEdicion();
+
+ if(!fecha||!cantidad||(!colorSimple&&!coloresTarea.length)||!editados.length){
+   alert('Completá fecha, cantidad, color y al menos un artículo.');
+   return;
+ }
+
+ const tasks=loadTasks();
+ const t=tasks[editTaskIndex];
+ if(!t){
+   alert('No encontré la tarea para editar.');
+   return;
+ }
+
+ t.fecha=fecha;
+ t.cantidad=cantidad;
+ t.color=color;
+ t.colores=coloresTarea.length ? coloresTarea : [{color:colorSimple,cantidad:cantidad}];
+ t.articulos=editados;
+
+ const botonGuardar=document.getElementById('modalSave');
+ if(botonGuardar){botonGuardar.disabled=true;botonGuardar.textContent='⏳ GUARDANDO...';}
+ try{
+   await saveTasks(tasks);
+ }catch(error){
+   if(botonGuardar){botonGuardar.disabled=false;botonGuardar.textContent='GUARDAR CAMBIOS';}
+   console.error('❌ ERROR GUARDANDO CAMBIOS:',error);
+   alert('❌ NO SE PUDO GUARDAR EN GOOGLE SHEETS.\n\n'+error.message);
+   return;
+ }
+ if(botonGuardar)botonGuardar.disabled=false;
+ cerrarModal();
+ cargarAnos();
+ document.getElementById('year').value=fecha.slice(0,4);
+ document.getElementById('month').value=String(Number(fecha.slice(5,7)));
+ render();
+ mostrarAviso('Tarea modificada correctamente');
+}
+async function agregarArticulo(ti){
+ const numero=prompt('¿Qué artículo querés agregar a esta tarea?');
+ if(numero===null)return;
+ const articulo=numero.trim();
+ if(!articulo)return;
+ const tasks=loadTasks();
+ // Los artículos pueden repetirse dentro de una misma tarea.
+ // Ej.: 1912 puede aparecer 5 veces y cada fila es independiente.
+ tasks[ti].articulos.push({articulo,taller:'',fechaSalida:''});
+ try{await saveTasks(tasks);render();mostrarAviso('Artículo agregado');}catch(error){alert('❌ NO SE PUDO GUARDAR EN GOOGLE SHEETS.\n\n'+error.message);}
+}
+
+async function cambiarTallerPorId(idCodificado,ai,taller){
+ const id=decodeURIComponent(idCodificado);
+ const tasks=loadTasks();
+ const ti=tasks.findIndex(t=>String(t.id)===String(id));
+
+ if(ti===-1){
+   alert('No pude identificar exactamente la tarea.');
+   return;
+ }
+
+ const a=tasks[ti].articulos[ai];
+ if(!a)return;
+
+ if(a.fechaSalida){
+   mostrarAviso('Este artículo ya fue entregado y no se puede cambiar desde aquí.');
+   return;
+ }
+
+ const nuevoTaller=(taller||'').trim().toUpperCase();
+
+ // Si el artículo ya tiene ID central, actualizamos SOLO esa fila.
+ // Esto evita sincronizar toda la tarea y garantiza que una reserva
+ // recién asignada quede inmediatamente persistida en Google Sheets.
+ if(a.id){
+   try{
+     const respuesta=await fetch(
+       `/api/tareas/articulos/${encodeURIComponent(a.id)}`,
+       {
+         method:'PUT',
+         headers:{'Content-Type':'application/json'},
+         body:JSON.stringify({
+           taller:nuevoTaller,
+           fechaSalida:a.fechaSalida||'',
+           movimientoId:a.movimientoId||''
+         }),
+         cache:'no-store'
+       }
+     );
+     const data=await respuesta.json().catch(()=>({}));
+     if(!respuesta.ok || data.success!==true){
+       throw new Error(data.error||'No se pudo guardar la reserva.');
+     }
+   }catch(error){
+     console.error('❌ ERROR GUARDANDO RESERVA:',error);
+     mostrarAviso('⚠️ No se pudo guardar la reserva');
+     return;
+   }
+ }
+
+ a.taller=nuevoTaller;
+ tasks[ti].articulos[ai]=a;
+ tareasCache=tasks;
+ try{localStorage.setItem(STORAGE,JSON.stringify(tareasCache));}catch(_){}
+
+ render();
+ mostrarAviso(a.taller
+   ? `Artículo ${a.articulo} reservado para ${a.taller}`
+   : `Artículo ${a.articulo} disponible`);
+}
+
+// Compatibilidad con llamadas antiguas.
+async function cambiarTaller(ti,ai,taller){
+ const tasks=loadTasks();
+ const t=tasks[ti];
+ if(!t)return;
+ await cambiarTallerPorId(encodeURIComponent(t.id),ai,taller);
+}
+
+
+async function cambiarEstadoTareaPorId(idCodificado){
+ const id=decodeURIComponent(idCodificado);
+ const tasks=loadTasks();
+ const ti=tasks.findIndex(t=>String(t.id)===String(id));
+
+ if(ti<0){
+   mostrarAviso('No pude identificar la tarea.');
+   return;
+ }
+
+ const tarea=tasks[ti];
+ const actual=String(tarea.estado||'PENDIENTE').trim().toUpperCase();
+ const nuevo=actual==='COMPLETO' ? 'PENDIENTE' : 'COMPLETO';
+
+ try{
+   const r=await fetch('/api/tareas/'+encodeURIComponent(id)+'/estado',{
+     method:'PUT',
+     headers:{'Content-Type':'application/json'},
+     body:JSON.stringify({estado:nuevo}),
+     cache:'no-store'
+   });
+   const data=await r.json().catch(()=>({}));
+
+   if(!r.ok || data.success!==true){
+     throw new Error(data.error||'No se pudo guardar el estado.');
+   }
+
+   tarea.estado=nuevo;
+   if(data.tarea){
+     tasks[ti]=normalizarTareaCliente({...tarea,...data.tarea});
+   }else{
+     tasks[ti]=tarea;
+   }
+
+   tareasCache=tasks;
+   try{localStorage.setItem(STORAGE,JSON.stringify(tareasCache));}catch(_){}
+   render();
+
+   mostrarAviso(nuevo==='COMPLETO'
+     ? '✅ Tarea marcada como COMPLETO'
+     : '🟠 Tarea marcada como PENDIENTE');
+ }catch(error){
+   console.error('❌ ERROR CAMBIANDO ESTADO:',error);
+   mostrarAviso('⚠️ No se pudo cambiar el estado de la tarea');
+ }
+}
+
+async function menuTareaPorId(idCodificado){
+ const id=decodeURIComponent(idCodificado);
+ const tasks=loadTasks();
+ const ti=tasks.findIndex(t=>String(t.id)===String(id));
+ if(ti===-1){
+   alert('No pude identificar exactamente esta tarea.');
+   return;
+ }
+ abrirMenuTarea(ti);
+}
+
+let menuTaskIndex=null;
+
+function abrirMenuTarea(ti){
+ const tasks=loadTasks();
+ const t=tasks[ti];
+ if(!t)return;
+ menuTaskIndex=ti;
+ const fecha=t.fecha ? t.fecha.split('-').reverse().join('/') : 'SIN FECHA';
+ document.getElementById('taskMenuDate').textContent=fecha;
+ document.getElementById('taskMenuBg').style.display='flex';
+}
+
+function cerrarMenuTarea(){
+ document.getElementById('taskMenuBg').style.display='none';
+ menuTaskIndex=null;
+}
+
+function menuEditarTarea(){
+ const ti=menuTaskIndex;
+ const t=loadTasks()[ti];
+ cerrarMenuTarea();
+ if(t) abrirEditarTareaPorId(t.id);
+}
+
+function menuAgregarHistorial(){
+ const ti=menuTaskIndex;
+ cerrarMenuTarea();
+ if(ti!==null && ti!==undefined) importarHistorial(ti);
+}
+
+function menuEliminarTarea(){
+ const ti=menuTaskIndex;
+ const t=loadTasks()[ti];
+ if(!t)return;
+ const fecha=t.fecha ? t.fecha.split('-').reverse().join('/') : 'SIN FECHA';
+ const articulos=(t.articulos||[]).length;
+ document.getElementById('taskConfirmText').innerHTML=
+   `Vas a eliminar la producción del <strong>${esc(fecha)}</strong>.<br><br>`+
+   `Se eliminarán sus <strong>${articulos}</strong> artículos y sus reservas.<br><br>`+
+   `<span style="color:#ff9eaa">Esta acción no se puede deshacer.</span>`;
+ document.getElementById('taskConfirmBg').style.display='flex';
+}
+
+function cerrarConfirmarEliminar(){
+ document.getElementById('taskConfirmBg').style.display='none';
+}
+
+async function confirmarEliminarTarea(){
+ const ti=menuTaskIndex;
+ const t=loadTasks()[ti];
+ if(!t){cerrarConfirmarEliminar();return;}
+ const id=t.id;
+ const fecha=t.fecha ? t.fecha.split('-').reverse().join('/') : '';
+ const boton=document.getElementById('confirmDeleteBtn');
+ if(boton){boton.disabled=true;boton.textContent='ELIMINANDO...';}
+ try{
+   const r=await fetch('/api/tareas/'+encodeURIComponent(id),{method:'DELETE',cache:'no-store'});
+   const data=await r.json().catch(()=>({}));
+   if(!r.ok||data.success!==true)throw new Error(data.error||'No se pudo eliminar la tarea de Google Sheets.');
+   tareasCache=loadTasks().filter(x=>String(x.id)!==String(id));
+   try{localStorage.setItem(STORAGE,JSON.stringify(tareasCache));}catch(_){}
+   cerrarConfirmarEliminar();
+   cerrarMenuTarea();
+   cargarAnos();
+   render();
+   mostrarAviso(`Tarea del ${fecha} eliminada correctamente`);
+ }catch(error){
+   alert('❌ NO SE PUDO ELIMINAR LA TAREA.\n\n'+error.message);
+ }finally{
+   if(boton){boton.disabled=false;boton.textContent='SÍ, ELIMINAR';}
+ }
+}
+
+// Compatibilidad con llamadas antiguas.
+async function menuTarea(ti){ abrirMenuTarea(ti); }
+
+let importTaskIndex=null;
+
+function importarHistorial(ti){
+ importTaskIndex=Number(ti);
+ document.getElementById('historyPaste').value='';
+ document.getElementById('importBg').style.display='flex';
+ setTimeout(()=>document.getElementById('historyPaste').focus(),50);
+}
+
+function cerrarImportacion(){
+ document.getElementById('importBg').style.display='none';
+ importTaskIndex=null;
+}
+
+function normalizarArticuloHistorial(valor){
+ let s=String(valor??'')
+   .replace(/\u00A0/g,' ')
+   .replace(/["“”'‘’]/g,'')
+   .trim()
+   .toUpperCase();
+
+ // Excel puede entregar un artículo numérico como 1959.0
+ if(/^\d+\.0+$/.test(s)) s=s.replace(/\.0+$/,'');
+
+ return s;
+}
+
+function normalizarFechaHistorial(valor){
+ const s=String(valor||'').trim();
+ if(!s)return '';
+
+ // dd/mm/yy or dd/mm/yyyy
+ const m=s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2}|\d{4})$/);
+ if(!m)return '';
+
+ let dia=Number(m[1]);
+ let mes=Number(m[2]);
+ let anio=Number(m[3]);
+
+ if(anio<100)anio+=2000;
+
+ if(!dia||!mes||anio<2000||anio>2100)return '';
+
+ const d=new Date(anio,mes-1,dia);
+ if(d.getFullYear()!==anio || d.getMonth()!==mes-1 || d.getDate()!==dia)return '';
+
+ return `${anio}-${String(mes).padStart(2,'0')}-${String(dia).padStart(2,'0')}`;
+}
+
+function separarFilaHistorial(linea){
+ let s=linea.trim();
+
+ // Quita formato de tabla Markdown si se pega así.
+ s=s.replace(/^\|/,'').replace(/\|$/,'').trim();
+
+ if(!s)return null;
+
+ // Separadores posibles: TAB, |, ;.
+ let partes;
+ if(s.includes('\t')){
+   partes=s.split('\t').map(x=>x.trim());
+ }else if(s.includes('|')){
+   // NO eliminar columnas vacías: una fecha vacía significa RESERVADO.
+   partes=s.split('|').map(x=>x.trim());
+ }else if(s.includes(';')){
+   partes=s.split(';').map(x=>x.trim());
+ }else{
+   // Último recurso: espacios múltiples.
+   partes=s.split(/\s{2,}/).map(x=>x.trim());
+ }
+
+ // Si empieza con |, quitar SOLO esa columna externa.
+ // NO quitar una columna vacía al final: en
+ // | 1409 | BEYMAR | |
+ // la última columna vacía ES la fecha y significa "todavía no salió".
+ if(s.includes('|')){
+   if(partes[0]==='')partes.shift();
+ }
+
+ // Ignora encabezados y separadores Markdown.
+ if(partes.length<3)return null;
+ if(/^art[íi]culo$/i.test(partes[0]))return null;
+ if(/^[-:]+$/.test(partes[0]))return null;
+
+ const articulo=normalizarArticuloHistorial(partes[0]);
+ let taller=partes[1].trim().toUpperCase();
+ const fechaTexto=String(partes[2]||'').replace(/\u00A0/g,' ').trim();
+ const fecha=fechaTexto ? normalizarFechaHistorial(fechaTexto) : '';
+
+ if(!articulo)return null;
+
+ // En el Excel viejo, "SELEC. TALLER" significa que todavía no tiene dueño.
+ if(
+   !taller ||
+   /SELEC\.?\s*TALLER/i.test(
+     taller.replace(/[\*"“”'‘’]/g,'').trim()
+   )
+ ){
+   taller='';
+ }
+
+ // Fecha vacía = todavía no salió.
+ // Si además no hay taller => DISPONIBLE.
+ // Si hay taller => RESERVADO.
+ if(fechaTexto && !fecha)return null;
+
+ return {articulo,taller,fechaSalida:fecha};
+}
+
+async function procesarHistorialPegado(){
+ const texto=document.getElementById('historyPaste').value||'';
+ const lineas=texto.split(/\r?\n/);
+
+ const registros=[];
+ let errores=0;
+
+ lineas.forEach(linea=>{
+   if(!linea.trim())return;
+
+   const registro=separarFilaHistorial(linea);
+
+   if(registro){
+     registros.push(registro);
+   }else{
+     const limpia=linea.trim().replace(/^\|/,'').replace(/\|$/,'').trim();
+     if(!/^art[íi]culo\s+.*taller.*fecha$/i.test(limpia) &&
+        !/^-+(\s*\|\s*-+)+$/.test(limpia)){
+       errores++;
+     }
+   }
+ });
+
+ if(!registros.length){
+   alert('No encontré registros válidos. Pegá ARTÍCULO | TALLER | FECHA.');
+   return;
+ }
+
+ const tasks=loadTasks();
+ const ti=importTaskIndex;
+
+ if(ti===null || !tasks[ti]){
+   alert('No hay una tarea seleccionada para importar.');
+   return;
+ }
+
+ const tarea=tasks[ti];
+
+ /*
+  IMPORTANTE:
+  Esta importación NO crea tareas y NO usa la fecha de salida
+  para cambiar la fecha de la tarea.
+
+  Los datos se vuelcan SOLAMENTE sobre la tarea seleccionada.
+  Si la fecha está vacía, el artículo queda sin fecha de salida.
+ */
+ const existentes=tarea.articulos||[];
+
+ let actualizados=0;
+ const noEncontrados=[];
+
+ registros.forEach(r=>{
+   // Cada aparición de un artículo se consume una sola vez.
+   // Esto permite que 1912 aparezca varias veces en la misma tarea.
+   const indice=existentes.findIndex(a=>
+     normalizarArticuloHistorial(a.articulo)===normalizarArticuloHistorial(r.articulo) &&
+     !a.__importadoEnEstaCarga
+   );
+
+   if(indice===-1){
+     noEncontrados.push(r.articulo);
+     return;
+   }
+
+   existentes[indice].taller=r.taller||'';
+   existentes[indice].fechaSalida=r.fechaSalida||'';
+   existentes[indice].__importadoEnEstaCarga=true;
+   actualizados++;
+ });
+
+ // Quitamos la marca temporal.
+ existentes.forEach(a=>delete a.__importadoEnEstaCarga);
+
+ tarea.articulos=existentes;
+ tasks[ti]=tarea;
+
+ try{await saveTasks(tasks);}catch(error){
+   alert('❌ NO SE PUDO GUARDAR EL HISTORIAL EN GOOGLE SHEETS.\n\n'+error.message);
+   return;
+ }
+ cerrarImportacion();
+ importTaskIndex=null;
+
+ render();
+
+ let mensaje=`${actualizados} artículos actualizados en la tarea`;
+ if(noEncontrados.length) mensaje+=` · ${noEncontrados} no encontrados en esa tarea`;
+
+ mostrarAviso(mensaje);
+
+ if(noEncontrados.length){
+   setTimeout(()=>{
+     alert(
+       `Importación terminada.\n\n`+
+       `Actualizados: ${actualizados}\n`+
+       `No encontrados en la tarea: ${noEncontrados.length}\n`+
+       `Artículos: ${noEncontrados.join(', ')}\n\n`+
+       `Los que no estaban en esta tarea NO fueron agregados ni crearon otra tarea.`
+     );
+   },250);
+ }
+}
+
+function buscarArticulo(){
+ const q=document.getElementById('articleSearch').value.trim().toUpperCase();
+ if(!q){mostrarAviso('Ingresá un número de artículo');return}
+
+ const resultados=[];
+
+ // Historial normal de las tareas.
+ loadTasks().forEach(t=>(t.articulos||[]).forEach(a=>{
+  if(String(a.articulo).trim().toUpperCase()===q && a.fechaSalida){
+   resultados.push({
+    fecha:a.fechaSalida,
+    taller:a.taller||'',
+    cantidad:t.cantidad,
+    color:t.color,
+    articulo:q,
+    origen:'TAREA'
+   });
+  }
+ }));
+
+ // Historial viejo importado.
+ const historialViejo=JSON.parse(localStorage.getItem('gc_historial_viejo_v1')||'[]');
+ historialViejo.forEach(r=>{
+  if(String(r.articulo).trim().toUpperCase()===q){
+   resultados.push({
+    fecha:r.fechaSalida,
+    taller:r.taller||'',
+    cantidad:'—',
+    color:'—',
+    articulo:q,
+    origen:'IMPORTADO'
+   });
+  }
+ });
+
+ resultados.sort((a,b)=>b.fecha.localeCompare(a.fecha));
+
+ const report=document.getElementById('reportContent');
+ document.getElementById('reportTitle').textContent=`INFORME — ARTÍCULO ${q}`;
+
+ if(!resultados.length){
+  report.innerHTML='<div class="report-empty">No hay salidas registradas para este artículo dentro de TAREAS.</div>';
+ }else{
+  const total=resultados.reduce((s,r)=>{
+   const valor=String(r.cantidad??'').trim();
+   if(!valor || valor==='—' || valor==='-' || valor.toUpperCase()==='NAN') return s;
+   const n=Number(valor.replace(/[^0-9,.-]/g,'').replace(',','.'));
+   return s+(Number.isFinite(n)?n:0);
+  },0);
+  report.innerHTML=`
+   <div class="report-summary">
+    <div class="report-chip"><b>ARTÍCULO:</b> ${esc(q)}</div>
+    <div class="report-chip"><b>SALIDAS:</b> ${resultados.length}</div>
+    <div class="report-chip"><b>TOTAL CARTERAS:</b> ${total.toLocaleString('es-AR')}</div>
+   </div>
+   <table class="report-table">
+    <thead><tr><th>FECHA</th><th>TALLER</th><th>CANTIDAD</th><th>COLOR</th></tr></thead>
+    <tbody>${resultados.map(r=>`<tr>
+     <td>${esc(r.fecha.split('-').reverse().join('/'))}</td>
+     <td>${esc(r.taller)}</td>
+     <td>${esc(r.cantidad)}</td>
+     <td>${esc(r.color)}</td>
+    </tr>`).join('')}</tbody>
+   </table>`;
+ }
+ document.getElementById('reportBg').style.display='flex';
+}
+
+function cerrarInforme(){document.getElementById('reportBg').style.display='none'}
+
+function mostrarAviso(t){
+ const n=document.getElementById('notice');
+ n.textContent='✓ '+t;n.style.display='block';
+ clearTimeout(window._notice);
+ window._notice=setTimeout(()=>n.style.display='none',1800);
+}
+function esc(v){
+ return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+}
+
+const taskDayInput=document.getElementById('taskDay');
+if(taskDayInput){
+ taskDayInput.addEventListener('focus',()=>{
+   setTimeout(()=>{try{taskDayInput.select();}catch(_){ }},0);
+ });
+ taskDayInput.addEventListener('click',()=>{
+   setTimeout(()=>{try{taskDayInput.select();}catch(_){ }},0);
+ });
+ taskDayInput.addEventListener('input',()=>{
+   taskDayInput.value=taskDayInput.value.replace(/\D/g,'').slice(0,2);
+   actualizarVistaFechaTarea();
+ });
+ taskDayInput.addEventListener('blur',()=>{
+   const n=Number(taskDayInput.value||0);
+   if(n>=1&&n<=31)taskDayInput.value=String(n).padStart(2,'0');
+   actualizarVistaFechaTarea();
+ });
+}
+const yearInput=document.getElementById('year');
+const monthInput=document.getElementById('month');
+if(yearInput)yearInput.addEventListener('change',actualizarVistaFechaTarea);
+if(monthInput)monthInput.addEventListener('change',actualizarVistaFechaTarea);
+actualizarDatalistColoresMaterial();
+
+const newProductionBtn=document.getElementById('newProductionBtn');
+if(newProductionBtn){
+ newProductionBtn.addEventListener('click',()=>abrirNuevaTarea());
+}
+
+const workshopQuery=document.getElementById('workshopQuery');
+if(workshopQuery){
+ workshopQuery.addEventListener('change',e=>{
+  if(e.target.value)abrirConsultaTaller(e.target.value);
+ });
+}
+
+const workArticleQueryBtn=document.getElementById('workArticleQueryBtn');
+if(workArticleQueryBtn)workArticleQueryBtn.addEventListener('click',ejecutarConsultaArticulo);
+
+const workArticleQuery=document.getElementById('workArticleQuery');
+if(workArticleQuery){
+ workArticleQuery.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){
+   e.preventDefault();
+   ejecutarConsultaArticulo();
+  }
+ });
+}
+
+document.getElementById('articleSearch').addEventListener('keydown',e=>{
+ if(e.key==='Enter')buscarArticulo();
+});
+
+cargarMeses();
+Promise.all([
+  cargarTareasDesdeServidor(),
+  cargarTalleres(),
+  cargarColores(),
+  cargarColoresMaterial()
+]).then(()=>{
+  actualizarDatalistColoresMaterial();
+  cargarAnos();
+  poblarSelectorConsultaTaller();
+  render();
+});
+
+
+// ======================================================
+// CONSULTAS TALLER <-> ARTÍCULO
+// La información visible de TAREAS proviene de TAREAS_ARTICULOS.
+// Estas funciones solo consultan; no modifican datos.
+// ======================================================
+
+function normalizarConsultaTexto(v){
+ return String(v??'').trim().toUpperCase();
+}
+
+function obtenerArticulosDeTaller(nombreTaller){
+ const taller=normalizarConsultaTexto(nombreTaller);
+ const set=new Set();
+
+ loadTasks().forEach(t=>{
+  (t.articulos||[]).forEach(a=>{
+   if(normalizarConsultaTexto(a.taller)===taller){
+    const articulo=String(a.articulo||'').trim();
+    if(articulo)set.add(articulo);
+   }
+  });
+ });
+
+ return [...set].sort((a,b)=>a.localeCompare(b,'es',{numeric:true}));
+}
+
+function obtenerTalleresDeArticulo(numeroArticulo){
+ const articulo=normalizarConsultaTexto(numeroArticulo);
+ const set=new Set();
+
+ loadTasks().forEach(t=>{
+  (t.articulos||[]).forEach(a=>{
+   if(normalizarConsultaTexto(a.articulo)===articulo){
+    const taller=String(a.taller||'').trim();
+    if(taller)set.add(taller);
+   }
+  });
+ });
+
+ return [...set].sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
+}
+
+function poblarSelectorConsultaTaller(){
+ const select=document.getElementById('workshopQuery');
+ if(!select)return;
+
+ const set=new Set();
+
+ talleres.forEach(t=>{
+  const nombre=String(t||'').trim();
+  if(nombre)set.add(nombre);
+ });
+
+ loadTasks().forEach(t=>{
+  (t.articulos||[]).forEach(a=>{
+   const nombre=String(a.taller||'').trim();
+   if(nombre)set.add(nombre);
+  });
+ });
+
+ select.innerHTML='<option value="">TALLER</option>'+
+  [...set].sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}))
+   .map(t=>`<option value="${esc(t)}">${esc(t)}</option>`).join('');
+}
+
+function abrirConsultaTaller(nombreTaller){
+ const taller=String(nombreTaller||'').trim();
+ if(!taller)return;
+
+ const articulos=obtenerArticulosDeTaller(taller);
+ const contenido=document.getElementById('workshopQueryContent');
+ document.getElementById('workshopQueryTitle').textContent=`ARTÍCULOS QUE TRABAJA ${taller}`;
+
+ if(!articulos.length){
+  contenido.innerHTML='<div class="report-empty">No hay artículos asociados a este taller.</div>';
+ }else{
+  contenido.innerHTML=`
+   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:8px;">
+    ${articulos.map(a=>`<div style="background:#111d31;border:1px solid #344867;border-radius:9px;padding:11px 7px;text-align:center;color:#fff;font-weight:900;font-size:16px;">${esc(a)}</div>`).join('')}
+   </div>
+   <div style="margin-top:12px;text-align:right;color:#91a2bd;font-size:11px;font-weight:800;">
+    ${articulos.length} ARTÍCULO${articulos.length===1?'':'S'}
+   </div>`;
+ }
+ document.getElementById('workshopQueryBg').style.display='flex';
+}
+
+function cerrarConsultaProduccion(){
+ document.getElementById('workshopQueryBg').style.display='none';
+ const select=document.getElementById('workshopQuery');
+ if(select)select.value='';
+}
+
+function ejecutarConsultaArticulo(){
+ const input=document.getElementById('workArticleQuery');
+ const articulo=String(input?.value||'').trim().toUpperCase();
+
+ if(!articulo){
+  mostrarAviso('Ingresá un artículo');
+  return;
+ }
+
+ const talleresEncontrados=obtenerTalleresDeArticulo(articulo);
+ const contenido=document.getElementById('articleQueryContent');
+ document.getElementById('articleQueryTitle').textContent=`TALLERES QUE CONFECCIONAN ${articulo}`;
+
+ if(!talleresEncontrados.length){
+  contenido.innerHTML='<div class="report-empty">No hay talleres registrados para este artículo.</div>';
+ }else{
+  contenido.innerHTML=`
+   <div style="display:flex;flex-wrap:wrap;gap:8px;">
+    ${talleresEncontrados.map(t=>`<div style="background:#111d31;border:1px solid #344867;border-radius:9px;padding:11px 14px;color:#fff;font-weight:900;font-size:14px;">${esc(t)}</div>`).join('')}
+   </div>
+   <div style="margin-top:12px;text-align:right;color:#91a2bd;font-size:11px;font-weight:800;">
+    ${talleresEncontrados.length} TALLER${talleresEncontrados.length===1?'':'ES'}
+   </div>`;
+ }
+ document.getElementById('articleQueryBg').style.display='flex';
+}
+
+function cerrarConsultaArticulo(){
+ document.getElementById('articleQueryBg').style.display='none';
+}
+
+
+// ======================================================
+// BOTÓN VER COLORES — DELEGACIÓN GLOBAL
+// ======================================================
+document.addEventListener('click', function(event) {
+    const boton = event.target.closest('.task-materials-btn');
+
+    if (!boton) {
+        return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const id = decodeURIComponent(boton.dataset.verColoresId || '');
+
+    if (!id) {
+        console.error('VER COLORES: la tarea no tiene ID.');
+        return;
+    }
+
+    verColoresTarea(id);
+});
+
+
+// ======================================================
+// FOTO DE ARTICULO — visor rapido desde FOTOS
+// ======================================================
+const GC_FOTOS_BASE = 'https://raw.githubusercontent.com/serpereyra1981-GC/FOTOS/main/';
+const GC_FOTO_FALLBACK = GC_FOTOS_BASE + 'GC.jpg';
+
+function abrirFotoArticulo(articulo){
+  const numero = String(articulo ?? '').trim();
+  if(!numero) return;
+
+  const modal = document.getElementById('articlePhotoModal');
+  const img = document.getElementById('articlePhotoImage');
+  const titulo = document.getElementById('articlePhotoNumber');
+  const fallback = document.getElementById('articlePhotoFallback');
+  if(!modal || !img || !titulo) return;
+
+  titulo.textContent = numero;
+  fallback.style.display = 'none';
+  img.onerror = function(){
+    this.onerror = function(){
+      this.style.display = 'none';
+      fallback.textContent = 'No se pudo cargar la imagen.';
+      fallback.style.display = 'block';
+    };
+    fallback.textContent = 'Sin foto específica · mostrando imagen general';
+    fallback.style.display = 'block';
+    this.src = GC_FOTO_FALLBACK;
+  };
+  img.onload = function(){
+    this.style.display = 'block';
+  };
+  img.style.display = 'block';
+  img.src = GC_FOTOS_BASE + encodeURIComponent(numero) + '.jpg';
+  modal.style.display = 'flex';
+}
+
+function cerrarFotoArticulo(){
+  const modal = document.getElementById('articlePhotoModal');
+  const img = document.getElementById('articlePhotoImage');
+  if(modal) modal.style.display='none';
+  if(img){
+    img.removeAttribute('src');
+    img.style.display='block';
+  }
+}
+
+document.addEventListener('click', function(event){
+  const boton = event.target.closest('.article-photo-btn');
+  if(!boton) return;
+  event.preventDefault();
+  event.stopPropagation();
+  abrirFotoArticulo(boton.dataset.articlePhoto || '');
+});
+
+document.addEventListener('keydown', function(event){
+  if(event.key === 'Escape') cerrarFotoArticulo();
+});
+
+</script>
+
+<div id="taskMenuBg" class="task-menu-bg" onclick="if(event.target===this)cerrarMenuTarea()">
+  <div class="task-menu-card">
+    <div class="task-menu-head">
+      <small>ACCIONES DE PRODUCCIÓN</small>
+      <strong id="taskMenuDate">--/--/----</strong>
+    </div>
+    <div class="task-menu-actions">
+      <button type="button" class="task-menu-action" onclick="menuEditarTarea()"><span class="mi">✏️</span><span>EDITAR PRODUCCIÓN</span></button>
+      <button type="button" class="task-menu-action" onclick="menuAgregarHistorial()"><span class="mi">📋</span><span>AGREGAR HISTORIAL</span></button>
+      <button type="button" class="task-menu-action danger" onclick="menuEliminarTarea()"><span class="mi">🗑️</span><span>ELIMINAR PRODUCCIÓN</span></button>
+    </div>
+    <button type="button" class="task-menu-close" onclick="cerrarMenuTarea()">CERRAR</button>
+  </div>
+</div>
+
+<div id="taskConfirmBg" class="task-confirm-bg" onclick="if(event.target===this)cerrarConfirmarEliminar()">
+  <div class="task-confirm-card">
+    <h3>¿ELIMINAR PRODUCCIÓN?</h3>
+    <p id="taskConfirmText"></p>
+    <div class="task-confirm-buttons">
+      <button type="button" class="confirm-no" onclick="cerrarConfirmarEliminar()">NO</button>
+      <button type="button" id="confirmDeleteBtn" class="confirm-yes" onclick="confirmarEliminarTarea()">SÍ, ELIMINAR</button>
+    </div>
+  </div>
+</div>
+
+<div id="materialsModal" class="materials-modal" onclick="if(event.target===this)cerrarColoresTarea()">
+  <div class="materials-modal-card">
+    <div class="materials-logo-wrap">
+      <img class="materials-modal-logo" src="https://raw.githubusercontent.com/serpereyra1981-GC/LOGOS/2a857363c00ab37e7fe8d1fb265a6c0681251949/LOGO%20TRANSPARENTE%20BLANCO.png" alt="GOOD COMPANY">
+    </div>
+
+    <div id="materialsModalTitle" class="materials-modal-title">
+      COLORES <span id="materialsModalDate"></span>
+    </div>
+
+    <div id="materialsModalBody" class="materials-modal-body"></div>
+
+    <button type="button" class="materials-modal-close-bottom" onclick="cerrarColoresTarea()">
+      ← CERRAR
+    </button>
+  </div>
+</div>
+
+
+<div id="articlePhotoModal" class="article-photo-modal" onclick="if(event.target===this)cerrarFotoArticulo()">
+  <div class="article-photo-card">
+    <button type="button" class="article-photo-close" onclick="cerrarFotoArticulo()" aria-label="Cerrar">×</button>
+    <div class="article-photo-title">ARTÍCULO <span id="articlePhotoNumber"></span></div>
+    <img id="articlePhotoImage" class="article-photo-image" alt="Foto del artículo">
+    <div id="articlePhotoFallback" class="article-photo-fallback-note" style="display:none;">Sin foto específica · mostrando imagen general</div>
+  </div>
+</div>
+
+</body>
+</html>

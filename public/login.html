@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Good Company - Acceso</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#1e3a8a 0%,#0f172a 35%,#020617 100%);color:#e2e8f0;font-family:Arial,Helvetica,sans-serif}
+.login-card{width:min(405px,calc(100vw - 40px));background:rgba(15,23,42,.96);border:1px solid rgba(71,85,105,.75);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.field{width:100%;box-sizing:border-box;background:#020617;border:1px solid #475569;color:#fff;border-radius:11px;padding:16px;outline:none;font-size:16px;font-weight:700}
+.field:focus{border-color:#2563eb;box-shadow:0 0 0 2px rgba(37,99,235,.18)}
+.btn{width:100%;border:0;border-radius:11px;padding:14px;font-weight:900;cursor:pointer}
+.btn-primary{background:#2563eb;color:#fff}.btn-primary:hover{background:#1d4ed8}
+.btn-secondary{background:#1e293b;color:#fff}
+.error{display:none;margin-top:12px;padding:10px 12px;border-radius:9px;background:#7f1d1d;border:1px solid #ef4444;color:#fecaca;font-size:13px;font-weight:800}
+.setup{display:none}.small-note{color:#94a3b8;font-size:12px;line-height:1.4}
+</style>
+</head>
+<body class="flex items-center justify-center p-5">
+<div class="login-card p-7">
+<div class="text-center mb-6">
+<img src="https://raw.githubusercontent.com/serpereyra1981-GC/LOGOS/2a857363c00ab37e7fe8d1fb265a6c0681251949/LOGO%20TRANSPARENTE%20BLANCO.png" alt="Good Company" class="w-48 h-auto mx-auto mb-3">
+<h1 class="text-xl font-black tracking-wide">ACCESO GOOD COMPANY</h1>
+</div>
+
+<div id="loginPanel">
+<label class="block text-sm font-black mb-2">USUARIO</label>
+<input id="usuario" class="field mb-4" autocomplete="username" placeholder="Ingrese usuario">
+<label class="block text-sm font-black mb-2">CONTRASEÑA</label>
+<input id="password" type="password" class="field" autocomplete="current-password" placeholder="Ingrese contraseña">
+<label class="flex items-center gap-2 mt-4 cursor-pointer select-none">
+<input id="recordar" type="checkbox" checked class="w-4 h-4">
+<span class="text-sm font-bold">Recordarme en esta PC</span>
+</label>
+<button id="btnIngresar" class="btn btn-primary mt-5">🔐 INGRESAR</button>
+<div id="errorLogin" class="error"></div>
+</div>
+
+<div id="setupPanel" class="setup">
+<div class="rounded-lg border border-amber-500/40 bg-amber-500/10 p-3 mb-4">
+<div class="font-black text-amber-300">🔐 CONFIGURACIÓN INICIAL</div>
+<div class="small-note mt-1">El SUPERADMIN todavía no tiene contraseña. Creá ahora la clave inicial.</div>
+</div>
+<label class="block text-sm font-black mb-2">USUARIO</label>
+<input id="setupUsuario" class="field mb-4" value="SERPER" autocomplete="username">
+<label class="block text-sm font-black mb-2">NUEVA CONTRASEÑA</label>
+<input id="setupPassword" type="password" class="field mb-4" autocomplete="new-password" placeholder="Mínimo 6 caracteres">
+<label class="block text-sm font-black mb-2">REPETIR CONTRASEÑA</label>
+<input id="setupPassword2" type="password" class="field" autocomplete="new-password" placeholder="Repita la contraseña">
+<label class="flex items-center gap-2 mt-4 cursor-pointer select-none">
+<input id="setupRecordar" type="checkbox" checked class="w-4 h-4">
+<span class="text-sm font-bold">Recordarme en esta PC</span>
+</label>
+<button id="btnSetup" class="btn btn-primary mt-5">🔐 GUARDAR CONTRASEÑA</button>
+<div id="errorSetup" class="error"></div>
+</div>
+
+<button id="btnVolver" class="btn btn-secondary mt-3">← VOLVER</button>
+</div>
+
+<script>
+const params=new URLSearchParams(location.search);
+const next=params.get('next')||'/';
+
+function error(id,msg){const e=document.getElementById(id);e.textContent=msg;e.style.display='block'}
+function hide(id){document.getElementById(id).style.display='none'}
+
+function destino(datos){
+    const p=datos?.usuario?.permisos||{};
+    const mapa={
+        '/':'INGRESOS_EGRESOS','/index.html':'INGRESOS_EGRESOS',
+        '/tareas.html':'TAREAS','/produccion.html':'PRODUCCION',
+        '/talleres.html':'TALLERES','/pagos.html':'PAGOS','/bd.html':'BD'
+    };
+
+    const solicitado=(next||'/').split('?')[0];
+    if(mapa[solicitado] && p[mapa[solicitado]]){location.href=next;return}
+
+    const primero=[
+        ['/','INGRESOS_EGRESOS'],['/tareas.html','TAREAS'],
+        ['/produccion.html','PRODUCCION'],['/talleres.html','TALLERES'],
+        ['/pagos.html','PAGOS'],['/bd.html','BD']
+    ].find(x=>p[x[1]]);
+
+    location.href=primero?primero[0]:'/login.html';
+}
+
+async function revisar(){
+    try{const r=await fetch('/api/auth/me');if(r.ok){const d=await r.json();if(d.autenticado)destino(d)}}catch{}
+}
+
+async function ingresar(){
+    hide('errorLogin');
+    const usuario=document.getElementById('usuario').value.trim();
+    const password=document.getElementById('password').value;
+    const recordar=document.getElementById('recordar').checked;
+
+    try{
+        const r=await fetch('/api/auth/login',{
+            method:'POST',headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({usuario,password,recordar})
+        });
+        const d=await r.json();
+        if(d.configurar){
+            document.getElementById('setupUsuario').value=usuario.toUpperCase();
+            document.getElementById('loginPanel').style.display='none';
+            document.getElementById('setupPanel').style.display='block';
+            return;
+        }
+        if(!r.ok)throw new Error(d.error||'No se pudo iniciar sesión.');
+        destino(d);
+    }catch(e){error('errorLogin',e.message)}
+}
+
+async function configurar(){
+    hide('errorSetup');
+    const usuario=document.getElementById('setupUsuario').value.trim();
+    const password=document.getElementById('setupPassword').value;
+    const password2=document.getElementById('setupPassword2').value;
+    const recordar=document.getElementById('setupRecordar').checked;
+
+    if(password.length<6)return error('errorSetup','La contraseña debe tener al menos 6 caracteres.');
+    if(password!==password2)return error('errorSetup','Las contraseñas no coinciden.');
+
+    try{
+        const r=await fetch('/api/auth/setup',{
+            method:'POST',headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({usuario,password,recordar})
+        });
+        const d=await r.json();
+        if(!r.ok)throw new Error(d.error||'No se pudo guardar la contraseña.');
+        destino({usuario:d.usuario,permisos:{
+            INGRESOS_EGRESOS:true,TAREAS:true,PRODUCCION:true,TALLERES:true,PAGOS:true,BD:true
+        }});
+    }catch(e){error('errorSetup',e.message)}
+}
+
+document.getElementById('btnIngresar').onclick=ingresar;
+document.getElementById('btnSetup').onclick=configurar;
+document.getElementById('password').addEventListener('keydown',e=>{if(e.key==='Enter')ingresar()});
+document.getElementById('setupPassword2').addEventListener('keydown',e=>{if(e.key==='Enter')configurar()});
+document.getElementById('btnVolver').onclick=()=>location.href='/';
+
+revisar();
+</script>
+</body>
+</html>

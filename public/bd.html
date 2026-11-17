@@ -1,0 +1,2308 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+<script src="/auth.js?v=10"></script>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Good Company - BD</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+
+        html,
+        body {
+            background: #020617;
+            color: #e5e7eb;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+        }
+
+        .input-dark {
+            background: #020617 !important;
+            color: #f8fafc !important;
+            border: 1px solid #475569 !important;
+        }
+
+        .input-dark::placeholder {
+            color: #64748b;
+        }
+
+        .input-dark:focus {
+            outline: none;
+            border-color: #3b82f6 !important;
+            box-shadow:
+                0 0 0 2px
+                rgba(
+                    59,
+                    130,
+                    246,
+                    0.2
+                );
+        }
+
+        select option {
+            background: #0f172a;
+            color: #f8fafc;
+        }
+
+        .tabla-scroll {
+            scrollbar-color:
+                #475569
+                #020617;
+        }
+
+        .tabla-scroll::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        .tabla-scroll::-webkit-scrollbar-track {
+            background: #020617;
+        }
+
+        .tabla-scroll::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 999px;
+        }
+
+        .fila-bd:hover {
+            background:
+                rgba(
+                    30,
+                    41,
+                    59,
+                    0.75
+                );
+        }
+
+    
+.gc-confirm-overlay{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(2,6,23,.78);backdrop-filter:blur(4px)}
+.gc-confirm-card{width:min(520px,96vw);background:#0f172a;color:#e2e8f0;border:1px solid #334155;border-radius:12px;box-shadow:0 20px 50px rgba(0,0,0,.45);overflow:hidden}
+.gc-confirm-head{padding:15px 18px;background:#1e293b;border-bottom:1px solid #334155;display:flex;align-items:center;gap:10px}
+.gc-confirm-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:#dc2626;color:#fff;font-size:18px}
+.gc-confirm-title{font-size:16px;font-weight:900;letter-spacing:.3px}
+.gc-confirm-body{padding:18px;font-size:14px;line-height:1.5}
+.gc-confirm-info{margin-top:10px;padding:10px 12px;background:#1e293b;border:1px solid #334155;border-radius:8px;color:#cbd5e1}
+.gc-confirm-actions{padding:12px 18px 16px;display:flex;justify-content:flex-end;gap:8px}
+.gc-confirm-btn{border:0;border-radius:7px;padding:9px 14px;font-size:12px;font-weight:900;cursor:pointer}
+.gc-confirm-cancel{background:#334155;color:#fff}.gc-confirm-cancel:hover{background:#475569}
+.gc-confirm-danger{background:#dc2626;color:#fff}.gc-confirm-danger:hover{background:#b91c1c}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     BASE DE DATOS
+===================================================== -->
+
+<div
+    id="pantalla-bd"
+    class="
+        min-h-screen
+        p-4
+        md:p-6
+        bg-slate-950
+    "
+>
+
+    <div
+        class="
+            max-w-[2200px]
+            mx-auto
+        "
+    >
+
+
+        <!-- =================================================
+             CABECERA
+        ================================================== -->
+
+        <header
+            class="
+                bg-slate-900
+                text-white
+                p-4
+                rounded-xl
+                shadow-lg
+                mb-6
+                border
+                border-slate-700
+            "
+        >
+
+            <div
+                class="
+                    flex
+                    items-center
+                    justify-between
+                    gap-4
+                "
+            >
+
+                <div
+                    class="
+                        flex
+                        items-center
+                        shrink-0
+                    "
+                >
+
+                    <img
+                        src="https://raw.githubusercontent.com/serpereyra1981-GC/LOGOS/2a857363c00ab37e7fe8d1fb265a6c0681251949/LOGO%20TRANSPARENTE%20BLANCO.png"
+                        alt="GOOD COMPANY"
+                        class="
+                            h-12
+                            md:h-14
+                            w-auto
+                            object-contain
+                        "
+                    >
+
+                </div>
+
+
+                <div
+                    class="
+                        flex-1
+                        text-center
+                    "
+                >
+
+                    <h1
+                        class="
+                            text-xl
+                            md:text-2xl
+                            font-black
+                            tracking-wide
+                        "
+                    >
+                        BASE DE DATOS
+                    </h1>
+
+                </div>
+
+
+                <div
+                    class="
+                        shrink-0
+                    "
+                >
+
+                    <div class="flex items-center gap-2">
+
+                    <button
+                        type="button"
+                        onclick="window.open('https://docs.google.com/spreadsheets/d/13b_Gi5CoCNKRy_nd5RPQE5elO-26S8ZclOnUCgpe1CM/edit?usp=sharing','_blank','noopener,noreferrer')"
+                        class="
+                            bg-emerald-600
+                            hover:bg-emerald-500
+                            px-5
+                            py-3
+                            rounded-lg
+                            font-bold
+                        "
+                    >
+                        📊 SHEET
+                    </button>
+
+                    <button
+                        type="button"
+                        onclick="window.location.href='/'"
+                        class="
+                            bg-blue-600
+                            hover:bg-blue-500
+                            px-5
+                            py-3
+                            rounded-lg
+                            font-bold
+                        "
+                    >
+                        ← VOLVER
+                    </button>
+
+                </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =================================================
+             CONTROLES
+        ================================================== -->
+
+        <div
+            class="
+                bg-blue-600
+                rounded-lg
+                shadow-md
+                px-4
+                py-2
+                mb-4
+            "
+        >
+
+            <div
+                class="
+                    flex
+                    flex-col
+                    xl:flex-row
+                    justify-between
+                    items-center
+                    gap-2
+                "
+            >
+
+                <div
+                    class="
+                        text-white
+                        flex
+                        items-center
+                        gap-2
+                    "
+                >
+
+                    <span
+                        class="
+                            text-sm
+                            font-medium
+                        "
+                    >
+                        REGISTROS:
+                    </span>
+
+                    <span
+                        id="total-registros"
+                        class="
+                            font-black
+                            text-lg
+                        "
+                    >
+                        0
+                    </span>
+
+
+                    <span
+                        class="
+                            text-blue-200
+                            ml-3
+                            text-sm
+                            font-medium
+                        "
+                    >
+                        MOSTRADOS:
+                    </span>
+
+                    <span
+                        id="registros-filtrados"
+                        class="
+                            font-black
+                            text-lg
+                        "
+                    >
+                        0
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="
+                        flex
+                        flex-wrap
+                        gap-2
+                    "
+                >
+
+                    <button
+                        id="btn-limpiar-filtros"
+                        type="button"
+                        class="
+                            bg-slate-700
+                            hover:bg-slate-800
+                            text-white
+                            font-bold
+                            px-3
+                            py-1.5
+                            rounded-md
+                            text-sm
+                        "
+                    >
+                        🧹 LIMPIAR FILTROS
+                    </button>
+
+
+                    <button
+                        id="btn-actualizar"
+                        type="button"
+                        class="
+                            bg-emerald-500
+                            hover:bg-emerald-600
+                            text-white
+                            font-bold
+                            px-3
+                            py-1.5
+                            rounded-md
+                            text-sm
+                        "
+                    >
+                        🔄 ACTUALIZAR
+                    </button>
+
+
+                    <button
+                        id="btn-salir"
+                        type="button"
+                        class="
+                            bg-red-500
+                            hover:bg-red-600
+                            text-white
+                            font-bold
+                            px-3
+                            py-1.5
+                            rounded-md
+                            text-sm
+                        "
+                    >
+                        🔒 SALIR
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="texto-filtros"
+                class="
+                    mt-1
+                    text-xs
+                    text-blue-100
+                    hidden
+                "
+            ></div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             TABLA
+        ================================================== -->
+
+        <div
+            class="
+                bg-slate-900
+                rounded-xl
+                shadow-md
+                border
+                border-slate-700
+                overflow-hidden
+            "
+        >
+
+            <div
+                class="
+                    tabla-scroll
+                    overflow-auto
+                    max-h-[75vh]
+                "
+            >
+
+                <table
+                    class="
+                        w-full
+                        text-sm
+                        border-collapse
+                        whitespace-nowrap
+                    "
+                >
+
+                    <thead class="bg-slate-950 text-white sticky top-0 z-10">
+<tr>
+<th class="p-3 text-left">ID 🔎</th>
+<th class="p-3 text-left">FECHA 🔎</th>
+<th class="p-3 text-left">TALLER 🔎</th>
+<th class="p-3 text-left">ART 🔎</th>
+<th class="p-3 text-center">CANT 🔎</th>
+<th class="p-3 text-left">COLOR 🔎</th>
+<th class="p-3 text-center">MOVIMIENTO 🔎</th>
+<th class="p-3 text-center">REPARACION 🔎</th>
+<th class="p-3 text-center">S/ARMAR 🔎</th>
+<th class="p-3 text-center">MUESTRA 🔎</th>
+<th class="p-3 text-center">HORA INGRESO 🔎</th>
+<th class="p-3 text-center">PAGADO 🔎</th>
+<th class="p-3 text-center">FINALIZADO 🔎</th>
+<th class="p-3 text-center">BOLETA 🔎</th>
+<th class="p-3 text-center">ACCIONES</th>
+</tr>
+
+<tr id="fila-filtros" class="bg-slate-800">
+
+<th class="p-2">
+<input id="filtro-id" type="text" placeholder="ID"
+class="filtro input-dark w-full min-w-[65px] rounded-md p-2 text-xs">
+</th>
+
+<th class="p-2">
+<input id="filtro-fecha" type="date"
+class="filtro input-dark w-full min-w-[130px] rounded-md p-2 text-xs">
+</th>
+
+<th class="p-2">
+<select id="filtro-taller"
+class="filtro input-dark w-full min-w-[140px] rounded-md p-2 text-xs">
+<option value="">TODOS</option>
+</select>
+</th>
+
+<th class="p-2">
+<input id="filtro-art" type="text" placeholder="Buscar..."
+class="filtro input-dark w-full min-w-[90px] rounded-md p-2 text-xs">
+</th>
+
+<th class="p-2">
+<input id="filtro-cant" type="number" min="0" placeholder="= cantidad"
+class="filtro input-dark w-full min-w-[85px] rounded-md p-2 text-xs">
+</th>
+
+<th class="p-2">
+<select id="filtro-color"
+class="filtro input-dark w-full min-w-[125px] rounded-md p-2 text-xs">
+<option value="">TODOS</option>
+</select>
+</th>
+
+<th class="p-2">
+<select id="filtro-movimiento"
+class="filtro input-dark w-full min-w-[105px] rounded-md p-2 text-xs">
+<option value="">TODOS</option>
+<option value="SALE">SALE</option>
+<option value="ENTRA">ENTRA</option>
+</select>
+</th>
+
+<th class="p-2">
+<select id="filtro-reparacion"
+class="filtro input-dark w-full min-w-[95px] rounded-md p-2 text-xs">
+<option value="">TODOS</option>
+<option value="SI">SI</option>
+<option value="NO">NO</option>
+</select>
+</th>
+
+<th class="p-2">
+<select id="filtro-sin-armar"
+class="filtro input-dark w-full min-w-[95px] rounded-md p-2 text-xs">
+<option value="">TODOS</option>
+<option value="SI">SI</option>
+<option value="NO">NO</option>
+</select>
+</th>
+
+<th class="p-2">
+<select id="filtro-muestra"
+class="filtro input-dark w-full min-w-[95px] rounded-md p-2 text-xs">
+<option value="">TODOS</option>
+<option value="SI">SI</option>
+<option value="NO">NO</option>
+</select>
+</th>
+
+<th class="p-2">
+<input id="filtro-hora" type="text" placeholder="Hora"
+class="filtro input-dark w-full min-w-[100px] rounded-md p-2 text-xs">
+</th>
+
+<th class="p-2">
+<select id="filtro-pagado"
+class="filtro input-dark w-full min-w-[95px] rounded-md p-2 text-xs">
+<option value="">TODOS</option>
+<option value="SI">SI</option>
+<option value="NO">NO</option>
+</select>
+</th>
+
+<th class="p-2">
+<select id="filtro-finalizado"
+class="filtro input-dark w-full min-w-[105px] rounded-md p-2 text-xs">
+<option value="">TODOS</option>
+<option value="SI">SI</option>
+<option value="NO">NO</option>
+</select>
+</th>
+
+<th class="p-2">
+<input id="filtro-boleta" type="text" placeholder="Boleta"
+class="filtro input-dark w-full min-w-[80px] rounded-md p-2 text-xs">
+</th>
+
+<th class="p-2"></th>
+
+</tr>
+</thead>
+
+
+                    <tbody
+                        id="tabla-bd"
+                        class="
+                            divide-y
+                            divide-slate-800
+                        "
+                    >
+
+                        <tr>
+
+                            <td
+                                colspan="15"
+                                class="
+                                    p-10
+                                    text-center
+                                    text-slate-500
+                                "
+                            >
+                                ⏳ Cargando...
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+// ======================================================
+// VARIABLES
+// ======================================================
+
+
+let listaTalleres = [];
+
+let listaColores = [];
+
+let movimientosBD = [];
+
+
+// ======================================================
+// ELEMENTOS
+// ======================================================
+
+const btnActualizar =
+    document.getElementById(
+        'btn-actualizar'
+    );
+
+const btnSalir =
+    document.getElementById(
+        'btn-salir'
+    );
+
+const btnLimpiarFiltros =
+    document.getElementById(
+        'btn-limpiar-filtros'
+    );
+
+
+// ======================================================
+// UTILIDADES
+// ======================================================
+
+function escapeHtml(texto) {
+
+    if (
+        texto === null ||
+        texto === undefined
+    ) {
+
+        return '';
+
+    }
+
+    return String(texto)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+
+}
+
+
+function normalizarTexto(texto) {
+
+    return String(
+        texto || ''
+    )
+        .trim()
+        .toLowerCase();
+
+}
+
+
+function formatearFecha(fechaStr) {
+
+    if (!fechaStr) {
+        return '';
+    }
+
+    if (
+        fechaStr.includes('T')
+    ) {
+
+        fechaStr =
+            fechaStr.split('T')[0];
+
+    }
+
+    const partes =
+        fechaStr.split('-');
+
+    if (
+        partes.length === 3
+    ) {
+
+        return (
+            `${partes[2]}/` +
+            `${partes[1]}/` +
+            `${partes[0]}`
+        );
+
+    }
+
+    return fechaStr;
+
+}
+
+
+function convertirFechaInput(fechaStr) {
+
+    if (!fechaStr) {
+        return '';
+    }
+
+    const partes =
+        fechaStr.split('/');
+
+    if (
+        partes.length === 3
+    ) {
+
+        return (
+            `${partes[2]}-` +
+            `${partes[1].padStart(2, '0')}-` +
+            `${partes[0].padStart(2, '0')}`
+        );
+
+    }
+
+    return fechaStr;
+
+}
+
+
+// ======================================================
+// TALLERES
+// ======================================================
+
+async function cargarListaTalleres() {
+
+    try {
+
+        const respuesta =
+            await fetch(
+                '/api/talleres',
+                {
+                    credentials:
+                        'same-origin'
+                }
+            );
+
+        if (!respuesta.ok) {
+
+            throw new Error(
+                'No se pudieron cargar los talleres.'
+            );
+
+        }
+
+        const datos =
+            await respuesta.json();
+
+        listaTalleres =
+            Array.isArray(datos)
+                ? datos
+                : [];
+
+    } catch (error) {
+
+        console.error(
+            '❌ ERROR CARGANDO TALLERES:',
+            error
+        );
+
+        listaTalleres = [];
+
+    }
+
+}
+
+
+// ======================================================
+// COLORES
+// ======================================================
+
+async function cargarListaColores() {
+
+    try {
+
+        const respuesta =
+            await fetch(
+                '/api/colores',
+                {
+                    credentials:
+                        'same-origin'
+                }
+            );
+
+        if (!respuesta.ok) {
+
+            throw new Error(
+                'No se pudieron cargar los colores.'
+            );
+
+        }
+
+        const datos =
+            await respuesta.json();
+
+        listaColores =
+            Array.isArray(datos)
+                ? datos
+                : [];
+
+    } catch (error) {
+
+        console.error(
+            '❌ ERROR CARGANDO COLORES:',
+            error
+        );
+
+        listaColores = [];
+
+    }
+
+}
+
+
+// ======================================================
+// SESIÓN GENERAL — SALIR
+// ======================================================
+
+btnSalir.addEventListener(
+    'click',
+    async () => {
+
+        if (!confirm('¿Querés cerrar la sesión de Good Company?')) {
+            return;
+        }
+
+        try {
+            await fetch(
+                '/api/auth/logout',
+                {
+                    method: 'POST',
+                    credentials: 'same-origin'
+                }
+            );
+        } catch (_) {}
+
+        window.location.href = '/login.html';
+
+    }
+);
+
+
+// ======================================================
+// CARGAR BD
+// ======================================================
+
+async function cargarBD() {
+
+    const tabla =
+        document.getElementById(
+            'tabla-bd'
+        );
+
+
+    tabla.innerHTML =
+        `
+        <tr>
+            <td
+                colspan="15"
+                class="p-10 text-center text-slate-500"
+            >
+                ⏳ Cargando movimientos...
+            </td>
+        </tr>
+        `;
+
+
+    try {
+
+        const respuesta =
+            await fetch(
+                '/api/bd',
+                {
+                    credentials:
+                        'same-origin'
+                }
+            );
+
+
+        const resultado =
+            await respuesta.json();
+
+
+        if (!respuesta.ok) {
+
+            throw new Error(
+                resultado.error ||
+                'No se pudo cargar la BD.'
+            );
+
+        }
+
+
+        movimientosBD =
+            Array.isArray(
+                resultado.movimientos
+            )
+                ? resultado.movimientos
+                : [];
+
+
+        document
+            .getElementById(
+                'total-registros'
+            )
+            .textContent =
+            movimientosBD.length;
+
+
+        llenarOpcionesFiltros();
+
+        aplicarFiltros();
+
+
+        setTimeout(
+            () => {
+
+                const ultimaFila =
+                    document
+                        .getElementById(
+                            'tabla-bd'
+                        )
+                        ?.querySelector(
+                            'tr:last-child'
+                        );
+
+                if (ultimaFila) {
+
+                    ultimaFila.scrollIntoView({
+
+                        behavior:
+                            'auto',
+
+                        block:
+                            'end'
+
+                    });
+
+                }
+
+            },
+            100
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            '❌ ERROR CARGANDO BD:',
+            error
+        );
+
+
+        tabla.innerHTML =
+            `
+            <tr>
+                <td
+                    colspan="15"
+                    class="p-10 text-center text-red-400 font-semibold"
+                >
+                    ❌ ${escapeHtml(
+                        error.message
+                    )}
+                </td>
+            </tr>
+            `;
+
+
+        document
+            .getElementById(
+                'registros-filtrados'
+            )
+            .textContent =
+            '0';
+
+    }
+
+}
+
+
+// ======================================================
+// ACTUALIZAR
+// ======================================================
+
+btnActualizar.addEventListener(
+    'click',
+    cargarBD
+);
+
+
+// ======================================================
+// FILTROS
+// ======================================================
+
+function valoresUnicos(campo) {
+
+    return [
+        ...new Set(
+            movimientosBD
+                .map(
+                    m =>
+                        String(
+                            m[campo] ??
+                            ''
+                        ).trim()
+                )
+                .filter(Boolean)
+        )
+    ]
+    .sort(
+        (a, b) =>
+            a.localeCompare(
+                b,
+                'es',
+                {
+                    numeric:
+                        true
+                }
+            )
+    );
+
+}
+
+
+function llenarSelect(
+    id,
+    valores
+) {
+
+    const select =
+        document.getElementById(
+            id
+        );
+
+    if (!select) {
+        return;
+    }
+
+    const actual =
+        select.value;
+
+
+    select.innerHTML =
+        '<option value="">TODOS</option>' +
+
+        valores
+            .map(
+                v =>
+                    `
+                    <option
+                        value="${escapeHtml(v)}"
+                    >
+                        ${escapeHtml(v)}
+                    </option>
+                    `
+            )
+            .join('');
+
+
+    if (
+        valores.includes(actual)
+    ) {
+
+        select.value =
+            actual;
+
+    }
+
+}
+
+
+function llenarOpcionesFiltros() {
+
+    llenarSelect(
+        'filtro-taller',
+        valoresUnicos('taller')
+    );
+
+
+    llenarSelect(
+        'filtro-color',
+        valoresUnicos('color')
+    );
+
+}
+
+
+// ======================================================
+// FILTROS
+// ======================================================
+
+const filtros = {
+    id: document.getElementById('filtro-id'),
+    fecha: document.getElementById('filtro-fecha'),
+    taller: document.getElementById('filtro-taller'),
+    art: document.getElementById('filtro-art'),
+    cant: document.getElementById('filtro-cant'),
+    color: document.getElementById('filtro-color'),
+    movimiento: document.getElementById('filtro-movimiento'),
+    reparacion: document.getElementById('filtro-reparacion'),
+    sin_armar: document.getElementById('filtro-sin-armar'),
+    muestra: document.getElementById('filtro-muestra'),
+    hora: document.getElementById('filtro-hora'),
+    pagado: document.getElementById('filtro-pagado'),
+    finalizado: document.getElementById('filtro-finalizado'),
+    boleta: document.getElementById('filtro-boleta')
+};
+
+
+Object.values(filtros)
+    .forEach(
+        el => {
+
+            el.addEventListener(
+                'input',
+                aplicarFiltros
+            );
+
+            el.addEventListener(
+                'change',
+                aplicarFiltros
+            );
+
+        }
+    );
+
+
+// ======================================================
+// LIMPIAR FILTROS
+// ======================================================
+
+btnLimpiarFiltros.addEventListener(
+    'click',
+    () => {
+
+        Object.values(filtros)
+            .forEach(
+                el =>
+                    el.value = ''
+            );
+
+        aplicarFiltros();
+
+    }
+);
+
+
+// ======================================================
+// COINCIDENCIA FILTRO
+// ======================================================
+
+function coincideFiltro(m, campo, valor) {
+
+    if (!valor) {
+        return true;
+    }
+
+    const dato =
+        String(m[campo] ?? '').trim();
+
+    if (
+        campo === 'id' ||
+        campo === 'articulo' ||
+        campo === 'hora' ||
+        campo === 'boleta'
+    ) {
+        return normalizarTexto(dato)
+            .includes(normalizarTexto(valor));
+    }
+
+    if (campo === 'cant') {
+        return Number(dato) === Number(valor);
+    }
+
+    if (campo === 'fecha') {
+        return convertirFechaInput(
+            formatearFecha(m.fecha)
+        ) === valor;
+    }
+
+    return normalizarTexto(dato) ===
+           normalizarTexto(valor);
+}
+
+// ======================================================
+// APLICAR FILTROS
+// ======================================================
+
+function aplicarFiltros() {
+
+    const filtrados =
+        movimientosBD.filter(m =>
+
+            coincideFiltro(m, 'id', filtros.id.value) &&
+
+            coincideFiltro(m, 'fecha', filtros.fecha.value) &&
+
+            coincideFiltro(m, 'taller', filtros.taller.value) &&
+
+            coincideFiltro(m, 'articulo', filtros.art.value) &&
+
+            coincideFiltro(m, 'cant', filtros.cant.value) &&
+
+            coincideFiltro(m, 'color', filtros.color.value) &&
+
+            coincideFiltro(m, 'movimiento', filtros.movimiento.value) &&
+
+            coincideFiltro(m, 'reparacion', filtros.reparacion.value) &&
+
+            coincideFiltro(m, 'sin_armar', filtros.sin_armar.value) &&
+
+            coincideFiltro(m, 'muestra', filtros.muestra.value) &&
+
+            coincideFiltro(m, 'hora', filtros.hora.value) &&
+
+            coincideFiltro(m, 'pagado', filtros.pagado.value) &&
+
+            coincideFiltro(m, 'finalizado', filtros.finalizado.value) &&
+
+            coincideFiltro(m, 'boleta', filtros.boleta.value)
+        );
+
+    document.getElementById(
+        'registros-filtrados'
+    ).textContent = filtrados.length;
+
+    renderizarMovimientos(filtrados);
+
+    const activos = [];
+
+    Object.entries(filtros).forEach(
+        ([nombre, el]) => {
+
+            if (el.value) {
+                activos.push(
+                    `${nombre}: ${el.value}`
+                );
+            }
+
+        }
+    );
+
+    const texto =
+        document.getElementById(
+            'texto-filtros'
+        );
+
+    if (activos.length) {
+
+        texto.textContent =
+            '🔎 FILTROS ACTIVOS: ' +
+            activos.join('  |  ');
+
+        texto.classList.remove('hidden');
+
+    } else {
+
+        texto.classList.add('hidden');
+
+    }
+
+}
+
+// ======================================================
+// RENDERIZAR
+// ======================================================
+
+function renderizarMovimientos(
+    movimientos
+) {
+
+    const tabla =
+        document.getElementById(
+            'tabla-bd'
+        );
+
+
+    tabla.innerHTML = '';
+
+
+    if (
+        movimientos.length === 0
+    ) {
+
+        tabla.innerHTML =
+            `
+            <tr>
+                <td
+                    colspan="15"
+                    class="p-10 text-center text-slate-500"
+                >
+                    No hay movimientos que coincidan con los filtros.
+                </td>
+            </tr>
+            `;
+
+        return;
+
+    }
+
+
+    movimientos.forEach(
+        m =>
+            crearFila(
+                tabla,
+                m
+            )
+    );
+
+}
+
+
+// ======================================================
+// SELECT TALLER
+// ======================================================
+
+function crearSelectTaller(
+    valorActual
+) {
+
+    const actual =
+        String(
+            valorActual || ''
+        ).trim();
+
+
+    let opciones =
+        listaTalleres.map(
+            t => ({
+                valor:
+                    t.nombre
+            })
+        );
+
+
+    if (
+        actual &&
+        !opciones.some(
+            o =>
+                normalizarTexto(
+                    o.valor
+                ) ===
+                normalizarTexto(
+                    actual
+                )
+        )
+    ) {
+
+        opciones.unshift({
+            valor:
+                actual
+        });
+
+    }
+
+
+    return `
+        <select
+            class="input-dark w-full min-w-[160px] rounded-lg p-2 font-semibold"
+        >
+
+            ${
+                opciones
+                    .map(
+                        o =>
+                            `
+                            <option
+                                value="${escapeHtml(o.valor)}"
+                                ${
+                                    normalizarTexto(
+                                        o.valor
+                                    ) ===
+                                    normalizarTexto(
+                                        actual
+                                    )
+                                        ? 'selected'
+                                        : ''
+                                }
+                            >
+                                ${escapeHtml(o.valor)}
+                            </option>
+                            `
+                    )
+                    .join('')
+            }
+
+        </select>
+    `;
+
+}
+
+
+// ======================================================
+// SELECT COLOR
+// ======================================================
+
+function crearSelectColor(
+    valorActual
+) {
+
+    const actual =
+        String(
+            valorActual || ''
+        ).trim();
+
+
+    let opciones =
+        listaColores.map(
+            c => ({
+                valor:
+                    c.nombre
+            })
+        );
+
+
+    if (
+        actual &&
+        !opciones.some(
+            o =>
+                normalizarTexto(
+                    o.valor
+                ) ===
+                normalizarTexto(
+                    actual
+                )
+        )
+    ) {
+
+        opciones.unshift({
+            valor:
+                actual
+        });
+
+    }
+
+
+    return `
+        <select
+            class="input-dark w-full min-w-[160px] rounded-lg p-2"
+        >
+
+            ${
+                opciones
+                    .map(
+                        o =>
+                            `
+                            <option
+                                value="${escapeHtml(o.valor)}"
+                                ${
+                                    normalizarTexto(
+                                        o.valor
+                                    ) ===
+                                    normalizarTexto(
+                                        actual
+                                    )
+                                        ? 'selected'
+                                        : ''
+                                }
+                            >
+                                ${escapeHtml(o.valor)}
+                            </option>
+                            `
+                    )
+                    .join('')
+            }
+
+        </select>
+    `;
+
+}
+
+
+// ======================================================
+// CREAR FILA
+// ======================================================
+
+function crearFila(tabla, movimiento) {
+
+    const tr = document.createElement('tr');
+
+    tr.className =
+        'fila-bd border-b border-slate-800';
+
+    tr.dataset.id =
+        movimiento.id;
+
+    const movimientoClase =
+        movimiento.movimiento === 'ENTRA'
+            ? 'bg-emerald-900/50 text-emerald-300'
+            : 'bg-blue-900/50 text-blue-300';
+
+    const pagadoClase =
+        movimiento.pagado === 'SI'
+            ? 'bg-emerald-900/50 text-emerald-300'
+            : 'bg-red-900/50 text-red-300';
+
+    const finalizado =
+        String(
+            movimiento.finalizado || 'NO'
+        )
+        .trim()
+        .toUpperCase();
+
+    const finalizadoClase =
+        finalizado === 'SI'
+            ? 'bg-emerald-900/50 text-emerald-300'
+            : 'bg-red-900/50 text-red-300';
+
+    tr.innerHTML = `
+
+        <td class="p-3 font-bold text-slate-100">
+            ${escapeHtml(movimiento.id)}
+        </td>
+
+        <td class="p-3 text-slate-200">
+            ${formatearFecha(movimiento.fecha)}
+        </td>
+
+        <td class="p-3 font-semibold text-slate-100">
+            ${escapeHtml(movimiento.taller)}
+        </td>
+
+        <td class="p-3 font-bold text-slate-100">
+            ${escapeHtml(movimiento.articulo)}
+        </td>
+
+        <td class="p-3 text-center font-bold text-slate-100">
+            ${escapeHtml(movimiento.cantidad)}
+        </td>
+
+        <td class="p-3 text-slate-200">
+            ${escapeHtml(movimiento.color)}
+        </td>
+
+        <td class="p-3 text-center">
+            <span class="${movimientoClase} px-3 py-1 rounded-full font-bold">
+                ${escapeHtml(movimiento.movimiento)}
+            </span>
+        </td>
+
+        <td class="p-3 text-center font-bold text-slate-200">
+            ${escapeHtml(movimiento.reparacion)}
+        </td>
+
+        <td class="p-3 text-center font-bold text-slate-200">
+            ${escapeHtml(movimiento.sin_armar)}
+        </td>
+
+        <td class="p-3 text-center font-bold text-slate-200">
+            ${escapeHtml(movimiento.muestra)}
+        </td>
+
+        <td class="p-3 text-center text-slate-400">
+            ${escapeHtml(movimiento.hora)}
+        </td>
+
+        <td class="p-3 text-center">
+            <span class="${pagadoClase} px-3 py-1 rounded-full font-bold">
+                ${escapeHtml(movimiento.pagado)}
+            </span>
+        </td>
+
+        <td class="p-3 text-center">
+            <span class="${finalizadoClase} px-3 py-1 rounded-full font-bold">
+                ${finalizado === 'SI' ? 'SI' : 'NO'}
+            </span>
+        </td>
+
+        <td class="p-3 text-center font-bold text-slate-200">
+            ${escapeHtml(movimiento.boleta)}
+        </td>
+
+        <td class="p-3 text-center">
+
+            <div class="flex gap-2 justify-center">
+
+                <button
+                    type="button"
+                    onclick="editarRegistro('${escapeHtml(movimiento.id)}')"
+                    class="
+                        bg-amber-500
+                        hover:bg-amber-400
+                        text-slate-950
+                        font-bold
+                        px-3
+                        py-2
+                        rounded-lg
+                    "
+                >
+                    ✏️ EDITAR
+                </button>
+
+                <button
+                    type="button"
+                    onclick="abrirModalEliminar('${escapeHtml(movimiento.id)}')"
+                    class="
+                        bg-red-600
+                        hover:bg-red-500
+                        text-white
+                        font-bold
+                        px-3
+                        py-2
+                        rounded-lg
+                    "
+                >
+                    🗑️ ELIMINAR
+                </button>
+
+            </div>
+
+        </td>
+
+    `;
+
+    tabla.appendChild(tr);
+}
+
+// ======================================================
+// EDITAR
+// ======================================================
+
+function editarRegistro(
+    id
+) {
+
+    const tr =
+        document.querySelector(
+            `tr[data-id="${CSS.escape(String(id))}"]`
+        );
+
+
+    if (!tr) {
+        return;
+    }
+
+
+    const celdas =
+        tr.querySelectorAll(
+            'td'
+        );
+
+
+    const valores = {
+
+        fecha:
+            celdas[1]
+                .textContent
+                .trim(),
+
+        taller:
+            celdas[2]
+                .textContent
+                .trim(),
+
+        articulo:
+            celdas[3]
+                .textContent
+                .trim(),
+
+        cantidad:
+            celdas[4]
+                .textContent
+                .trim(),
+
+        color:
+            celdas[5]
+                .textContent
+                .trim(),
+
+        movimiento:
+            celdas[6]
+                .textContent
+                .trim(),
+
+        reparacion:
+            celdas[7]
+                .textContent
+                .trim(),
+
+        sin_armar:
+            celdas[8]
+                .textContent
+                .trim(),
+
+        muestra:
+            celdas[9]
+                .textContent
+                .trim(),
+
+        pagado:
+            celdas[11]
+                .textContent
+                .trim(),
+
+        finalizado:
+            celdas[12]
+                .textContent
+                .trim(),
+
+        boleta:
+            celdas[13]
+                .textContent
+                .trim()
+
+    };
+
+
+    celdas[1].innerHTML =
+        `
+        <input
+            type="date"
+            class="input-dark w-full min-w-[130px] rounded-lg p-2"
+            value="${convertirFechaInput(valores.fecha)}"
+        >
+        `;
+
+
+    celdas[2].innerHTML =
+        crearSelectTaller(
+            valores.taller
+        );
+
+
+    celdas[3].innerHTML =
+        `
+        <input
+            type="text"
+            class="
+                input-dark
+                w-full
+                min-w-[100px]
+                rounded-lg
+                p-2
+                font-bold
+            "
+            value="${escapeHtml(valores.articulo)}"
+        >
+        `;
+
+
+    celdas[4].innerHTML =
+        `
+        <input
+            type="number"
+            min="0"
+            class="
+                input-dark
+                w-full
+                min-w-[80px]
+                rounded-lg
+                p-2
+                text-center
+                font-bold
+            "
+            value="${escapeHtml(valores.cantidad)}"
+        >
+        `;
+
+
+    celdas[5].innerHTML =
+        crearSelectColor(
+            valores.color
+        );
+
+
+    celdas[6].innerHTML =
+        `
+        <select
+            class="input-dark rounded-lg p-2"
+        >
+
+            <option
+                value="ENTRA"
+                ${
+                    valores.movimiento ===
+                    'ENTRA'
+                        ? 'selected'
+                        : ''
+                }
+            >
+                ENTRA
+            </option>
+
+            <option
+                value="SALE"
+                ${
+                    valores.movimiento ===
+                    'SALE'
+                        ? 'selected'
+                        : ''
+                }
+            >
+                SALE
+            </option>
+
+        </select>
+        `;
+
+
+    celdas[7].innerHTML =
+        `
+        <select
+            class="input-dark rounded-lg p-2"
+        >
+
+            <option
+                value="NO"
+                ${
+                    valores.reparacion ===
+                    'NO'
+                        ? 'selected'
+                        : ''
+                }
+            >
+                NO
+            </option>
+
+            <option
+                value="SI"
+                ${
+                    valores.reparacion ===
+                    'SI'
+                        ? 'selected'
+                        : ''
+                }
+            >
+                SI
+            </option>
+
+        </select>
+        `;
+
+
+    celdas[8].innerHTML =
+        `
+        <select
+            class="input-dark rounded-lg p-2"
+        >
+
+            <option
+                value="NO"
+                ${
+                    valores.sin_armar ===
+                    'NO'
+                        ? 'selected'
+                        : ''
+                }
+            >
+                NO
+            </option>
+
+            <option
+                value="SI"
+                ${
+                    valores.sin_armar ===
+                    'SI'
+                        ? 'selected'
+                        : ''
+                }
+            >
+                SI
+            </option>
+
+        </select>
+        `;
+
+
+    celdas[9].innerHTML =
+        `
+        <select
+            class="input-dark rounded-lg p-2"
+        >
+
+            <option
+                value="NO"
+                ${
+                    valores.muestra ===
+                    'NO'
+                        ? 'selected'
+                        : ''
+                }
+            >
+                NO
+            </option>
+
+            <option
+                value="SI"
+                ${
+                    valores.muestra ===
+                    'SI'
+                        ? 'selected'
+                        : ''
+                }
+            >
+                SI
+            </option>
+
+        </select>
+        `;
+
+
+    celdas[11].innerHTML =
+        `
+        <select
+            class="input-dark rounded-lg p-2"
+        >
+
+            <option
+                value="NO"
+                ${
+                    valores.pagado ===
+                    'NO'
+                        ? 'selected'
+                        : ''
+                }
+            >
+                NO
+            </option>
+
+            <option
+                value="SI"
+                ${
+                    valores.pagado ===
+                    'SI'
+                        ? 'selected'
+                        : ''
+                }
+            >
+                SI
+            </option>
+
+        </select>
+        `;
+
+
+    celdas[14].innerHTML =
+        `
+        <div
+            class="
+                flex
+                gap-2
+                justify-center
+            "
+        >
+
+            <button
+                type="button"
+                onclick="guardarRegistro('${escapeHtml(id)}')"
+                class="
+                    bg-emerald-600
+                    hover:bg-emerald-500
+                    text-white
+                    font-bold
+                    px-4
+                    py-2
+                    rounded-lg
+                "
+            >
+                💾 GUARDAR
+            </button>
+
+
+            <button
+                type="button"
+                onclick="cargarBD()"
+                class="
+                    bg-slate-700
+                    hover:bg-slate-600
+                    text-white
+                    font-bold
+                    px-4
+                    py-2
+                    rounded-lg
+                "
+            >
+                ❌ CANCELAR
+            </button>
+
+        </div>
+        `;
+
+}
+
+
+// ======================================================
+// GUARDAR
+// ======================================================
+
+async function guardarRegistro(
+    id
+) {
+
+    const tr =
+        document.querySelector(
+            `tr[data-id="${CSS.escape(String(id))}"]`
+        );
+
+
+    if (!tr) {
+        return;
+    }
+
+
+    const celdas =
+        tr.querySelectorAll(
+            'td'
+        );
+
+
+    const payload = {
+
+        fecha:
+            celdas[1]
+                .querySelector('input')
+                .value,
+
+        taller:
+            celdas[2]
+                .querySelector('select')
+                .value
+                .trim(),
+
+        articulo:
+            celdas[3]
+                .querySelector('input')
+                .value
+                .trim(),
+
+        cantidad:
+            celdas[4]
+                .querySelector('input')
+                .value,
+
+        color:
+            celdas[5]
+                .querySelector('select')
+                .value
+                .trim(),
+
+        movimiento:
+            celdas[6]
+                .querySelector('select')
+                .value,
+
+        reparacion:
+            celdas[7]
+                .querySelector('select')
+                .value,
+
+        sin_armar:
+            celdas[8]
+                .querySelector('select')
+                .value,
+
+        muestra:
+            celdas[9]
+                .querySelector('select')
+                .value,
+
+        pagado:
+            celdas[11]
+                .querySelector('select')
+                .value
+
+    };
+
+
+    if (
+        !payload.fecha ||
+        !payload.taller ||
+        !payload.articulo ||
+        !payload.cantidad ||
+        !payload.color
+    ) {
+
+        alert(
+            '⚠️ FALTAN DATOS OBLIGATORIOS.'
+        );
+
+        return;
+
+    }
+
+
+    abrirModalGuardar(id,payload);
+return;
+}
+let payloadPendienteGuardar=null,idPendienteGuardar=null;
+function abrirModalGuardar(id,payload){
+ idPendienteGuardar=String(id); payloadPendienteGuardar=payload;
+ document.getElementById('gcSaveId').textContent=idPendienteGuardar;
+ document.getElementById('gcSaveModal').style.display='flex';
+}
+function cerrarModalGuardar(){
+ document.getElementById('gcSaveModal').style.display='none';
+ payloadPendienteGuardar=null; idPendienteGuardar=null;
+}
+async function confirmarGuardarRegistro(){
+ const id=idPendienteGuardar,payload=payloadPendienteGuardar;
+ if(!id||!payload)return;
+ cerrarModalGuardar();
+ try {
+
+        const respuesta =
+            await fetch(
+                `/api/bd/${encodeURIComponent(id)}`,
+                {
+                    method:
+                        'PUT',
+
+                    headers: {
+                        'Content-Type':
+                            'application/json'
+                    },
+
+                    credentials:
+                        'same-origin',
+
+                    body:
+                        JSON.stringify(
+                            payload
+                        )
+                }
+            );
+
+
+        const resultado =
+            await respuesta.json();
+
+
+        if (
+            !respuesta.ok ||
+            !resultado.success
+        ) {
+
+            throw new Error(
+                resultado.error ||
+                'No se pudo actualizar el registro.'
+            );
+
+        }
+
+
+        await cargarBD();
+
+
+    } catch (error) {
+
+        console.error(
+            '❌ ERROR GUARDANDO REGISTRO:',
+            error
+        );
+
+
+        alert(
+            '❌ Error: ' +
+            error.message
+        );
+
+    }
+
+}
+
+
+// ======================================================
+// ELIMINAR
+// ======================================================
+
+let idPendienteEliminar = null;
+function abrirModalEliminar(id){
+ idPendienteEliminar=String(id);
+ document.getElementById('gcDeleteId').textContent=idPendienteEliminar;
+ document.getElementById('gcDeleteModal').style.display='flex';
+}
+function cerrarModalEliminar(){
+ document.getElementById('gcDeleteModal').style.display='none';
+ idPendienteEliminar=null;
+}
+async function confirmarEliminarRegistro(){
+ const id=idPendienteEliminar;
+ if(!id)return;
+ cerrarModalEliminar();
+ try {
+
+        const respuesta =
+            await fetch(
+                `/api/bd/${encodeURIComponent(id)}`,
+                {
+                    method:
+                        'DELETE',
+
+                    credentials:
+                        'same-origin'
+                }
+            );
+
+
+        const texto =
+            await respuesta.text();
+
+
+        let resultado = {};
+
+
+        try {
+
+            resultado =
+                texto
+                    ? JSON.parse(texto)
+                    : {};
+
+        } catch (_) {}
+
+
+        if (
+            !respuesta.ok ||
+            !resultado.success
+        ) {
+
+            throw new Error(
+                resultado.error ||
+                `El servidor respondió ${respuesta.status}.`
+            );
+
+        }
+
+
+        await cargarBD();
+
+
+    } catch (error) {
+
+        console.error(
+            '❌ ERROR ELIMINANDO REGISTRO:',
+            error
+        );
+
+
+        alert(
+            '❌ No se pudo eliminar.\n\n' +
+            error.message
+        );
+
+    }
+
+}
+
+// ======================================================
+// INICIO DIRECTO
+// ======================================================
+
+(async function iniciarBD() {
+    await cargarListaTalleres();
+    await cargarListaColores();
+    await cargarBD();
+})();
+
+</script>
+
+
+
+<div id="gcDeleteModal" class="gc-confirm-overlay" aria-hidden="true">
+ <div class="gc-confirm-card" role="dialog" aria-modal="true">
+  <div class="gc-confirm-head"><div class="gc-confirm-icon">🗑️</div><div class="gc-confirm-title">ELIMINAR REGISTRO</div></div>
+  <div class="gc-confirm-body">Vas a eliminar el registro:
+   <div class="gc-confirm-info"><strong>ID:</strong> <span id="gcDeleteId"></span></div>
+   <div style="margin-top:12px;">Esta acción no se puede deshacer.</div>
+  </div>
+  <div class="gc-confirm-actions">
+   <button type="button" class="gc-confirm-btn gc-confirm-cancel" onclick="cerrarModalEliminar()">CANCELAR</button>
+   <button type="button" class="gc-confirm-btn gc-confirm-danger" onclick="confirmarEliminarRegistro()">🗑️ ELIMINAR</button>
+  </div>
+ </div>
+</div>
+<div id="gcSaveModal" class="gc-confirm-overlay" aria-hidden="true">
+ <div class="gc-confirm-card" role="dialog" aria-modal="true">
+  <div class="gc-confirm-head"><div class="gc-confirm-icon" style="background:#059669">💾</div><div class="gc-confirm-title">MODIFICAR REGISTRO</div></div>
+  <div class="gc-confirm-body">Vas a guardar los cambios del registro:
+   <div class="gc-confirm-info"><strong>ID:</strong> <span id="gcSaveId"></span></div>
+  </div>
+  <div class="gc-confirm-actions">
+   <button type="button" class="gc-confirm-btn gc-confirm-cancel" onclick="cerrarModalGuardar()">CANCELAR</button>
+   <button type="button" class="gc-confirm-btn" style="background:#059669;color:#fff" onclick="confirmarGuardarRegistro()">💾 GUARDAR</button>
+  </div>
+ </div>
+</div>
+</body>
+
+</html>
+<script>
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){cerrarModalEliminar();cerrarModalGuardar();}});
+document.getElementById('gcDeleteModal')?.addEventListener('click',e=>{if(e.target===e.currentTarget)cerrarModalEliminar();});
+document.getElementById('gcSaveModal')?.addEventListener('click',e=>{if(e.target===e.currentTarget)cerrarModalGuardar();});
+</script>
