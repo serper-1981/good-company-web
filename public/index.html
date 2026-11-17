@@ -2,7 +2,7 @@
 <html lang="es">
 
 <head>
-<script src="/auth.js?v=10"></script>
+<script src="/auth.js?v=11"></script>
 
     <meta charset="UTF-8">
 
@@ -1936,6 +1936,13 @@ document.addEventListener('DOMContentLoaded', function(){
                     class="bg-emerald-600 hover:bg-emerald-700 text-white font-black px-3 py-2 rounded-lg text-xs md:text-sm transition shadow"
                 >
                     📊 BD
+                </button>
+
+                <!-- STOCK ONLINE: visible únicamente con permiso STOCK_ONLINE -->
+                <button id="gcIndexStockOnline" type="button" onclick="window.location.href='/stock-online.html'"
+                    class="bg-teal-700 hover:bg-teal-600 text-white font-black px-3 py-2 rounded-lg text-xs md:text-sm transition shadow"
+                    style="display:none">
+                    📦 STOCK ONLINE
                 </button>
 
                 <span
@@ -5254,6 +5261,7 @@ tbody tr:last-child td{padding-bottom:2.2mm;}
   <a id="gcMobPagos" href="/pagos.html"><span>PAGOS</span></a>
   <a id="gcMobBd" href="/bd.html"><span>BD</span></a>
   <a id="gcMobRollos" href="/rollos.html"><span>ROLLOS</span></a>
+  <a id="gcMobStockOnline" href="/stock-online.html" style="display:none"><span>STOCK ONLINE</span></a>
 </nav>
 <script>
 (function(){

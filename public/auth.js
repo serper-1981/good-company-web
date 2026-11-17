@@ -8,6 +8,7 @@
         '/talleres.html':'TALLERES',
         '/pagos.html':'PAGOS',
         '/bd.html':'BD',
+        '/rollos.html':'ROLLOS',
         '/stock-online.html':'STOCK_ONLINE'
     };
 
@@ -25,7 +26,12 @@
         window.GC_USUARIO=data.usuario;
 
         // STOCK ONLINE: acceso individual, visible solo con permiso.
-        if(permisos.STOCK_ONLINE && location.pathname!=='/stock-online.html' && !document.getElementById('gc-stock-nav')){
+        // En INDEX, el acceso se muestra en la barra principal y el menú móvil.
+        const stockIndex=document.getElementById('gcIndexStockOnline');
+        const stockMobile=document.getElementById('gcMobStockOnline');
+        if(stockIndex) stockIndex.style.display=permisos.STOCK_ONLINE ? '' : 'none';
+        if(stockMobile) stockMobile.style.display=permisos.STOCK_ONLINE ? '' : 'none';
+        if(permisos.STOCK_ONLINE && location.pathname!=='/stock-online.html' && !stockIndex && !document.getElementById('gc-stock-nav')){
             const link=document.createElement('a');
             link.id='gc-stock-nav';
             link.href='/stock-online.html';
@@ -206,7 +212,12 @@
             const m=onclick.match(/(?:location\\.href|window\\.location\\.href)\\s*=\\s*['"]([^'"]+)/);
             if(m)ruta=m[1];
             const permiso=mapa[ruta];
-            if(permiso && !permisos[permiso])el.style.display='none';
+            if(permiso && !permisos[permiso]){
+                el.style.display='none';
+                if(ruta==='/rollos.html' && el.closest('.gc-rollos-mobile-access')){
+                    el.closest('.gc-rollos-mobile-access').style.setProperty('display','none','important');
+                }
+            }
         });
     }catch(error){
         console.error('❌ AUTH UI:',error);
