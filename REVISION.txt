@@ -1,0 +1,14 @@
+GOOD COMPANY - VERSION PUBLICAR + LOGIN
+
+Base: WEBGCSERPER_PUBLICAR
+Login/permisos/sesion: integrado desde GC_LOGIN_PERMISOS_SESION_V10
+
+- Login general con usuarios de hoja USUARIOS
+- Recordarme en esta PC (cookie persistente)
+- Boton usuario + SALIR
+- Permisos por modulo
+- Administracion de usuarios para SUPERADMIN
+- BD conserva su proteccion propia
+- Google Sheets como base de datos
+
+IMPORTANTE: mantener GOOGLE_SHEET_ID y google-credentials.json segun la configuracion actual del servidor.

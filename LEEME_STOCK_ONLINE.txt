@@ -1,0 +1,9 @@
+GOOD COMPANY - ETAPA 1: STOCK ONLINE
+
+1. En Google Sheets, hoja USUARIOS, agregar encabezado STOCK_ONLINE en M1 (columna M).
+2. Reemplazar/desplegar este proyecto en el servidor habitual de Good Company.
+3. SUPERADMIN: abrir ADMINISTRAR USUARIOS y marcar Stock Online solo a quienes corresponda.
+4. Los autorizados verán un acceso STOCK ONLINE dentro del sistema.
+5. Se muestra el catálogo público dentro de un iframe. Si el alojamiento externo bloquea iframe, hará falta integración por proxy o enlace.
+
+ATENCIÓN: Esta es solo la primera etapa. NO se implementó todavía el disparador manual de GitHub Actions. La página pública todavía conserva sus controles originales: se deberán eliminar del despliegue Cloudflare en la siguiente etapa. No se cambiaron los horarios automáticos.

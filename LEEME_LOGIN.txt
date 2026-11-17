@@ -1,0 +1,22 @@
+GOOD COMPANY — LOGIN Y PERMISOS (PRUEBA LOCAL)
+
+NOVEDADES:
+- Login general con USUARIO + CONTRASEÑA.
+- Checkbox "Recordarme en esta PC".
+- Primer acceso de SERPER: si PASSWORD_HASH está vacío, aparece configuración inicial.
+- Contraseña almacenada como scrypt hash en USUARIOS.
+- Sesión mediante cookie HttpOnly.
+- Páginas protegidas por permiso:
+    INDEX -> INGRESOS_EGRESOS
+    TAREAS -> TAREAS
+    PRODUCCION -> PRODUCCION
+    TALLERES -> TALLERES
+    PAGOS -> PAGOS
+    BD -> BD + contraseña BD existente
+- Acceso directo a páginas sin permiso devuelve Acceso Denegado.
+- APIs protegidas según módulo; endpoints compartidos admiten los permisos de los módulos que realmente los utilizan.
+- auth.js oculta botones de navegación sin permiso.
+- No se modificó la lógica de Google Sheets ni la contraseña adicional de BD.
+
+IMPORTANTE:
+Este paquete es para PROBAR EN LOCAL antes de publicarlo.
