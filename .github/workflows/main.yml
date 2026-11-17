@@ -1,0 +1,104 @@
+name: Backup semanal Good Company
+
+on:
+  schedule:
+    # Todos los domingos a las 06:00 UTC
+    # = 03:00 de Argentina
+    - cron: '0 6 * * 0'
+
+  # Permite ejecutarlo manualmente para hacer una prueba
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # ========================================================
+      # 1. Descargar repositorio
+      # ========================================================
+
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # ========================================================
+      # 2. Crear ZIP del repositorio
+      # ========================================================
+
+      - name: Crear ZIP del repositorio
+        run: |
+          FECHA=$(date -u +"%Y-%m-%d_%H-%M-%S")
+          NOMBRE="GOOD_COMPANY_GITHUB_BACKUP_${FECHA}.zip"
+
+          git archive \
+            --format=zip \
+            --output="$NOMBRE" \
+            HEAD
+
+          echo "BACKUP_FILE=$NOMBRE" >> "$GITHUB_ENV"
+
+      # ========================================================
+      # 3. Guardar backup en GitHub
+      # ========================================================
+
+      - name: Guardar backup
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.BACKUP_FILE }}
+          path: ${{ env.BACKUP_FILE }}
+          retention-days: 90
+
+      # ========================================================
+      # 4. Enviar backup a Google Drive
+      # ========================================================
+
+      - name: Enviar backup a Google Drive
+        env:
+          BACKUP_URL: ${{ secrets.BACKUP_GOOGLE_SCRIPT_URL }}
+          BACKUP_KEY: ${{ secrets.BACKUP_GOOGLE_SCRIPT_KEY }}
+        run: |
+          echo "Preparando backup para Google Drive..."
+
+          # Convertir ZIP a Base64 en un archivo
+          # para evitar superar el límite de argumentos de Linux
+          base64 -w 0 "$BACKUP_FILE" > backup_base64.txt
+
+          # Crear el JSON leyendo el Base64 desde archivo
+          jq -n \
+            --arg clave "$BACKUP_KEY" \
+            --arg nombre "$BACKUP_FILE" \
+            --rawfile archivo backup_base64.txt \
+            '{
+              clave: $clave,
+              nombre: $nombre,
+              archivo: $archivo
+            }' > payload.json
+
+          echo "Enviando $BACKUP_FILE a Google Drive..."
+
+          # IMPORTANTE:
+          # --data-binary hace que la primera solicitud sea POST.
+          # Apps Script recibe el POST y ejecuta doPost(e).
+          # Al seguir la redirección, curl usa GET para obtener
+          # la respuesta de ContentService.
+          RESPUESTA=$(curl \
+            --silent \
+            --show-error \
+            --fail \
+            --location \
+            --header "Content-Type: application/json" \
+            --data-binary @payload.json \
+            "$BACKUP_URL")
+
+          echo "Respuesta de Google Drive:"
+          echo "$RESPUESTA"
+
+          # Comprobar que Google confirmó el guardado
+          echo "$RESPUESTA" | jq -e '.ok == true' > /dev/null
+
+          echo "========================================"
+          echo "BACKUP GUARDADO CORRECTAMENTE EN DRIVE"
+          echo "========================================"
