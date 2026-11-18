@@ -2608,7 +2608,7 @@ document.addEventListener('click', function(event) {
 // FOTO DE ARTICULO — visor rapido desde Fotos-gc
 // ======================================================
 const GC_Fotos-gc_BASE = 'https://raw.githubusercontent.com/serper-1981/Fotos-gc/main/';
-const GC_FOTO_FALLBACK = GC_Fotos-gc_BASE + 'GC.jpg';
+const GC_FOTO_FALLBACK = GC_FOTOS_BASE + 'GC.jpg';
 
 function abrirFotoArticulo(articulo){
   const numero = String(articulo ?? '').trim();
@@ -2636,7 +2636,7 @@ function abrirFotoArticulo(articulo){
     this.style.display = 'block';
   };
   img.style.display = 'block';
-  img.src = GC_Fotos-gc_BASE + encodeURIComponent(numero) + '.jpg';
+  img.src = GC_FOTOS_BASE + encodeURIComponent(numero) + '.jpg';
   modal.style.display = 'flex';
 }
 
