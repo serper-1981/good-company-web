@@ -2017,7 +2017,7 @@ function mostrarConfirmacionSalida(
         overlay.className = 'gc-salida-overlay';
 
         const LOGO =
-            'https://raw.githubusercontent.com/serpereyra1981-GC/LOGOS/2a857363c00ab37e7fe8d1fb265a6c0681251949/LOGO%20TRANSPARENTE%20BLANCO.png';
+            'https://raw.githubusercontent.com/serper-1981/LOGOS/2a857363c00ab37e7fe8d1fb265a6c0681251949/LOGO%20TRANSPARENTE%20BLANCO.png';
 
         function esc(v) {
             return String(v ?? '')
