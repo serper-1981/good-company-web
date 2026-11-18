@@ -1,0 +1,31 @@
+GOOD COMPANY STOCK ONLINE - PAQUETE BASE PARA GITHUB + CLOUDFLARE
+
+IMPORTANTE: No subir el ZIP original V49. Este paquete NO contiene .env, node_modules ni data.
+
+ARQUITECTURA:
+- Cloudflare Pages: publicar carpeta public; funciones en functions.
+- Cloudflare KV: namespace para guardar la clave "catalogo".
+- Cloudflare Pages: configurar binding KV llamado STOCK_KV al namespace.
+- GitHub Actions: consulta ADMIN y publica en KV solo cuando la sincronización completa termina bien.
+- GitHub Secrets: GC_ADMIN_EMAIL, GC_ADMIN_PASSWORD, GC_EMAIL, GC_PASSWORD (si aplica), CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_KV_NAMESPACE_ID, CLOUDFLARE_API_TOKEN.
+- Programación UTC-3 lunes a viernes 08:00 a 16:00 cada 15 min, sujeto a demoras de GitHub.
+
+PASOS (NO REALIZADOS):
+1. Subir este paquete al repositorio privado de GitHub, conservando los archivos ocultos .github y .gitignore.
+2. Crear Cloudflare KV y configurar el binding STOCK_KV en Cloudflare Pages.
+3. Crear Pages conectado al repositorio: build command vacío, output directory "public"; root directory /.
+4. Crear token Cloudflare con permiso de edición KV para el namespace.
+5. Guardar las credenciales y los IDs como secretos de Actions; NUNCA publicarlos.
+6. Ejecutar Actions > Actualizar stock Good Company > Run workflow; verificar resultado y sitio público.
+7. Antes de usar con clientes, verificar filtros, impresión, imágenes y 2 ciclos de sincronización.
+
+ADVERTENCIAS:
+- El proyecto NO se ha probado contra ADMIN ni Cloudflare real.
+- GitHub Actions puede retrasar u omitir ejecuciones programadas.
+- GitHub Actions no respeta automáticamente feriados nacionales; pendiente implementar calendario.
+- Cloudflare KV tiene propagación eventual; puede tardar en verse la última actualización.
+- La página pública muestra último catálogo válido si falla una sincronización.
+- El botón Actualizar en la web pública RECARGA el último catálogo publicado; no fuerza una consulta ADMIN.
+- Si el proyecto es privado, los minutos de GitHub Actions consumen cuota incluida del plan.
+- La comprobación de ventas original sigue ejecutándose en segundo plano durante la sincronización, pero no bloquea la publicación.
+- No reemplazar el sistema local V49 con estos archivos.
