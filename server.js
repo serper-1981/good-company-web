@@ -715,8 +715,8 @@ app.use(authMejorada);
 
 // STOCK ONLINE: controles exclusivos del sistema autenticado.
 // Configurar GITHUB_STOCK_TOKEN (token GitHub con Actions: Read and write)
-// y opcionalmente GITHUB_STOCK_REPO=serpereyra1981-GC/GOODCOMPANY-STOCK-ONLINE.
-const STOCK_REPO = process.env.GITHUB_STOCK_REPO || 'serpereyra1981-GC/GOODCOMPANY-STOCK-ONLINE';
+// y opcionalmente GITHUB_STOCK_REPO=serper-1981/GOODCOMPANY-STOCK-ONLINE.
+const STOCK_REPO = process.env.GITHUB_STOCK_REPO || 'serper-1981/GOODCOMPANY-STOCK-ONLINE';
 const STOCK_WORKFLOW = 'actualizar-stock.yml';
 let ultimaSolicitudStock = 0;
 async function githubStock(endpoint, options={}){
