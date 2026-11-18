@@ -296,7 +296,8 @@ button,input,select,textarea{font:inherit}
     background:#334155;
 }
 
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.68);display:none;align-items:center;justify-content:center;z-index:100}.modal{width:min(620px,calc(100% - 30px));background:#101a2d;border:1px solid #3a4e70;border-radius:12px;padding:18px}.modal h2{margin:0 0 14px;font-size:20px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:11px;color:#9eb0ca;font-weight:800}.field input,.field textarea{background:#0b1527;color:#fff;border:1px solid #344867;border-radius:7px;padding:10px;outline:none}.field textarea{min-height:145px;resize:vertical}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px;flex-wrap:wrap}.modal-actions .btn{white-space:nowrap}.cancel{background:#33445f}.save{background:var(--green)}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.68);display:none;align-items:center;justify-content:center;z-index:100}.modal{width:min(620px,calc(100% - 30px));background:#101a2d;border:1px solid #3a4e70;border-radius:12px;padding:18px}.modal h2{margin:0 0 14px;font-size:20px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:11px;color:#9eb0ca;font-weight:800}.field input,.field textarea{background:#0b1527;color:#fff;border:1px solid #344867;border-radius:7px;padding:10px;outline:none}.field textarea{min-height:145px;resize:vertical}.modal-actions{display:flex;justify-content:stretch;align-items:center;gap:8px;margin-top:14px;flex-wrap:nowrap}.modal-actions .btn{white-space:nowrap;flex:1 1 0;min-width:0;padding:11px 8px;font-size:12px;font-weight:900}.modal-actions .action-add{background:#176b9b;border:1px solid #328dc1;color:#fff}.modal-actions .action-save{background:#218044;border:1px solid #35a65f;color:#fff}.modal-actions .action-cancel{background:#8b3038;border:1px solid #c24a55;color:#fff}.cancel{background:#33445f}.save{background:var(--green)}
+@media(max-width:520px){.modal-actions{gap:5px}.modal-actions .btn{font-size:10px;padding:10px 4px;letter-spacing:-.2px}}
 .notice{position:fixed;right:20px;bottom:20px;background:#101a2d;border:1px solid #3a4e70;border-radius:8px;padding:12px 16px;display:none;z-index:200}
 @media(max-width:1100px){.title{font-size:20px}.grid{grid-template-columns:repeat(4,minmax(200px,1fr))}}@media(max-width:760px){.quick-search{width:100%;margin-left:0}.quick-search input{flex:1}.topbar{flex-wrap:wrap}.nav{width:100%;margin-left:0}.nav button{flex:1}.toolbar{display:flex;flex-wrap:wrap;justify-content:center}.toolbar-main{width:100%;flex-wrap:wrap;justify-content:center}.production-mini{margin-left:0;padding-left:0;border-left:0;justify-content:center}.legend{width:100%;justify-content:center}.lower{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}}
 
@@ -893,9 +894,9 @@ button,input,select,textarea{font:inherit}
 </div>
 </div>
 <div class="modal-actions">
-<button type="button" id="editAddArticle" class="btn" style="display:none;background:#176b55;" onclick="agregarArticuloEdicion()">＋ AGREGAR ARTÍCULO</button>
-<button class="btn cancel" onclick="cerrarModal()">CANCELAR</button>
-<button id="modalSave" class="btn save" onclick="guardarTarea()">CREAR TAREA</button>
+<button type="button" id="editAddArticle" class="btn action-add" style="display:none;" onclick="agregarArticuloEdicion(event)">＋ AGREGAR ARTÍCULOS</button>
+<button type="button" id="modalSave" class="btn save action-save" onclick="guardarTarea()">CREAR TAREA</button>
+<button type="button" class="btn cancel action-cancel" onclick="cerrarModal()">CANCELAR</button>
 </div>
 </div></div>
 
@@ -1338,7 +1339,7 @@ function cardHtml(t,ti){
   </div>
   <div class="th"><span>ARTÍCULO</span><span>TALLER</span><span>ESTADO</span></div>
   ${filas}
-  <div class="foot"><button onclick="agregarArticulo(${ti})">＋ AGREGAR ARTÍCULO</button></div>
+  <div class="foot"><button type="button" onclick="agregarArticuloPorId('${encodeURIComponent(String(t.id))}')">＋ AGREGAR ARTÍCULO</button></div>
  </article>`;
 }
 
@@ -1520,19 +1521,28 @@ function leerFilasEdicion(){
  return ordenarArticulos(filas);
 }
 
-function agregarArticuloEdicion(){
+function agregarArticuloEdicion(event){
+ if(event){event.preventDefault();event.stopPropagation();}
+ const cont=document.getElementById('editRows');
+ if(!cont || document.getElementById('editRowsWrap')?.style.display==='none'){
+   alert('Primero abrí EDITAR PRODUCCIÓN para agregar artículos.');
+   return;
+ }
  const numero=prompt('¿Qué número de artículo querés agregar a esta producción?');
  if(numero===null)return;
  const articulo=normalizarArticuloHistorial(numero);
- if(!articulo)return;
+ if(!articulo){alert('Ingresá un número de artículo.');return;}
  if(!/^\d+$/.test(articulo)){
    alert('Ingresá un número de artículo válido.');
    return;
  }
  const actuales=leerFilasEdicion();
- // Los artículos repetidos están permitidos: cada fila es una unidad de relación independiente.
+ // Los artículos repetidos están permitidos: cada fila es una relación independiente.
+ // Los nuevos se crean siempre sin taller y sin fecha de salida.
  actuales.push({articulo,taller:'',fechaSalida:'',movimientoId:''});
  renderFilasEdicion(ordenarArticulos(actuales));
+ const nuevaFila=[...cont.querySelectorAll('.edit-row')].find(row=>row.querySelector('.edit-articulo')?.value===articulo && !row.dataset.movimientoId);
+ if(nuevaFila){nuevaFila.scrollIntoView({block:'nearest'});nuevaFila.querySelector('.edit-articulo')?.focus();}
 }
 
 function quitarArticuloEdicion(indice){
@@ -1933,18 +1943,28 @@ async function guardarTarea(){
  render();
  mostrarAviso('Tarea modificada correctamente');
 }
-async function agregarArticulo(ti){
+async function agregarArticuloPorId(idCodificado){
  const numero=prompt('¿Qué artículo querés agregar a esta tarea?');
  if(numero===null)return;
  const articulo=normalizarArticuloHistorial(numero);
- if(!articulo)return;
+ if(!articulo){alert('Ingresá un número de artículo.');return;}
  if(!/^\d+$/.test(articulo)){alert('Ingresá un número de artículo válido.');return;}
+ const id=decodeURIComponent(String(idCodificado||''));
  const tasks=loadTasks();
- if(!tasks[ti]){alert('No encontré la tarea seleccionada.');return;}
+ const indice=tasks.findIndex(t=>String(t.id)===id);
+ if(indice===-1){alert('No encontré la tarea seleccionada. Actualizá la página e intentá nuevamente.');return;}
  // Se permite repetir un artículo. Cada fila es una relación independiente.
- // Taller y fecha de salida vacíos equivalen a — SIN TALLER — y sin entrega.
- tasks[ti].articulos=ordenarArticulos([...(tasks[ti].articulos||[]),{articulo,taller:'',fechaSalida:'',movimientoId:''}]);
- try{await saveTasks(tasks);render();mostrarAviso('Artículo agregado y acomodado en su lugar');}catch(error){alert('❌ NO SE PUDO GUARDAR EN GOOGLE SHEETS.\n\n'+error.message);}
+ // El artículo nuevo queda por defecto — SIN TALLER — y sin fecha de salida.
+ tasks[indice].articulos=ordenarArticulos([...(tasks[indice].articulos||[]),{articulo,taller:'',fechaSalida:'',movimientoId:''}]);
+ try{
+   await saveTasks(tasks);
+   await cargarTareasDesdeServidor();
+   render();
+   mostrarAviso(`Artículo ${articulo} agregado y acomodado en su lugar`);
+ }catch(error){
+   console.error('❌ ERROR AGREGANDO ARTÍCULO A LA TAREA:',error);
+   alert('❌ NO SE PUDO GUARDAR EL ARTÍCULO.\n\n'+error.message);
+ }
 }
 
 async function cambiarTallerPorId(idCodificado,ai,taller){
