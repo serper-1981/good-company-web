@@ -296,7 +296,7 @@ button,input,select,textarea{font:inherit}
     background:#334155;
 }
 
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.68);display:none;align-items:center;justify-content:center;z-index:100}.modal{width:min(620px,calc(100% - 30px));background:#101a2d;border:1px solid #3a4e70;border-radius:12px;padding:18px}.modal h2{margin:0 0 14px;font-size:20px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:11px;color:#9eb0ca;font-weight:800}.field input,.field textarea{background:#0b1527;color:#fff;border:1px solid #344867;border-radius:7px;padding:10px;outline:none}.field textarea{min-height:145px;resize:vertical}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}.cancel{background:#33445f}.save{background:var(--green)}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.68);display:none;align-items:center;justify-content:center;z-index:100}.modal{width:min(620px,calc(100% - 30px));background:#101a2d;border:1px solid #3a4e70;border-radius:12px;padding:18px}.modal h2{margin:0 0 14px;font-size:20px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:11px;color:#9eb0ca;font-weight:800}.field input,.field textarea{background:#0b1527;color:#fff;border:1px solid #344867;border-radius:7px;padding:10px;outline:none}.field textarea{min-height:145px;resize:vertical}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px;flex-wrap:wrap}.modal-actions .btn{white-space:nowrap}.cancel{background:#33445f}.save{background:var(--green)}
 .notice{position:fixed;right:20px;bottom:20px;background:#101a2d;border:1px solid #3a4e70;border-radius:8px;padding:12px 16px;display:none;z-index:200}
 @media(max-width:1100px){.title{font-size:20px}.grid{grid-template-columns:repeat(4,minmax(200px,1fr))}}@media(max-width:760px){.quick-search{width:100%;margin-left:0}.quick-search input{flex:1}.topbar{flex-wrap:wrap}.nav{width:100%;margin-left:0}.nav button{flex:1}.toolbar{display:flex;flex-wrap:wrap;justify-content:center}.toolbar-main{width:100%;flex-wrap:wrap;justify-content:center}.production-mini{margin-left:0;padding-left:0;border-left:0;justify-content:center}.legend{width:100%;justify-content:center}.lower{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}}
 
@@ -892,7 +892,11 @@ button,input,select,textarea{font:inherit}
 <div id="editRows" style="max-height:360px;overflow:auto;background:#07101e;border:1px solid #344867;border-radius:8px;padding:8px;"></div>
 </div>
 </div>
-<div class="modal-actions"><button class="btn cancel" onclick="cerrarModal()">CANCELAR</button><button id="modalSave" class="btn save" onclick="guardarTarea()">CREAR TAREA</button></div>
+<div class="modal-actions">
+<button type="button" id="editAddArticle" class="btn" style="display:none;background:#176b55;" onclick="agregarArticuloEdicion()">＋ AGREGAR ARTÍCULO</button>
+<button class="btn cancel" onclick="cerrarModal()">CANCELAR</button>
+<button id="modalSave" class="btn save" onclick="guardarTarea()">CREAR TAREA</button>
+</div>
 </div></div>
 
 
@@ -1462,42 +1466,86 @@ function interpretarArticulosPegados(texto){
  return resultado;
 }
 
+function compararArticulos(a,b){
+ const aa=normalizarArticuloHistorial(a?.articulo||'');
+ const bb=normalizarArticuloHistorial(b?.articulo||'');
+ const na=Number(aa), nb=Number(bb);
+ if(aa!=='' && bb!=='' && Number.isFinite(na) && Number.isFinite(nb) && na!==nb) return na-nb;
+ return aa.localeCompare(bb,'es',{numeric:true,sensitivity:'base'});
+}
+
+function ordenarArticulos(articulos){
+ return (Array.isArray(articulos)?articulos:[])
+   .map((a,i)=>({...a,__ordenOriginal:i}))
+   .sort((a,b)=>compararArticulos(a,b)||a.__ordenOriginal-b.__ordenOriginal)
+   .map(({__ordenOriginal,...a})=>a);
+}
+
 function renderFilasEdicion(articulos){
  const cont=document.getElementById('editRows');
  if(!cont)return;
-
- if(!articulos.length){
-   cont.innerHTML='<div style="padding:15px;text-align:center;color:#aebbd0;">No hay artículos.</div>';
+ const lista=ordenarArticulos(articulos);
+ if(!lista.length){
+   cont.innerHTML='<div style="padding:15px;text-align:center;color:#aebbd0;">No hay artículos. Usá ＋ AGREGAR ARTÍCULO para incorporar uno.</div>';
    return;
  }
-
- cont.innerHTML=articulos.map((a,i)=>`
-   <div class="edit-row" data-edit-index="${i}"
-     style="display:grid;grid-template-columns:minmax(90px,.7fr) minmax(150px,1.4fr) minmax(130px,1fr);gap:8px;align-items:center;padding:7px 2px;border-bottom:1px solid #263650;">
-     <input class="edit-articulo" value="${esc(a.articulo||'')}"
-       style="width:100%;box-sizing:border-box;background:#111d30;color:#fff;border:1px solid #344867;border-radius:6px;padding:8px;font-weight:800;">
+ cont.innerHTML=lista.map((a,i)=>{
+   const tieneMovimiento=!!String(a.movimientoId||'').trim();
+   return `
+   <div class="edit-row" data-edit-index="${i}" data-movimiento-id="${esc(a.movimientoId||'')}"
+     style="display:grid;grid-template-columns:minmax(75px,.7fr) minmax(120px,1.4fr) minmax(115px,1fr) 38px;gap:7px;align-items:center;padding:7px 2px;border-bottom:1px solid #263650;">
+     <input class="edit-articulo" inputmode="numeric" value="${esc(a.articulo||'')}"
+       style="width:100%;min-width:0;box-sizing:border-box;background:#111d30;color:#fff;border:1px solid #344867;border-radius:6px;padding:8px;font-weight:800;">
      <select class="edit-taller"
-       style="width:100%;box-sizing:border-box;background:#111d30;color:#fff;border:1px solid #344867;border-radius:6px;padding:8px;font-weight:800;">
+       style="width:100%;min-width:0;box-sizing:border-box;background:#111d30;color:#fff;border:1px solid #344867;border-radius:6px;padding:8px;font-weight:800;">
        ${opcionesTaller(a.taller||'')}
      </select>
      <input class="edit-fecha" type="date" value="${esc(a.fechaSalida||'')}"
-       style="width:100%;box-sizing:border-box;background:#111d30;color:#fff;border:1px solid #344867;border-radius:6px;padding:8px;font-weight:800;">
-   </div>
- `).join('');
+       style="width:100%;min-width:0;box-sizing:border-box;background:#111d30;color:#fff;border:1px solid #344867;border-radius:6px;padding:8px;font-weight:800;">
+     <button type="button" title="${tieneMovimiento?'El artículo tiene un movimiento registrado y no se puede quitar desde aquí':'Quitar artículo de esta tarea'}" ${tieneMovimiento?'disabled':''}
+       onclick="quitarArticuloEdicion(${i})"
+       style="height:34px;border:1px solid ${tieneMovimiento?'#475569':'#8b3540'};border-radius:6px;background:${tieneMovimiento?'#263244':'#54232d'};color:${tieneMovimiento?'#9aa7b8':'#fff'};font-weight:900;cursor:${tieneMovimiento?'not-allowed':'pointer'};">×</button>
+   </div>`;
+ }).join('');
 }
 
 function leerFilasEdicion(){
- return [...document.querySelectorAll('#editRows .edit-row')].map(row=>{
+ const filas=[...document.querySelectorAll('#editRows .edit-row')].map(row=>{
    const articulo=normalizarArticuloHistorial(row.querySelector('.edit-articulo')?.value||'');
    const taller=(row.querySelector('.edit-taller')?.value||'').trim();
    const fechaSalida=row.querySelector('.edit-fecha')?.value||'';
-
-   return {
-     articulo,
-     taller,
-     fechaSalida
-   };
+   const movimientoId=row.dataset.movimientoId||'';
+   return {articulo,taller,fechaSalida,movimientoId};
  }).filter(r=>r.articulo);
+ return ordenarArticulos(filas);
+}
+
+function agregarArticuloEdicion(){
+ const numero=prompt('¿Qué número de artículo querés agregar a esta producción?');
+ if(numero===null)return;
+ const articulo=normalizarArticuloHistorial(numero);
+ if(!articulo)return;
+ if(!/^\d+$/.test(articulo)){
+   alert('Ingresá un número de artículo válido.');
+   return;
+ }
+ const actuales=leerFilasEdicion();
+ // Los artículos repetidos están permitidos: cada fila es una unidad de relación independiente.
+ actuales.push({articulo,taller:'',fechaSalida:'',movimientoId:''});
+ renderFilasEdicion(ordenarArticulos(actuales));
+}
+
+function quitarArticuloEdicion(indice){
+ const actuales=leerFilasEdicion();
+ const articulo=actuales[indice];
+ if(!articulo)return;
+ if(articulo.movimientoId){
+   alert('Este artículo tiene un movimiento registrado y no se puede quitar de la producción.');
+   return;
+ }
+ if(!confirm(`¿Quitar el artículo ${articulo.articulo} de esta producción?\n\nEl cambio se aplicará definitivamente al presionar GUARDAR CAMBIOS. Si presionás CANCELAR, se recuperará.`))return;
+ actuales.splice(indice,1);
+ renderFilasEdicion(actuales);
 }
 
 function obtenerColoresTarea(){
@@ -1732,6 +1780,7 @@ function abrirNuevaTarea(){
  document.getElementById('taskArticles').value='';
  document.getElementById('taskArticles').style.display='';
  document.getElementById('editRowsWrap').style.display='none';
+ document.getElementById('editAddArticle').style.display='none';
  document.getElementById('modalBg').style.display='flex';
 }
 function abrirEditarTareaPorId(id){
@@ -1769,6 +1818,7 @@ function abrirEditarTarea(ti){
 
  document.getElementById('taskArticles').style.display='none';
  document.getElementById('editRowsWrap').style.display='block';
+ document.getElementById('editAddArticle').style.display='inline-flex';
  renderFilasEdicion(t.articulos||[]);
 
  document.getElementById('modalBg').style.display='flex';
@@ -1780,6 +1830,8 @@ function cerrarModal(){
  const rw=document.getElementById('editRowsWrap');
  if(ta)ta.style.display='';
  if(rw)rw.style.display='none';
+ const add=document.getElementById('editAddArticle');
+ if(add)add.style.display='none';
  const cr=document.getElementById('taskColorRows');
  if(cr)cr.innerHTML='';
 }
@@ -1884,13 +1936,15 @@ async function guardarTarea(){
 async function agregarArticulo(ti){
  const numero=prompt('¿Qué artículo querés agregar a esta tarea?');
  if(numero===null)return;
- const articulo=numero.trim();
+ const articulo=normalizarArticuloHistorial(numero);
  if(!articulo)return;
+ if(!/^\d+$/.test(articulo)){alert('Ingresá un número de artículo válido.');return;}
  const tasks=loadTasks();
- // Los artículos pueden repetirse dentro de una misma tarea.
- // Ej.: 1912 puede aparecer 5 veces y cada fila es independiente.
- tasks[ti].articulos.push({articulo,taller:'',fechaSalida:''});
- try{await saveTasks(tasks);render();mostrarAviso('Artículo agregado');}catch(error){alert('❌ NO SE PUDO GUARDAR EN GOOGLE SHEETS.\n\n'+error.message);}
+ if(!tasks[ti]){alert('No encontré la tarea seleccionada.');return;}
+ // Se permite repetir un artículo. Cada fila es una relación independiente.
+ // Taller y fecha de salida vacíos equivalen a — SIN TALLER — y sin entrega.
+ tasks[ti].articulos=ordenarArticulos([...(tasks[ti].articulos||[]),{articulo,taller:'',fechaSalida:'',movimientoId:''}]);
+ try{await saveTasks(tasks);render();mostrarAviso('Artículo agregado y acomodado en su lugar');}catch(error){alert('❌ NO SE PUDO GUARDAR EN GOOGLE SHEETS.\n\n'+error.message);}
 }
 
 async function cambiarTallerPorId(idCodificado,ai,taller){
